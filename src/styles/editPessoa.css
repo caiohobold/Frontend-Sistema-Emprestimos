@@ -1,0 +1,75 @@
+.return-div{
+    margin-top: 28px;
+}
+
+.return-btn{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    margin-bottom: 22px;
+    margin-left: 20px;
+    color: white;
+    scale: calc(1.7);
+}
+
+.container-div{
+    background-color: #ffffff;
+    border-top-right-radius: 60px;
+    height: inherit;
+    margin-top: 10px;
+}
+
+.header-edit{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pessoa-edit-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    display: flex;
+    margin-left: 20px;
+}
+
+.btn-delete{
+    margin-right: 30px;
+    border: none;
+    background-color: transparent;
+}
+
+.icon-delete{
+    width: 25px;
+    height: 25px;
+    color: rgb(214, 0, 29);
+}
+
+.form-edit{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-input{
+    width: 80%;
+}
+
+.save-btn{
+    background-color: #3dabd6;
+    font-family: 'League Spartan', sans-serif;
+    margin-top: 30px;
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.save-btn:active{
+    background-color: #287897;
+}

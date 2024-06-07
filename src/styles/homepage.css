@@ -1,0 +1,35 @@
+.img-div{
+    width: 20%;
+    margin-top: -10px;
+}
+
+.container-div{
+    background-color: #ffffff;
+    border-top-right-radius: 60px;
+    height: inherit;
+    margin-top: 10px;
+}
+
+.btns-div{
+    margin-top: 30px;
+    gap: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    display: flex;
+    margin-left: 20px;
+}
+
+.sub-welcome-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    display: flex;
+    margin-top: -5px;
+    margin-left: 22px;
+}

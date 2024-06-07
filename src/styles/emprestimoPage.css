@@ -1,0 +1,116 @@
+.img-div{
+    width: 20%;
+    margin-top: -10px;
+}
+
+.container-div{
+    background-color: #ffffff;
+    border-top-right-radius: 60px;
+    height: inherit;
+    margin-top: 10px;
+}
+
+.emprestimo-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    display: flex;
+    margin-left: 20px;
+}
+
+.box-emprestimo{
+    background-color: #eeeeee;
+    height: 130px;
+    width: 90%;
+    border-radius: 20px;
+    display: flex;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-right: auto;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+}
+
+.nomepessoa-emprestimo{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-left: 20px;
+    display: flex;
+    font-weight: 500;
+}
+
+.nomeequipamento-emprestimo{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: -5px;
+    display: flex;
+    font-weight: 400;
+}
+
+.data-emprestimo{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
+    margin-left: 20px;
+    margin-top: -5px;
+    display: flex;
+    font-weight: 400;
+}
+
+.carga-obeso{
+    margin-top: 5px;
+    background-color: #00719C;
+    border-radius: 20px;
+    padding: 5px;
+    width: 20%;
+    margin-left: 20px;
+    color: white;
+}
+
+.carga-semi-obeso{
+    margin-top: 5px;
+    background-color: #71C7E8;
+    border-radius: 20px;
+    padding: 5px;
+    width: 30%;
+    margin-left: 20px;
+    color: white;
+}
+
+.carga-normal{
+    margin-top: 5px;
+    background-color: #4c4fe2;
+    border-radius: 20px;
+    padding: 5px;
+    width: 20%;
+    margin-left: 20px;
+    color: white;
+}
+
+.btn-finalizar{
+    margin-top: 5px;
+    background-color: #DD7474;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    padding: 5px;
+    width: 25%;
+    margin-left: 10px;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-finalizar:active{
+    background-color: rgb(204, 42, 42);
+}
+
+.modals{
+    display: flex;
+    flex-direction: row;
+}
+
+.emprestimos{
+    height: 630px;
+    overflow-y: auto;
+}

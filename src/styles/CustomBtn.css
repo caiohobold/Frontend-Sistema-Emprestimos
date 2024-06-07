@@ -1,0 +1,17 @@
+.custom-btn{
+    height: 150px;
+    width: 150px;
+    border-radius: 20px;
+    background-color: #F8F8F8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.compact-text{
+    margin-top: 5px;
+    line-height: 0.8;
+}
+

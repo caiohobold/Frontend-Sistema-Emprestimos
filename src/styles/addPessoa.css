@@ -1,0 +1,37 @@
+ .pessoa-add-title {
+    margin: 20px 0;
+  }
+  
+  .form-add {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-input {
+    margin-bottom: 10px;
+  }
+
+  .form-input-estado{
+    margin-top: 10px;
+    margin-bottom: 7px;
+    width: 80%;
+  }
+  
+.save-pessoa{
+    background-color: #3dabd6;
+    font-family: 'League Spartan', sans-serif;
+    margin-top: 30px;
+    width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.save-pessoa:active{
+    background-color: #287897;
+}
+  

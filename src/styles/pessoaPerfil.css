@@ -1,0 +1,221 @@
+.return-div{
+    margin-top: 28px;
+}
+
+.return-btn{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    margin-bottom: 22px;
+    margin-left: 20px;
+    color: white;
+    scale: calc(1.7);
+}
+
+.container-div{
+    background-color: #ffffff;
+    border-top-right-radius: 60px;
+    height: inherit;
+    margin-top: 10px;
+}
+
+.pessoa{
+    font-family: 'League Spartan', sans-serif;
+    display: flex;
+    flex-direction: row;
+}
+
+.pessoa-icon-div{
+    display: flex;
+}
+
+.pessoa-icon{
+    width: 100px;
+    height: 100px;
+    margin-left: 30px;
+}
+
+.pessoa-name{
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.pessoa-cpf{
+    text-align: left;
+    display: flex;
+    margin-left: 20px;
+}
+
+.sem-emprestimo{
+    font-family: 'League Spartan', sans-serif;
+    margin-top: 5px;
+    width: 130px;
+    margin-left: 18px;
+    font-size: 16px;
+    height: 30px;
+    background-color: #96DD74;
+    border-radius: 15px;
+    padding: 5px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+
+.com-emprestimo{
+    font-family: 'League Spartan', sans-serif;
+    margin-top: 5px;
+    width: 130px;
+    margin-left: 18px;
+    font-size: 16px;
+    height: 30px;
+    background-color: #DD747A;
+    border-radius: 15px;
+    padding: 5px;
+    color: white;
+    font-weight: 600;
+}
+
+
+.box-emprestimos{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'League Spartan', sans-serif;
+    width: 90%;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.2);
+}
+
+.emprestimos-title{
+    margin-left: 20px;
+    margin-top: 15px;
+    font-size: 20px;
+    display: flex;
+}
+
+.sub-box-emprestimos{
+    background-color: #e4e4e4;
+    border-radius: 15px;
+    width: 93%;
+    height: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nomeEquipamento{
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.dataEmp{
+    margin-left: 10px;
+}
+
+.em-andamento{
+    background-color: rgb(119, 10, 25);
+    width: 115px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    border-radius: 15px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.finalizado{
+    background-color: rgb(92, 0, 92);
+    width: 90px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    border-radius: 15px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.status-and-btn{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.finalizar-btn{
+    background-color: transparent;
+    border-radius: 15px;
+    color: rgb(119, 10, 25);
+    font-weight: 600;
+    width: 100px;
+    height: 30px;
+    border: 2px solid rgb(119, 10, 25);
+    margin-right: 20px;
+}
+
+.finalizar-btn:active{
+    background-color: rgb(119, 10, 25);
+    color: white;
+}
+
+.no-emprestimos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #555;
+    animation: pop-up 0.2s ease-in;
+  }
+
+.no-emprestimos-pessoa {
+    margin-top: 200px;
+}
+
+.no-emprestimos-pessoa div{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.no-emprestimos div{
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.icon-chair {
+    width: 80px;
+    height: 80px;
+}
+
+@keyframes pop-up {
+    0%, 100%{
+        transform: scale(0.2);
+    }
+
+    80%{
+        transform: scale(1.4);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}

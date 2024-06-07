@@ -1,0 +1,152 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.main-content{
+    background-color: #3dabd6;
+    text-align: center;
+    height: 100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+@media (max-width: 1080px){
+}
+
+.WheelShareLogo{
+    margin-top: 30%;
+    width: 55%;
+}
+
+.sub-content1{
+    background-color: #ffffff;
+    border-top-left-radius: 60px;
+    height: inherit;
+    margin-top: 30px;
+}
+
+.sub-content2{
+    background-color: #ffffff;
+    border-top-left-radius: 60px;
+    height: inherit;
+    margin-top: 30px;
+}
+
+.btns-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.login-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    display: flex;
+    margin-bottom: -10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-email{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-senha{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-cnpj{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-razaosocial{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-nomefantasia{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-telefone{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-endereco{
+    width: 70%;
+    margin: 0 auto;
+}
+
+
+.form-group{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+#loading-icon{
+    margin-right: 20px;
+}
+
+.alert{
+    position: fixed;
+}
+
+#btnEntrar{
+    width: 250px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #3dabd6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+#btnEntrar span{
+    margin-top: 3px;
+}
+
+#btnAssoc{
+    width: 250px;
+    height: 60px;
+    border-radius: 30px;
+    color: #3dabd6;
+    background-color: transparent;
+    display: flex;
+    border: 2px solid #3dabd6;
+    justify-content: center;
+    align-items: center;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+.span-member{
+    margin-top: 10px;
+}

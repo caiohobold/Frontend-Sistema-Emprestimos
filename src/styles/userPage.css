@@ -1,0 +1,19 @@
+.img-div{
+    width: 20%;
+    margin-top: -10px;
+}
+
+.container-div{
+    background-color: #ffffff;
+    border-top-right-radius: 60px;
+    height: inherit;
+    margin-top: 10px;
+}
+
+.perfil-title{
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    display: flex;
+    margin-left: 20px;
+}
