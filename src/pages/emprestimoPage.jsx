@@ -3,9 +3,10 @@ import emprestimosService from '../services/emprestimosService';
 import { Navigate, useNavigate } from 'react-router-dom';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png'
 import '../styles/emprestimoPage.css'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '../components/navBar';
-import { format } from 'date-fns';
+import { format, parseISO, utcToZonedTime, zonedTimeToUtc } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
@@ -17,6 +18,8 @@ const EmprestimosPage = ({ emprestimo }) =>{
     const [loading, setLoading] = useState(false);
     const [filteredEmprestimos, setFilteredEmprestimos] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
       const results = emprestimos.filter(emp => 
@@ -30,7 +33,7 @@ const EmprestimosPage = ({ emprestimo }) =>{
         const loadEmprestimos = async () => {
             try {
                 setLoading(true);
-                const data = await emprestimosService.getEmprestimosAtivos(1, 5);
+                const data = await emprestimosService.getEmprestimosAtivos(1, 500);
                 setEmprestimos(data);
                 setFilteredEmprestimos(data);
                 setLoading(false);
@@ -44,8 +47,9 @@ const EmprestimosPage = ({ emprestimo }) =>{
     }, []);
 
     const formatDate = (dateString) => {
-        return format(new Date(dateString), 'dd/MM/yyyy', { locale: ptBR });
-      };
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+  };
 
     const getCargaDescription = (carga) => {
         const cargaMap = {
@@ -80,6 +84,12 @@ const EmprestimosPage = ({ emprestimo }) =>{
           ]
         });
       };
+
+      const isAtrasado = (dataDevolucao) => {
+        const dataAtual = new Date();
+        const dataDevolucaoDate = new Date(dataDevolucao);
+        return dataAtual > dataDevolucaoDate;
+      }
       
       const finalizarEmprestimo = (idEmprestimo) => {
         emprestimosService.finalizarEmprestimo(idEmprestimo)
@@ -122,11 +132,17 @@ const EmprestimosPage = ({ emprestimo }) =>{
                       filteredEmprestimos.map(emp => 
                         
                         <div key={emp.id} className='box-emprestimo'>
+                          <div className='atrasado'>
+                            {isAtrasado(emp.dataDevolucao) && <div className='status-atrasado'>Atrasado</div>}
+                          </div>
+                          <div className='row-edit'>
                             <div className='nomepessoa-emprestimo'>{emp.nomePessoa}</div>
+                            <button className='btn-edit-equip-div' onClick={() => navigate(`/emprestimos/edit/${emp.id}`)}><FontAwesomeIcon className='btn-edit-equip' icon={faPenToSquare} /></button>
+                          </div>
                             <div className='nomeequipamento-emprestimo'>{emp.nomeEquipamento}</div>
                             <div className='row-datas'>
-                              <div className='data-emprestimo'>Início: {formatDate(emp.dataEmprestimo)}</div>
-                              <div className='data-devolucao'>Devolução: {formatDate(emp.dataDevolucao)}</div>
+                              <div className='data-emprestimo'>Início: {formatDate(emp.dataEmprestimo.split('T')[0])}</div>
+                              <div className='data-devolucao'>Devolução: {formatDate(emp.dataDevolucao.split('T')[0])}</div>
                             </div>
                             <div className='modals'>
                                 <div className={getCargaClass(emp.cargaEquipamento)}>{getCargaDescription(emp.cargaEquipamento)}</div>
@@ -137,7 +153,10 @@ const EmprestimosPage = ({ emprestimo }) =>{
                     )
                   )
                 )}
+                <br></br>
+                <br></br>
                 </div>
+                
                 <NavBar />
           </div>
         </div>

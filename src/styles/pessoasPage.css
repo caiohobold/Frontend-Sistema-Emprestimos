@@ -108,7 +108,7 @@
 
 .modal-filter{
     width: 80%;
-    background-color: #71C7E8;
+    background-color: #dee3e6;
     height: 50%;
     margin-top: 50%;
     z-index: 1030;
@@ -134,7 +134,6 @@
     border-radius: 20px;
     font-size: 15px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.562);
-    margin-top: 70%;
 }
 
 

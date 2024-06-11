@@ -17,6 +17,7 @@ import EquipamentosPage from './pages/equipamentosPage';
 import AddEquip from './pages/addEquip';
 import EditEquip from './pages/editEquip';
 import AddEmprestimo from './pages/addEmp';
+import EditEmp from './pages/editEmp';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path="/equipamento/add" element={<AddEquip />} />
               <Route path="/Usuarios/equipamentos" element={<EquipamentosPage />} />
               <Route path="/Emprestimos/add" element={<AddEmprestimo />} />
+              <Route exact path="/emprestimos/edit/:id" element={<EditEmp />}/>
             </Routes>
           </Router>
         </main>

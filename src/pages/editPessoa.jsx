@@ -20,6 +20,7 @@ const EditPessoa = () => {
     email: '',
     telefone: '',
     descricao: '',
+    endereco: ''
   });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -131,6 +132,9 @@ const EditPessoa = () => {
                     </div>
                     <div className='form-input'>
                         <CustomInput label="Descrição" type="text" name="descricao" value={pessoa.descricao} onChange={handleChange}/>
+                    </div>
+                    <div className='form-input'>
+                        <CustomInput label="Endereço" type="text" name="endereço" value={pessoa.endereco} onChange={handleChange}/>
                     </div>
                     <button type="submit" className='save-btn'>Salvar</button>
                 </form>

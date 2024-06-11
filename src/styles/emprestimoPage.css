@@ -20,7 +20,6 @@
 
 .box-emprestimo{
     background-color: #eeeeee;
-    height: 130px;
     width: 90%;
     border-radius: 20px;
     display: flex;
@@ -31,11 +30,27 @@
     flex-direction: column;
 }
 
+.atrasado{
+    display: flex;
+    justify-content: center;
+}
+
+.status-atrasado{
+    background-color: #d41414;
+    width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+}
+
 .nomepessoa-emprestimo{
     font-family: 'League Spartan', sans-serif;
     font-size: 20px;
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 19px;
     display: flex;
     font-weight: 500;
 }
@@ -83,6 +98,34 @@
     font-weight: 400;
 }
 
+.row-edit{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn-edit-equip-div{
+    background-color: #71C7E8;
+    border: none;
+    color: white;
+    margin-right: 10px;
+    border-radius: 15px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    margin-top: 8px;
+}
+
+.btn-edit-equip{
+    width: 15px;
+    height: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 3px;
+}
+
 .carga-semi-obeso{
     margin-top: 5px;
     background-color: #71C7E8;
@@ -123,9 +166,11 @@
 .modals{
     display: flex;
     flex-direction: row;
+    margin-bottom: 15px;
 }
 
 .emprestimos{
-    height: 630px;
+    height: 580px;
     overflow-y: auto;
+    border-radius: 20px;
 }

@@ -90,8 +90,19 @@ const AddEmprestimo = () => {
             navigate('/Usuarios/emprestimos');
           }, 1500);
         } catch (error) {
-          console.error('Erro ao cadastrar o empréstimo:', error);
-          setMessage('Erro ao cadastrar o empréstimo.');
+            const resMessage =
+            (error.response && 
+                error.response.data &&
+                error.response.data.message) || 
+            error.message || 
+            error.toString();
+
+            if (error.response && error.response.status === 500) {
+              toast.error("A data de devolução não pode ser anterior à data de início do empréstimo.");
+          } else {
+              toast.error(resMessage);
+          }
+
           setLoading(false);
         }
       };
@@ -132,6 +143,7 @@ const AddEmprestimo = () => {
                             />
                         </FormControl>
                 </div>
+                <br />
                 <div className='form-input'>
                     <FormControl fullWidth>
                             <Autocomplete
@@ -142,6 +154,7 @@ const AddEmprestimo = () => {
                             />
                     </FormControl>
                 </div>
+                <br />
                 <div className='form-input'>
                     <TextField
                     label="Data de início"
@@ -155,6 +168,7 @@ const AddEmprestimo = () => {
                     fullWidth
                     />
                 </div>
+                <br />
                 <div className='form-input'>
                     <TextField
                     label="Data de devolução estimada"

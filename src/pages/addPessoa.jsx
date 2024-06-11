@@ -15,7 +15,8 @@ const AddPessoa = () => {
     cpf: '',
     email: '',
     telefone: '',
-    descricao: ''
+    descricao: '',
+    endereco: ''
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -72,6 +73,9 @@ const AddPessoa = () => {
           </div>
           <div className='form-input'>
             <CustomInput label="Descrição" type="text" name="descricao" value={pessoa.descricao} onChange={handleChange} />
+          </div>
+          <div className='form-input'>
+            <CustomInput label="Endereço" type="text" name="endereco" value={pessoa.endereco} onChange={handleChange} />
           </div>
           <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
         </form>

@@ -106,7 +106,6 @@
     background-color: #e4e4e4;
     border-radius: 15px;
     width: 93%;
-    height: 110px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
@@ -228,4 +227,62 @@
     100%{
         transform: scale(1);
     }
+}
+
+.div-info-add{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    align-items: start;
+}
+
+.info-add{
+    font-size: 22px;
+    font-family: 'League Spartan', sans-serif;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.description-pessoa{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 17px;
+}
+
+.description-pessoa span {
+    color: white;
+    background-color: #555;
+    padding: 7px;
+    border-radius: 20px;
+}
+
+.tel-pessoa{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 17px;
+}
+
+.row-3{
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-filter-more-info{
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 12px;
+    margin-top: 5px;
+    color: #71C7E8;
+    text-decoration: underline;
+}
+
+
+.tel-pessoa span {
+    color: white;
+    background-color: #555;
+    padding: 7px;
+    border-radius: 20px;
 }

@@ -4,10 +4,12 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
 import emprestimosService from '../services/emprestimosService';
+import { FormControlLabel, Checkbox, Button, TextField, Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import axios from 'axios';
+import Modal from 'react-modal';
 import '../styles/pessoaPerfil.css'
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -18,6 +20,7 @@ const PerfilPessoa = () => {
   const [emprestimos, setEmprestimos] = useState([]);
   const [pessoa, setPessoa] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,8 +49,17 @@ const PerfilPessoa = () => {
     }
 
     const formatDate = (dateString) => {
-      return format(new Date(dateString), 'dd/MM/yyyy', { locale: ptBR });
-    };
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+  };
+
+  const isAtrasado = (dataDevolucao, status) => {
+    const dataAtual = new Date();
+    const dataDevolucaoDate = new Date(dataDevolucao);
+    return dataAtual > dataDevolucaoDate && status === 0;
+  };
+
+    
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +115,24 @@ const PerfilPessoa = () => {
             </div>
             <div className='container-div'>
                 <br></br>
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    contentLabel="Filtros"
+                    className="modal-filter"
+                >
+                    <br />
+                    <h3>Informações Adicionais:</h3>
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+                      <div className='div-info-add'>
+                        <p className='description-pessoa'><span>Descrição:</span> {pessoa.descricao}</p>
+                        <p className='tel-pessoa'><span>Telefone:</span> {pessoa.telefone}</p>
+                        <p className='tel-pessoa'><span>E-mail:</span> {pessoa.email}</p>
+                        <p className='tel-pessoa'><span>Endereco:</span> {pessoa.endereco}</p>
+                      </div>
+                    </Box>
+                    <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
+                </Modal>
                 <div className='pessoa'>
                     <div className='pessoa-icon-div'>
                         <FontAwesomeIcon className='pessoa-icon' icon={faCircleUser}/>
@@ -110,7 +140,10 @@ const PerfilPessoa = () => {
                     <div>
                         <div className='pessoa-name'>{pessoa.nomeCompleto}</div>
                         <div className='pessoa-cpf'>{pessoa.cpf}</div>
-                        <div className={getStatusClass(pessoa.statusEmprestimo)}>{getStatusPessoa(pessoa.statusEmprestimo)}</div>
+                        <div className='row-3'>
+                          <div className={getStatusClass(pessoa.statusEmprestimo)}>{getStatusPessoa(pessoa.statusEmprestimo)}</div>
+                          <button onClick={() => setIsModalOpen(true)} className='btn-filter-more-info'>Detalhes</button>                        
+                        </div>
                     </div>
                 </div>
                 <div className='box-emprestimos'>
@@ -126,10 +159,13 @@ const PerfilPessoa = () => {
                     ) : (
                       emprestimos.map(emp => (
                         <div key={emp.id} className='sub-box-emprestimos'>
+                          <div className='atrasado'>
+                            {isAtrasado(emp.dataDevolucao, emp.status) && <div className='status-atrasado'>Atrasado</div>}
+                          </div>
                           <div className='nomeEquipamento'>{emp.nomeEquipamento}</div>
                           <div className='row-dates'>
-                            <div className='dataEmp'>Início: {formatDate(emp.dataEmprestimo)}</div>
-                            <div className='dataDev'>Devolução: {formatDate(emp.dataDevolucao)}</div>
+                            <div className='dataEmp'>Início: {formatDate(emp.dataEmprestimo.split('T')[0])}</div>
+                            <div className='dataDev'>Devolução: {formatDate(emp.dataDevolucao.split('T')[0])}</div>
                           </div>
                           <div className='status-and-btn'>
                             <div className={getEmpStatusClass(emp.status)}>{emp.status === 0 ? 'Em andamento' : 'Finalizado'}</div>
@@ -137,13 +173,14 @@ const PerfilPessoa = () => {
                               <button onClick={() => handleFinalizar(emp.id)} className='finalizar-btn'>Finalizar</button>
                             )}
                           </div>
-        </div>
-      ))
-    )
-  )}
-</div>
+                    </div>
+                  ))
+                )
+              )}
 
             </div>
+            
+          </div>
         </div>
   );
 }
