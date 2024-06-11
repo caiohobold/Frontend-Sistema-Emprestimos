@@ -124,7 +124,10 @@ const EmprestimosPage = ({ emprestimo }) =>{
                         <div key={emp.id} className='box-emprestimo'>
                             <div className='nomepessoa-emprestimo'>{emp.nomePessoa}</div>
                             <div className='nomeequipamento-emprestimo'>{emp.nomeEquipamento}</div>
-                            <div className='data-emprestimo'>Início: {formatDate(emp.dataEmprestimo)}</div>
+                            <div className='row-datas'>
+                              <div className='data-emprestimo'>Início: {formatDate(emp.dataEmprestimo)}</div>
+                              <div className='data-devolucao'>Devolução: {formatDate(emp.dataDevolucao)}</div>
+                            </div>
                             <div className='modals'>
                                 <div className={getCargaClass(emp.cargaEquipamento)}>{getCargaDescription(emp.cargaEquipamento)}</div>
                                 <button onClick={() => handleFinalizar(emp.id)} className='btn-finalizar'>Finalizar</button>

@@ -127,7 +127,10 @@ const PerfilPessoa = () => {
                       emprestimos.map(emp => (
                         <div key={emp.id} className='sub-box-emprestimos'>
                           <div className='nomeEquipamento'>{emp.nomeEquipamento}</div>
-                          <div className='dataEmp'>Início: {formatDate(emp.dataEmprestimo)}</div>
+                          <div className='row-dates'>
+                            <div className='dataEmp'>Início: {formatDate(emp.dataEmprestimo)}</div>
+                            <div className='dataDev'>Devolução: {formatDate(emp.dataDevolucao)}</div>
+                          </div>
                           <div className='status-and-btn'>
                             <div className={getEmpStatusClass(emp.status)}>{emp.status === 0 ? 'Em andamento' : 'Finalizado'}</div>
                             {emp.status === 0 && (

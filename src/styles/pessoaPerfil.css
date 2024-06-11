@@ -190,6 +190,16 @@
     margin-top: 200px;
 }
 
+.row-dates{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dataDev{
+    margin-right: 10px;
+}
+
 .no-emprestimos-pessoa div{
     font-size: 22px;
     font-weight: 600;

@@ -68,6 +68,21 @@
     color: white;
 }
 
+.row-datas{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.data-devolucao{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
+    margin-right: 10px;
+    margin-top: -5px;
+    display: flex;
+    font-weight: 400;
+}
+
 .carga-semi-obeso{
     margin-top: 5px;
     background-color: #71C7E8;

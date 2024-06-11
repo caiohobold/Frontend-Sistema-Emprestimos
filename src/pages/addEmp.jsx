@@ -8,7 +8,8 @@ import pessoasServices from '../services/pessoasService';
 import equipamentosServices from '../services/equipamentosService';
 import { jwtDecode } from 'jwt-decode';
 import api from '../services/axiosConfig';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import { utcToZonedTime, format as tzFormat, toDate } from 'date-fns-tz';
 import { Autocomplete } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +21,7 @@ const AddEmprestimo = () => {
         idPessoa: '',
         idEquipamento: '',
         dataEmprestimo: '',
+        dataDevolucao: '',
         idUsuario: ''
     });
 
@@ -69,8 +71,16 @@ const AddEmprestimo = () => {
         e.preventDefault();
         setLoading(true);
         
-        const formattedDate = format(new Date(emprestimo.dataEmprestimo), 'yyyy-MM-dd');
-        const emprestimoData = { ...emprestimo, dataEmprestimo: formattedDate, idUsuario: getCurrentUser().id};
+        const timeZone = 'America/Sao_Paulo';  // Ajuste para seu fuso horário
+        const dataEmprestimoUtc = toDate(new Date(emprestimo.dataEmprestimo), { timeZone });
+        const dataDevolucaoUtc = toDate(new Date(emprestimo.dataDevolucao), { timeZone });
+
+        const emprestimoData = { 
+            ...emprestimo, 
+            dataEmprestimo: dataEmprestimoUtc.toISOString(), 
+            dataDevolucao: dataDevolucaoUtc.toISOString(), 
+            idUsuario: getCurrentUser().id 
+        };
     
         try {
           await api.post('https://localhost:7000/api/Emprestimos', emprestimoData);
@@ -134,10 +144,23 @@ const AddEmprestimo = () => {
                 </div>
                 <div className='form-input'>
                     <TextField
-                    label="Data do Empréstimo"
+                    label="Data de início"
                     type="date"
                     name="dataEmprestimo"
                     value={emprestimo.dataEmprestimo}
+                    onChange={handleChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    fullWidth
+                    />
+                </div>
+                <div className='form-input'>
+                    <TextField
+                    label="Data de devolução estimada"
+                    type="date"
+                    name="dataDevolucao"
+                    value={emprestimo.dataDevolucao}
                     onChange={handleChange}
                     InputLabelProps={{
                         shrink: true,
