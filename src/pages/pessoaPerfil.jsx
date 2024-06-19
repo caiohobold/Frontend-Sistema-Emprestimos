@@ -131,7 +131,7 @@ const PerfilPessoa = () => {
                         <p className='tel-pessoa'><span>Endereco:</span> {pessoa.endereco}</p>
                       </div>
                     </Box>
-                    <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
+                    <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Fechar</button>
                 </Modal>
                 <div className='pessoa'>
                     <div className='pessoa-icon-div'>

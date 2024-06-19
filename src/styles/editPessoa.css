@@ -18,6 +18,7 @@
     border-top-right-radius: 60px;
     height: inherit;
     margin-top: 10px;
+    overflow-y: auto;
 }
 
 .header-edit{
@@ -34,6 +35,7 @@
     margin-left: 20px;
 }
 
+
 .btn-delete{
     margin-right: 30px;
     border: none;
@@ -48,6 +50,14 @@
 
 .form-edit{
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-edit-equip{
+    margin-top: -10px;
     display: flex;
     flex-direction: column;
     justify-content: center;

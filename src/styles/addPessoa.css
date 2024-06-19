@@ -10,7 +10,7 @@
   }
   
   .form-input {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .form-input-estado{
@@ -34,4 +34,64 @@
 .save-pessoa:active{
     background-color: #287897;
 }
+
+.save-equip{
+  background-color: #3dabd6;
+  font-family: 'League Spartan', sans-serif;
+  margin-top: 10px;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  color: white;
+  border: none;
+  outline: none;
+}
+
+.save-equip:active{
+  background-color: #287897;
+}
+
+.dropzone {
+  border: 3px dashed #0087F7;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;
+  max-height: 150px;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 120px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.form-add-equip{
+  margin-top: -10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-string{
+  font-weight: 600;
+  font-size: 18px;
+  font-family: 'League Spartan', sans-serif;
+  background-color: #3dabd6a6;
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 15px;
   
+}
+
+.photos{
+  width: 80%;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+}
+

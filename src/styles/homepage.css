@@ -33,3 +33,82 @@
     margin-top: -5px;
     margin-left: 22px;
 }
+
+.notifications-box{
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    margin-top: 30px;
+    width: 90%;
+    height: 200px;
+    background-color: #F8F8F8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.notification-title{
+    margin-top: 10px;
+    font-family: 'League Spartan', sans-serif;
+}
+
+.notifications{
+    display: flex;
+    flex-direction: column;
+}
+
+.icon-bell{
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.sub-box-atrasados{
+    background-color: rgb(180, 180, 180);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.nome-atrasado{
+    font-weight: bold;
+}
+
+.message-atrasado{
+    font-size: 18px;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: 0px;
+    text-align: start;
+    margin-left: 10px;
+}
+.message-atrasado-2{
+    font-size: 18px;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: 0px;
+    text-align: start;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.icon-chair-2{
+    width: 50px;
+    height: 50px;
+}
+
+.no-emprestimos-2 div{
+    font-size: 18px;
+}
+
+.atrasados{
+    width: 100%;
+}

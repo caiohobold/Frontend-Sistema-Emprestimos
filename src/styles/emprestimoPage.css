@@ -53,6 +53,11 @@
     margin-left: 19px;
     display: flex;
     font-weight: 500;
+    text-align: start;
+}
+
+.date-input{
+    width: 45%;
 }
 
 .nomeequipamento-emprestimo{

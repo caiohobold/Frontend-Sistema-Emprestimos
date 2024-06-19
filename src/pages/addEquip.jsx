@@ -7,7 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/addPessoa.css';
 import api from '../services/axiosConfig';
 import categoriasServices from '../services/categoriasServices';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Button, TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
+import { useDropzone } from 'react-dropzone';
+import locaisServices from '../services/locaisServices';
 
 const AddEquip = () => {
   const [categorias, setCategorias] = useState([]);
@@ -16,12 +19,46 @@ const AddEquip = () => {
     idCategoria: '',
     estadoEquipamento: '',
     cargaEquipamento: '',
-    descricaoEquipamento: ''
+    descricaoEquipamento: '',
+    idLocal: '',
+    foto1: null,
+    foto2: null
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [preview1, setPreview1] = useState(null);
+  const [preview2, setPreview2] = useState(null);
+  const [local, setLocal] = useState([]);
 
   const navigate = useNavigate();
+
+  const handleDrop1 = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setEquipamento(prevState => ({
+      ...prevState,
+      foto1: file
+    }));
+    setPreview1(URL.createObjectURL(file));
+  };
+
+  const handleAutoCompleteChangeLocal = (event, value, name) => {
+    setEquipamento(prevState => ({
+        ...prevState,
+        [name]: value ? value.idLocal : ''
+    }));
+ };
+
+  const handleDrop2 = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setEquipamento(prevState => ({
+      ...prevState,
+      foto2: file
+    }));
+    setPreview2(URL.createObjectURL(file));
+  };
+
+  const { getRootProps: getRootProps1, getInputProps: getInputProps1 } = useDropzone({ onDrop: handleDrop1, accept: 'image/*' });
+  const { getRootProps: getRootProps2, getInputProps: getInputProps2 } = useDropzone({ onDrop: handleDrop2, accept: 'image/*' });
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -29,11 +66,24 @@ const AddEquip = () => {
             const data = await categoriasServices.getCategorias(1, 500);
             setCategorias(data);
         } catch (error) {
-            console.error("Erro ao carregas categorias:", error);
+            console.error("Erro ao carregar categorias:", error);
         }
     };
 
     fetchCategorias();
+  }, []);
+
+  useEffect(() => {
+    const fetchLocais = async () => {
+        try {
+            const data = await locaisServices.getLocais(1, 500);
+            setLocal(data);
+        } catch (error) {
+            console.error("Erro ao carregar categorias:", error);
+        }
+    };
+
+    fetchLocais();
   }, []);
 
   const handleChange = (e) => {
@@ -44,11 +94,27 @@ const AddEquip = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setEquipamento(prevState => ({
+      ...prevState,
+      [name]: files[0]
+    }));
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
+    const formData= new FormData();
+    for(const key in equipamento){
+      formData.append(key, equipamento[key]);
+    }
     setLoading(true);
     try {
-      await api.post('https://localhost:7000/api/Equipamentos', equipamento);
+      await api.post('https://localhost:7000/api/Equipamentos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       setMessage('Equipamento cadastrado com sucesso!');
       setLoading(false);
       navigate('/Usuarios/Equipamentos');
@@ -68,7 +134,7 @@ const AddEquip = () => {
         <br></br>
         <h2 className='pessoas-title'>Cadastro de Equipamento</h2>
         {message && <p>{message}</p>}
-        <form className='form-edit' onSubmit={handleSave}>
+        <form className='form-add-equip' onSubmit={handleSave}>
           <div className='form-input'>
             <CustomInput label="Nome do Equipamento" type="text" name="nomeEquipamento" value={equipamento.nomeEquipamento} onChange={handleChange} />
           </div>
@@ -118,10 +184,40 @@ const AddEquip = () => {
                     </Select>
             </FormControl>
           </div>
+          <div className='form-input-estado'>
+            <FormControl fullWidth>
+              <Autocomplete
+                  options={local}
+                  getOptionLabel={(option) => option.nomeLocal}
+                  onChange={(event, value) => handleAutoCompleteChangeLocal(event, value, 'idLocal')}
+                  renderInput={(params) => <TextField {...params} label="Local" />}
+              />
+            </FormControl>
+          </div>
           <div className='form-input'>
             <CustomInput label="Descrição" type="text" name="descricaoEquipamento" value={equipamento.descricaoEquipamento} onChange={handleChange} />
           </div>
-          <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
+          <div className='photos'>
+            <div className='form-input'>
+              <div {...getRootProps1()} className="dropzone">
+                <input {...getInputProps1()} />
+                {preview1 ? <img src={preview1} alt="Preview" className="preview-image" /> : <p className='edit-string'>Foto 1</p>}
+              </div>
+            </div>
+            <div className='form-input'>
+              <div {...getRootProps2()} className="dropzone">
+                <input {...getInputProps2()} />
+                {preview2 ? <img src={preview2} alt="Preview" className="preview-image" /> : <p className='edit-string'>Foto 2</p>}
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" className='save-equip' disabled={loading}>Salvar</button>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
         </form>
       </div>
     </div>

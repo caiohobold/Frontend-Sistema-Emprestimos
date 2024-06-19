@@ -22,8 +22,8 @@ const PessoasPage = () =>{
     const [loading, setLoading] = useState(false);
     const [filteredPessoas, setFilteredPessoas] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [showActiveOnly, setShowActiveOnly] = useState(false);
-    const [showInativeOnly, setShowInativeOnly] = useState(false);
+    const [showActiveOnly, setShowActiveOnly] = useState(true);
+    const [showInactiveOnly, setShowInactiveOnly] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -46,19 +46,19 @@ const PessoasPage = () =>{
     useEffect(() => {
         let results = pessoas;
 
-        if(showActiveOnly){
+        if (showActiveOnly && !showInactiveOnly) {
             results = results.filter(pessoa => pessoa.statusEmprestimo === 0);
-        }
-
-        if(showInativeOnly){
-            results = results.filter(pessoa => pessoa.statusEmprestimo === 1 || pessoa.statusEmprestimo === -1);
+        } else if (!showActiveOnly && showInactiveOnly) {
+            results = results.filter(pessoa => pessoa.statusEmprestimo !== 0);
+        } else if (!showActiveOnly && !showInactiveOnly) {
+            results = [];
         }
         results = results.filter(pessoa => 
-            pessoa.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase()) || pessoa.cpf.toLowerCase().includes(searchTerm.toLowerCase())
+            pessoa.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase()) || pessoa.cpf.toLowerCase().replace(".", "").replace(".", "").replace("-", "").includes(searchTerm.toLowerCase())
         )
 
         setFilteredPessoas(results);
-    }, [searchTerm, pessoas, showActiveOnly]);
+    }, [searchTerm, pessoas, showActiveOnly, showInactiveOnly]);
 
     const getStatusPessoa = (status) => {
         const statusMap = {
@@ -105,18 +105,29 @@ const PessoasPage = () =>{
                     <br />
                     <h2>Filtros</h2>
                     <h3>Mostrar apenas pessoas:</h3>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={showActiveOnly}
-                                    onChange={() => setShowActiveOnly(!showActiveOnly)}
-                                    name="showActiveOnly"
-                                    color="primary"
-                                />
-                            }
-                            label="Com empréstimos ativos"
-                        />
+                    <Box display="flex" justifyContent="left" alignItems="left" marginLeft="20px" flexDirection="column">
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={showActiveOnly}
+                                onChange={() => setShowActiveOnly(!showActiveOnly)}
+                                name="showActiveOnly"
+                                color="primary"
+                            />
+                        }
+                        label="Com empréstimos ativos"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={showInactiveOnly}
+                                onChange={() => setShowInactiveOnly(!showInactiveOnly)}
+                                name="showInactiveOnly"
+                                color="primary"
+                            />
+                        }
+                        label="Sem empréstimos ativos"
+                    />
                     </Box>
                     <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
                 </Modal>

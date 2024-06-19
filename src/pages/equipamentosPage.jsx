@@ -4,7 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import '../styles/equipamentosPage.css'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import { faWheelchair, faWalking } from '@fortawesome/free-solid-svg-icons';
+import { faWheelchair, faWalking, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faCrutch } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '../components/navBar';
@@ -14,6 +14,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import equipamentosService from '../services/equipamentosService';
+import Modal from 'react-modal';
+import { FormControlLabel, Checkbox, Button, TextField, Box } from '@mui/material';
 
 
 const EquipamentosPage = () =>{
@@ -21,6 +23,9 @@ const EquipamentosPage = () =>{
     const [loading, setLoading] = useState(false);
     const [filteredEquipamentos, setFilteredEquipamentos] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [showInUse, setShowInUse] = useState(true);
+    const [showAvailable, setShowAvailable] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const getEquipamentoIcon = (categoria) => {
         switch (categoria) {
@@ -86,6 +91,15 @@ const EquipamentosPage = () =>{
         return cargaClasses[carga] || 'carga-desconhecido'; // Retorna uma classe padrão se não for 0, 1 ou 2
       };
 
+      const renderImage = (base64String) => {
+        if (!base64String) {
+            console.log("Imagem base64 está vazia");
+            return null;
+        }
+        console.log("Base64 da imagem:", base64String);
+        return `data:image/png;base64,${base64String}`;
+    };
+
     useEffect(() => {
         const loadEquipamentos = async () => {
             try {
@@ -104,12 +118,23 @@ const EquipamentosPage = () =>{
     }, []);
 
     useEffect(() => {
-        const results = equipamentos.filter(equip => 
+
+        let results = equipamentos.filter(equip => 
             equip.nomeEquipamento.toLowerCase().includes(searchTerm.toLowerCase()) ||
             equip.idEquipamento.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        );
+
+        if (showInUse && !showAvailable) {
+            results = results.filter(equip => equip.statusEquipamento === 0);
+        } else if (!showInUse && showAvailable) {
+            results = results.filter(equip => equip.statusEquipamento === 1);
+        } else if (!showInUse && !showAvailable) {
+            results = [];
+        }
+
+        
         setFilteredEquipamentos(results);
-    }, [searchTerm, equipamentos]);
+    }, [searchTerm, equipamentos, showInUse, showAvailable]);
 
     const navigate = useNavigate();
 
@@ -118,9 +143,48 @@ const EquipamentosPage = () =>{
             <div className='return-div'>
                 <button onClick={() => navigate("/Usuarios/Inicio")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Filtros"
+                className="modal-filter"
+            >
+                <br />
+                <h2>Filtros</h2>
+                <h3>Mostrar apenas equipamentos:</h3>
+                <Box display="flex" justifyContent="left" alignItems="left" marginLeft="20px" flexDirection="column">
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={showInUse}
+                                onChange={() => setShowInUse(!showInUse)}
+                                name="showInUse"
+                                color="primary"
+                            />
+                        }
+                        label="Em uso"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                            
+                                checked={showAvailable}
+                                onChange={() => setShowAvailable(!showAvailable)}
+                                name="showAvailable"
+                                color="primary"
+                            />
+                        }
+                        label="Disponíveis"
+                    />
+                </Box>
+                <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
+            </Modal>
             <div className='container-div'>
                 <br></br>
-                <h2 className='pessoas-title'>Equipamentos</h2>
+                <div className='row-title'>
+                    <h2 className='pessoas-title'>Equipamentos</h2>
+                    <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon class="icon-filter" icon={faFilter} /></button>
+                </div>
                 <input
                     type="text"
                     placeholder="Pesquise um equipamento..."
@@ -142,7 +206,7 @@ const EquipamentosPage = () =>{
                         
                         <div key={equip.idEquipamento} className='box-equip'>
                             <div className='icon-equip-div'>
-                                <FontAwesomeIcon className='icon-equip' icon={getEquipamentoIcon(equip.nomeCategoriaEquipamento)} />
+                                {equip.foto1 && <img src={renderImage(equip.foto1)} className='img-equip' alt='Equipamento' />}
                             </div>
                             <div className='equip-info'>
                                 <div className='row-info'>
