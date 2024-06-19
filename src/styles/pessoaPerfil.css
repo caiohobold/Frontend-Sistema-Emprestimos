@@ -56,7 +56,7 @@
     margin-left: 18px;
     font-size: 16px;
     height: 30px;
-    background-color: #96DD74;
+    background-color: #DD747A;
     border-radius: 15px;
     padding: 5px;
     color: white;
@@ -72,7 +72,7 @@
     margin-left: 18px;
     font-size: 16px;
     height: 30px;
-    background-color: #DD747A;
+    background-color: #96DD74;
     border-radius: 15px;
     padding: 5px;
     color: white;
@@ -285,4 +285,31 @@
     background-color: #555;
     padding: 7px;
     border-radius: 20px;
+}
+
+.modal-filter{
+    height: 100%;
+    width: 100%;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 50px;
+    background-color: white;
+    box-shadow: 2 10px 10px rgba(0, 0, 0, 0.774);
+    margin-top: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 5000;
+}
+
+.change-local-equip-h2{
+    font-family: 'League Spartan', sans-serif;
+    
+}
+
+.change-local-input{
+    margin-top: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }

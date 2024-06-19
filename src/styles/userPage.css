@@ -17,3 +17,76 @@
     display: flex;
     margin-left: 20px;
 }
+
+.geral-config{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.geral-config h3{
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: -5px;
+}
+
+.btn-account{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    border: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.685);
+    background-color: transparent;
+}
+
+.btn-account span{
+    display: flex;
+    margin-left: 15px;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: 10px;
+}
+
+.icon-account{
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.admin-config{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.admin-config h3{
+    margin-top: 25px;
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: -5px;
+}
+
+.feedback-config{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.feedback-config h3{
+    margin-top: 25px;
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'League Spartan', sans-serif;
+    margin-bottom: -5px;
+}

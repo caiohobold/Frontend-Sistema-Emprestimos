@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Modal from 'react-modal';
-import { FormControlLabel, Checkbox, Box, TextField, Autocomplete } from '@mui/material';
+import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button } from '@mui/material';
 
 const EmprestimosPage = () => {
     const [emprestimos, setEmprestimos] = useState([]);
@@ -127,6 +127,12 @@ const EmprestimosPage = () => {
         });
     };
 
+    const customStyles = {
+        overlay: {
+          backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
+        },
+      };
+
     const isAtrasado = (dataDevolucao) => {
         const dataAtual = new Date();
         const dataDevolucaoDate = new Date(dataDevolucao);
@@ -186,37 +192,33 @@ const EmprestimosPage = () => {
                 <img src={WheelShareLogo} className='WheelShareLogo' alt="WheelShare Logo"></img>
             </div>
             <Modal
+                style={customStyles}
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 contentLabel="Filtros"
                 className="modal-filter"
+                closeTimeoutMS={300}
             >
                 <br />
                 <h2>Filtros</h2>
                 <h3>Mostrar apenas empréstimos:</h3>
-                <Box display="flex" justifyContent="left" alignItems="left" marginLeft="20px" flexDirection="column" marginTop="-5px">
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={showAtrasados}
-                                onChange={() => setShowAtrasados(!showAtrasados)}
-                                name="showAtrasados"
-                                color="primary"
-                            />
-                        }
-                        label="Atrasados"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={showEmDia}
-                                onChange={() => setShowEmDia(!showEmDia)}
-                                name="showEmDia"
-                                color="primary"
-                            />
-                        }
-                        label="Em dia"
-                    />
+                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" marginTop="20px" gap="20px">
+                    <Button
+                        variant={showAtrasados ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => setShowAtrasados(!showAtrasados)}
+                        style={{ marginBottom: '10px', width: '150px', borderRadius: '20px', fontFamily: 'League Spartan' }}
+                    >
+                        Atrasados
+                    </Button>
+                    <Button
+                        variant={showEmDia ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => setShowEmDia(!showEmDia)}
+                        style={{ marginBottom: '10px', width: '150px', borderRadius: '20px', fontFamily: 'League Spartan' }}
+                    >
+                        Em dia
+                    </Button>
                 </Box>
                 <hr />
                 <h3>Filtrar por data de início:</h3>
@@ -246,14 +248,18 @@ const EmprestimosPage = () => {
             </Modal>
 
             <Modal
+                style={customStyles}
                 isOpen={isLocationModalOpen}
                 onRequestClose={() => setIsLocationModalOpen(false)}
                 contentLabel="Trocar Local do Equipamento"
                 className="modal-filter"
+                closeTimeoutMS={300}
             >
                 <br />
-                <h2>Trocar Local do Equipamento</h2>
+                <br />
+                <h2 className='change-local-equip-h2'>Trocar Local do Equipamento</h2>
                 <Autocomplete
+                    className='change-local-input'
                     options={locais}
                     getOptionLabel={(option) => option.nomeLocal}
                     onChange={handleLocationChange}

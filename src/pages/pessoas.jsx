@@ -43,6 +43,12 @@ const PessoasPage = () =>{
         loadPessoas();
     }, []);
 
+    const customStyles = {
+        overlay: {
+          backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
+        },
+      };
+
     useEffect(() => {
         let results = pessoas;
 
@@ -97,37 +103,33 @@ const PessoasPage = () =>{
                     className='search-input'
                 />
                 <Modal
+                    style={customStyles}
                     isOpen={isModalOpen}
                     onRequestClose={() => setIsModalOpen(false)}
                     contentLabel="Filtros"
                     className="modal-filter"
+                    closeTimeoutMS={300}
                 >
                     <br />
                     <h2>Filtros</h2>
                     <h3>Mostrar apenas pessoas:</h3>
-                    <Box display="flex" justifyContent="left" alignItems="left" marginLeft="20px" flexDirection="column">
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={showActiveOnly}
-                                onChange={() => setShowActiveOnly(!showActiveOnly)}
-                                name="showActiveOnly"
-                                color="primary"
-                            />
-                        }
-                        label="Com empréstimos ativos"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={showInactiveOnly}
-                                onChange={() => setShowInactiveOnly(!showInactiveOnly)}
-                                name="showInactiveOnly"
-                                color="primary"
-                            />
-                        }
-                        label="Sem empréstimos ativos"
-                    />
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" marginTop="20px" gap="10px">
+                    <Button
+                        variant={showActiveOnly ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => setShowActiveOnly(!showActiveOnly)}
+                        style={{ marginBottom: '10px', width: '170px', borderRadius: '20px', fontSize: '13px', fontFamily: 'League Spartan' }}
+                    >
+                        Com empréstimos
+                    </Button>
+                    <Button
+                        variant={showInactiveOnly ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => setShowInactiveOnly(!showInactiveOnly)}
+                        style={{ marginBottom: '10px', width: '170px', borderRadius: '20px', fontSize: '13px', fontFamily: 'League Spartan' }}
+                    >
+                        Sem empréstimos
+                    </Button>
                     </Box>
                     <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
                 </Modal>
@@ -173,7 +175,7 @@ const PessoasPage = () =>{
                     <br />
                     <br />
                     <br />
-                    <div className='plus-pessoa-div'>
+                    <div className={`plus-pessoa-div ${isModalOpen ? 'hidden' : ''}`}>
                         <button className='plus-pessoa' onClick={() => navigate("/pessoa/add")}>Cadastrar Pessoa</button>
                     </div>
                 </div>

@@ -256,6 +256,34 @@
     justify-content: center;
 }
 
+.plus-pessoa-div.hidden {
+    margin-top: 200px;
+}
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 300ms ease-in-out;
+  }
+  
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+  }
+  
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
+  }
+
+.hidden {
+    display: none;
+}
+
+.filter-categoria{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
 .plus-pessoa {
     position: fixed;
     bottom: 40px;

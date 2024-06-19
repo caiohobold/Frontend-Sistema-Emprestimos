@@ -18,6 +18,7 @@ import AddEquip from './pages/addEquip';
 import EditEquip from './pages/editEquip';
 import AddEmprestimo from './pages/addEmp';
 import EditEmp from './pages/editEmp';
+import ConfigUserPage from './pages/configUser';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route exact path="/Usuarios/Inicio" element={<HomePage />}/>
               <Route exact path="/Usuarios/emprestimos" element={<EmprestimosPage />}/>
               <Route exact path="/Usuarios/perfil" element={<PerfilPage />}/>
+              <Route exact path="/Usuarios/perfil/info" element={<ConfigUserPage />}/>
               <Route exact path="/Usuarios/pessoas" element={<PessoasPage />}/>
               <Route exact path="/pessoa/:id" element={<PerfilPessoa />}/>
               <Route exact path="/pessoa/edit/:id" element={<EditPessoa />}/>
@@ -42,6 +44,7 @@ function App() {
               <Route path="/Usuarios/equipamentos" element={<EquipamentosPage />} />
               <Route path="/Emprestimos/add" element={<AddEmprestimo />} />
               <Route exact path="/emprestimos/edit/:id" element={<EditEmp />}/>
+              
             </Routes>
           </Router>
         </main>
