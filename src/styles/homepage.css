@@ -20,9 +20,10 @@
 .welcome-title{
     font-family: 'League Spartan', sans-serif;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 25px;
     display: flex;
     margin-left: 20px;
+    justify-content: left;
 }
 
 .sub-welcome-title{

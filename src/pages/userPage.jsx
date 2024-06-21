@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png'
@@ -12,6 +12,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const PerfilPage = () =>{
 
     const navigate = useNavigate();
+    const [role, setRole] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setRole(decodedToken.role);
+        }
+    }, []);
 
     return(
         <div className='main-content'>
@@ -36,15 +45,17 @@ const PerfilPage = () =>{
                         <span>Sair da conta</span>
                     </button>
                 </div>
-                <div className='admin-config'>
-                    <h3>Administrativo</h3>
-                    <button className='btn-account'>
-                        <div className='icon-account'>
-                            <FontAwesomeIcon icon={faUserGroup} />
-                        </div>
-                        <span>Associação</span>
-                    </button>
-                </div>
+                {role === 'Associacao' && (
+                    <div className='admin-config'>
+                        <h3>Administrativo</h3>
+                        <button className='btn-account' onClick={() => navigate("/Associacao/cadastros")}>
+                            <div className='icon-account'>
+                                <FontAwesomeIcon icon={faUserGroup} />
+                            </div>
+                            <span>Associação</span>
+                        </button>
+                    </div>
+                )}
                 <div className='feedback-config'>
                     <h3>Feedback</h3>
                     <button className='btn-account'>

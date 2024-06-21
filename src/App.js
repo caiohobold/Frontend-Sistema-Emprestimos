@@ -19,6 +19,11 @@ import EditEquip from './pages/editEquip';
 import AddEmprestimo from './pages/addEmp';
 import EditEmp from './pages/editEmp';
 import ConfigUserPage from './pages/configUser';
+import EditUser from './pages/editUser';
+import EditAssoc from './pages/editAssoc';
+import AdminConfig from './pages/adminConfig';
+import CategPage from './pages/categPage';
+import LocalPage from './pages/localPage';
 
 function App() {
   return (
@@ -35,6 +40,8 @@ function App() {
               <Route exact path="/Usuarios/emprestimos" element={<EmprestimosPage />}/>
               <Route exact path="/Usuarios/perfil" element={<PerfilPage />}/>
               <Route exact path="/Usuarios/perfil/info" element={<ConfigUserPage />}/>
+              <Route exact path="/Usuarios/perfil/edit/membro" element={<EditUser />}/>
+              <Route exact path="/Usuarios/perfil/edit/assoc" element={<EditAssoc />}/>
               <Route exact path="/Usuarios/pessoas" element={<PessoasPage />}/>
               <Route exact path="/pessoa/:id" element={<PerfilPessoa />}/>
               <Route exact path="/pessoa/edit/:id" element={<EditPessoa />}/>
@@ -44,7 +51,9 @@ function App() {
               <Route path="/Usuarios/equipamentos" element={<EquipamentosPage />} />
               <Route path="/Emprestimos/add" element={<AddEmprestimo />} />
               <Route exact path="/emprestimos/edit/:id" element={<EditEmp />}/>
-              
+              <Route exact path="/Associacao/cadastros" element={<AdminConfig />}/>
+              <Route exact path="/Associacao/cadastros/categorias" element={<CategPage />}/>
+              <Route exact path="/Associacao/cadastros/locais" element={<LocalPage />}/>
             </Routes>
           </Router>
         </main>

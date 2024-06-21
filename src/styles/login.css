@@ -150,3 +150,93 @@
 .span-member{
     margin-top: 10px;
 }
+
+.plus-categoria-div{
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.plus-categoria {
+    position: fixed;
+    bottom: 40px;
+    padding: 10px 20px;
+    width: 250px;
+    background-color: #71C7E8;
+    font-family: 'League Spartan', sans-serif;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000; /* Ensures it is above other elements */
+  }
+
+  .plus-categoria:hover {
+    background-color: #0056b3;
+  }
+
+  .categorias{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  .box-categ{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    background-color: #eeeeee;
+    margin-bottom: 20px;
+    border-radius: 17px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .nome-categ{
+    font-size: 19px;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+
+  .edit-categ-btn{
+    background-color: #71C7E8;
+    border: none;
+    color: white;
+    margin-right: 20px;
+    border-radius: 15px;
+}
+
+.btn-edit-categ{
+    width: 20px;
+    height: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.edit-register-local{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+.icon-delete-2{
+    width: 20px;
+    height: 20px;
+    color: rgb(214, 0, 29);
+    margin-bottom: 5px;
+}

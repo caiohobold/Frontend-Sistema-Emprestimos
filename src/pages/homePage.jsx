@@ -21,6 +21,7 @@ const HomePage = () =>{
         const fetchAtrasados = async () => {
             try {
                 const response = await api.get('https://localhost:7000/api/Emprestimos/atrasados');
+                
                 setAtrasados(response.data);
             } catch (error) {
                 console.error("Erro ao buscar empréstimos atrasados:", error);

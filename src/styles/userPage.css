@@ -57,6 +57,14 @@
     margin-top: 2px;
 }
 
+.icon-account-local{
+    display: flex;
+    align-items: center;
+    margin-left: 9px;
+    margin-top: 2px;
+    margin-right: 2px;
+}
+
 .admin-config{
     display: flex;
     flex-direction: column;
@@ -89,4 +97,55 @@
     font-weight: 700;
     font-family: 'League Spartan', sans-serif;
     margin-bottom: -5px;
+}
+
+.row-1-usuario{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+}
+
+.icon-usuario{
+    width: 120px;
+    height: 120px;
+}
+
+.nome-usuario{
+    display: flex;
+    justify-content: left;
+    text-align: left;
+    font-size: 23px;
+    margin-left: 20px;
+    font-family: 'League Spartan', sans-serif;
+}
+
+.email-usuario{
+    display: flex;
+    justify-content: left;
+    text-align: left;
+    margin-top: -5px;
+    font-family: 'League Spartan', sans-serif;
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+.btn-edit-usuario{
+    margin-top: 5px;
+    border: none;
+    border-radius: 18px;
+    padding: 10px;
+    width: 150px;
+    background-color: #71C7E8;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 18px;
+    color: white;
+    font-weight: 600;
+}
+
+.icon-edit-usuario{
+    margin-left: 10px;
 }

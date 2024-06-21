@@ -28,7 +28,7 @@ const LoginAssoc = () =>{
 
         AuthService.loginAssoc(email, senha).then(
             () => {
-                navigate("/Associacoes/Inicio")
+                navigate("/Usuarios/Inicio")
                 window.location.reload();
             },
             (error) => {

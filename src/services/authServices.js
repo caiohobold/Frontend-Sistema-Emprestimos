@@ -7,8 +7,9 @@ class AuthService{
         return axios
         .post(API_URL + 'Associacoes/login', { email, senha })
         .then(response => {
+            const token = response.data.token;
             if(response.data.token){
-                localStorage.setItem('assocToken', JSON.stringify(response.data));
+                localStorage.setItem('userToken', token);
             }
             return response.data;
         });
@@ -18,12 +19,14 @@ class AuthService{
         return axios
         .post(API_URL + 'Usuarios/login', { email, senha })
         .then(response => {
+            const token = response.data.token;
             if(response.data.token){
-                localStorage.setItem('userToken', JSON.stringify(response.data));
+                localStorage.setItem('userToken', token);
             }
             return response.data;
         });
     }
+
 
     registerAssoc(emailprofissional, cnpj, razaoSocial, nomeFantasia, numero_telefone, endereco, senha){
         return axios
@@ -31,7 +34,14 @@ class AuthService{
     }
 
     getCurrentUser(){
-        return JSON.parse(localStorage.getItem('userToken'));
+        const token = localStorage.getItem('userToken');
+        if (!token) return null;
+        try {
+            return token;
+        } catch (error) {
+            console.error("Erro ao decodificar o token JWT:", error);
+            return null;
+        }
     }
 
     getCurrentAsoc(){
