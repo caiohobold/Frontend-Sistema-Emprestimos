@@ -39,6 +39,8 @@ const EquipamentosPage = () => {
     const [locais, setLocais] = useState([]);
     const [selectedLocais, setSelectedLocais] = useState([]);
     const [openLocais, setOpenLocais] = useState(false);
+    const [filteredCount, setFilteredCount] = useState(0);
+
 
     const getEquipamentoIcon = (categoria) => {
         switch (categoria) {
@@ -216,6 +218,7 @@ const EquipamentosPage = () => {
         results = results.filter(equip => selectedLocais.includes(equip.idLocal));
 
         setFilteredEquipamentos(results);
+        setFilteredCount(results.length); 
     }, [searchTerm, equipamentos, showInUse, showAvailable, showNew, showUsed, showNormal, showObeso, showSemiObeso, selectedCategorias, selectedLocais]);
 
     const navigate = useNavigate();
@@ -372,6 +375,7 @@ const EquipamentosPage = () => {
                     className='search-input'
                 />
                 <div className='equipamentos'>
+                    <p className='total-equip'>{filteredCount} equipamentos</p>
                     {loading ? (
                         <p>Carregando...</p>
                     ) : (

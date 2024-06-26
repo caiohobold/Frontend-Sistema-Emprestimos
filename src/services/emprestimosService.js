@@ -17,6 +17,21 @@ const getEmprestimosAtivos = async (pageNumber, pageSize) => {
 }
 }
 
+const getAllEmprestimos = async (pageNumber, pageSize) => {
+    try{
+        const response = await api.get(API_URL, {
+            params: {
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            }
+        });
+        return response.data;
+    } catch (error){
+        console.error("Erro ao buscar empréstimos: ", error);
+        throw error;
+    }
+}
+
 const getEmprestimosByPessoaId = async (idPessoa) => {
     try {
         const response = await api.get(`${API_URL}pessoa/${idPessoa}`);
@@ -35,5 +50,6 @@ const finalizarEmprestimo = (idEmprestimo) => {
 export default {
     getEmprestimosAtivos,
     getEmprestimosByPessoaId,
-    finalizarEmprestimo
+    finalizarEmprestimo,
+    getAllEmprestimos
 };

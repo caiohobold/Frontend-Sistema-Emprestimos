@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, redirect } from 'react-router-dom';
 import LoginAssoc from './pages/loginAssoc';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InitialPage from './pages/initialPage';
@@ -24,8 +24,13 @@ import EditAssoc from './pages/editAssoc';
 import AdminConfig from './pages/adminConfig';
 import CategPage from './pages/categPage';
 import LocalPage from './pages/localPage';
+import AddUser from './pages/addUser';
+import ViewUsersPage from './pages/viewUsers';
+import RelatoriosPage from './pages/relatóriosPage';
+import RelatorioEmp from './pages/relatorioEmprestimos';
 
 function App() {
+
   return (
     <div className="App">
       <main className="content">
@@ -54,6 +59,10 @@ function App() {
               <Route exact path="/Associacao/cadastros" element={<AdminConfig />}/>
               <Route exact path="/Associacao/cadastros/categorias" element={<CategPage />}/>
               <Route exact path="/Associacao/cadastros/locais" element={<LocalPage />}/>
+              <Route exact path="/Associacao/cadastros/usuarios" element={<AddUser />}/>
+              <Route exact path="/Associacao/cadastros/viewUsuarios" element={<ViewUsersPage />}/>
+              <Route exact path="/Associacao/relatorios" element={<RelatoriosPage />}/>
+              <Route exact path="/Associacao/relatorios/emprestimos" element={<RelatorioEmp />}/>
             </Routes>
           </Router>
         </main>

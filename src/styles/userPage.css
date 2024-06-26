@@ -149,3 +149,37 @@
 .icon-edit-usuario{
     margin-left: 10px;
 }
+
+.edit-user-row-1{
+    display: flex;
+    flex-direction: row;
+}
+
+.change-password-btn{
+    margin-bottom: 10px;
+}
+
+.form-input-categ{
+    width: 80%;
+    margin-bottom: -20px;
+}
+
+.status-emprestimo-relatorio{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.status-finalizado{
+    color: rgb(173, 0, 0);
+    font-weight: bold;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
+}
+
+.status-ativo{
+    color: rgb(0, 173, 0);
+    font-weight: bold;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 16px;
+}
+

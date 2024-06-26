@@ -20,7 +20,7 @@ const EditPessoa = () => {
     email: '',
     telefone: '',
     descricao: '',
-    endereco: ''
+    endereco: '',
   });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -55,7 +55,10 @@ const EditPessoa = () => {
     try {
       await api.put(`https://localhost:7000/api/Pessoas/${id}`, pessoa);
       setMessage('Dados atualizados com sucesso!');
-      navigate('/Usuarios/pessoas');
+      toast.success('Pessoa editada com sucesso!');
+      setTimeout(() => {
+        navigate('/Usuarios/pessoas');
+      }, 1500);
     } catch (error) {
       console.error('Erro ao atualizar os dados da pessoa:', error);
       setMessage('Erro ao atualizar os dados.');
@@ -134,7 +137,7 @@ const EditPessoa = () => {
                         <CustomInput label="Descrição" type="text" name="descricao" value={pessoa.descricao} onChange={handleChange}/>
                     </div>
                     <div className='form-input'>
-                        <CustomInput label="Endereço" type="text" name="endereço" value={pessoa.endereco} onChange={handleChange}/>
+                        <CustomInput label="Endereço" type="text" name="endereco" value={pessoa.endereco} onChange={handleChange}/>
                     </div>
                     <button type="submit" className='save-btn'>Salvar</button>
                 </form>

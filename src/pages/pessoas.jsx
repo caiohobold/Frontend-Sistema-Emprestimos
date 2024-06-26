@@ -25,6 +25,7 @@ const PessoasPage = () =>{
     const [showActiveOnly, setShowActiveOnly] = useState(true);
     const [showInactiveOnly, setShowInactiveOnly] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [filteredCount, setFilteredCount] = useState(0);
 
     useEffect(() => {
         const loadPessoas = async () => {
@@ -64,6 +65,7 @@ const PessoasPage = () =>{
         )
 
         setFilteredPessoas(results);
+        setFilteredCount(results.length); 
     }, [searchTerm, pessoas, showActiveOnly, showInactiveOnly]);
 
     const getStatusPessoa = (status) => {
@@ -134,6 +136,7 @@ const PessoasPage = () =>{
                     <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
                 </Modal>
                 <div className='pessoas'>
+                <p className='total-equip'>{filteredCount} pessoas</p>
                     {loading ? (
                         <p>Carregando...</p>
                     ) : (

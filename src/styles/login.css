@@ -189,7 +189,32 @@
   }
 
 
+  .usuarios{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
   .box-categ{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    background-color: #eeeeee;
+    margin-bottom: 20px;
+    border-radius: 17px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .box-user{
     display: flex;
     margin-left: auto;
     margin-right: auto;
@@ -218,6 +243,43 @@
     border-radius: 15px;
 }
 
+.edit-user-btn{
+    background-color: #71C7E8;
+    border: none;
+    color: white;
+    margin-right: 10px;
+    border-radius: 15px;
+}
+
+.delete-user-btn{
+    background-color: #b31206;
+    border: none;
+    color: white;
+    margin-right: 10px;
+    border-radius: 15px;
+}
+
+.modal-scrollable {
+    max-height: 80vh; /* Defina um tamanho máximo para o modal */
+    overflow-y: auto; /* Permite a rolagem vertical */
+}
+
+.edit-user-row-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.change-password-btn{
+    background-color: #71C7E8;
+    border: none;
+    color: white;
+    border-radius: 15px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
 .btn-edit-categ{
     width: 20px;
     height: 20px;
@@ -226,6 +288,7 @@
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 
 .edit-register-local{
     display: flex;

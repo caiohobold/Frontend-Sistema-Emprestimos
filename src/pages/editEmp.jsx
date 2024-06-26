@@ -58,8 +58,10 @@ const EditEmp = () => {
     e.preventDefault();
     try {
       await api.put(`https://localhost:7000/api/Emprestimos/${id}`, emprestimo);
-      setMessage('Dados atualizados com sucesso!');
-      navigate('/Usuarios/emprestimos');
+      toast.success('Empréstimo editado com sucesso!');
+      setTimeout(() => {
+        navigate('/Usuarios/emprestimos');
+      }, 1500);
     } catch (error) {
         const resMessage =
         (error.response && 

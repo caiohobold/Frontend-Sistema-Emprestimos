@@ -1,31 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import WheelShareLogo from '../photos/WheelShareWithoutName.png'
-import '../styles/userPage.css'
+import jwt_decode, { jwtDecode } from 'jwt-decode';
+import WheelShareLogo from '../photos/WheelShareWithoutName.png';
+import '../styles/userPage.css';
 import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
-
-const PerfilPage = () =>{
-
+const PerfilPage = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
         if (token) {
-            const decodedToken = jwtDecode(token);
+            const decodedToken = jwtDecode(token)
             setRole(decodedToken.role);
         }
     }, []);
 
-    return(
+    const handleLogout = () => {
+        confirmAlert({
+            title: 'Confirmação de Logout',
+            message: 'Tem certeza que deseja sair da conta?',
+            buttons: [
+                {
+                    label: 'Sim',
+                    onClick: () => {
+                        localStorage.removeItem('userToken'); // Remover o token de autenticação
+                        navigate('/'); // Redirecionar para a página de login
+                    }
+                },
+                {
+                    label: 'Não',
+                    onClick: () => {}
+                }
+            ]
+        });
+    };
+
+    return (
         <div className='main-content'>
             <div className='img-div'>
-                <img src={WheelShareLogo} className='WheelShareLogo'></img>
+                <img src={WheelShareLogo} className='WheelShareLogo' alt='WheelShare Logo' />
             </div>
             <div className='container-div'>
                 <br />
@@ -34,13 +54,13 @@ const PerfilPage = () =>{
                     <h3>Geral</h3>
                     <button className='btn-account' onClick={() => navigate("/Usuarios/perfil/info")}>
                         <div className='icon-account'>
-                            <FontAwesomeIcon icon={faUser}/>
+                            <FontAwesomeIcon icon={faUser} />
                         </div>
                         <span>Conta</span>
                     </button>
-                    <button className='btn-account'>
+                    <button className='btn-account' onClick={handleLogout}>
                         <div className='icon-account'>
-                        <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                            <FontAwesomeIcon icon={faArrowRightFromBracket} />
                         </div>
                         <span>Sair da conta</span>
                     </button>
@@ -53,6 +73,12 @@ const PerfilPage = () =>{
                                 <FontAwesomeIcon icon={faUserGroup} />
                             </div>
                             <span>Associação</span>
+                        </button>
+                        <button className='btn-account' onClick={() => navigate("/Associacao/relatorios")}>
+                            <div className='icon-account'>
+                                <FontAwesomeIcon icon={faChartPie} />
+                            </div>
+                            <span>Relatórios</span>
                         </button>
                     </div>
                 )}
@@ -75,6 +101,6 @@ const PerfilPage = () =>{
             </div>
         </div>
     );
-}
+};
 
 export default PerfilPage;

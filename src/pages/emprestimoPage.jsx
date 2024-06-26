@@ -27,6 +27,7 @@ const EmprestimosPage = () => {
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [selectedEmprestimo, setSelectedEmprestimo] = useState(null);
     const [selectedLocal, setSelectedLocal] = useState(null);
+    const [filteredCount, setFilteredCount] = useState(0);
 
     const navigate = useNavigate();
 
@@ -52,6 +53,7 @@ const EmprestimosPage = () => {
         }
 
         setFilteredEmprestimos(results);
+        setFilteredCount(results.length); 
     }, [searchTerm, emprestimos, showAtrasados, showEmDia, startDate, endDate]);
 
     useEffect(() => {
@@ -282,6 +284,7 @@ const EmprestimosPage = () => {
                     className='search-input'
                 />
                 <div className='emprestimos'>
+                <p className='total-equip'>{filteredCount} empréstimos ativos</p>
                     {loading ? (
                         <p>Carregando...</p>
                     ) : (

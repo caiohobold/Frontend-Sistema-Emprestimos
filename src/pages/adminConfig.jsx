@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import CustomInput from '../components/customInput';
 import WheelShareLogo from '../photos/WheelShareLogo.png';
 import '../styles/login.css';
-import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faArrowLeft, faCircleUser, faPenToSquare, faLayerGroup, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faUserGroup, faUserPlus, faTriangleExclamation, faArrowLeft, faCircleUser, faPenToSquare, faLayerGroup, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -47,6 +47,21 @@ const AdminConfig = () =>{
                     </button>          
                 </div>
                 <br />
+                <div className='geral-config'>
+                    <h3>Usuários</h3>
+                    <button className='btn-account' onClick={() => navigate("/Associacao/cadastros/usuarios")}>
+                        <div className='icon-account'>
+                            <FontAwesomeIcon icon={faUserPlus} />
+                        </div>
+                        <span>Cadastrar usuário</span>
+                    </button>
+                    <button className='btn-account' onClick={() => navigate("/Associacao/cadastros/viewUsuarios")}>
+                        <div className='icon-account'>
+                            <FontAwesomeIcon icon={faUserGroup} />
+                        </div>
+                        <span>Visualizar usuários</span>
+                    </button>          
+                </div>
             </div>
         </div>
     );
