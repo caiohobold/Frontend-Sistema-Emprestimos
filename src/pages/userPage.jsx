@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import jwt_decode, { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import api from '../services/axiosConfig';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png';
 import '../styles/userPage.css';
 import NavBar from '../components/navBar';
@@ -9,18 +10,80 @@ import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-modal';
+import { TextField, Button, Box } from '@mui/material';
 
 const PerfilPage = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
+    const [userName, setUserName] = useState('');
+    const [message, setMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isErrorReport, setIsErrorReport] = useState(false);
+    const token = localStorage.getItem('userToken');
+    const decodedToken = token ? jwtDecode(token) : null;
 
     useEffect(() => {
-        const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
-        if (token) {
-            const decodedToken = jwtDecode(token)
+        if (decodedToken) {
             setRole(decodedToken.role);
+            console.log(role)
         }
-    }, []);
+    }, [decodedToken]);
+
+    useEffect(() => {
+        if (role) {
+            if (role === "Usuario") {
+                api.get(`https://localhost:7000/api/Usuarios/${decodedToken.id}`)
+                    .then(response => {
+                        setUserName(response.data.nomeCompleto);
+                    })
+                    .catch(error => {
+                        console.error("Erro ao fazer fetch:", error);
+                    });
+            } else if (role === "Associacao") {
+                api.get(`https://localhost:7000/api/Associacoes/${decodedToken.id}`)
+                    .then(response => {
+                        setUserName(response.data.nomeFantasia);
+                    })
+                    .catch(error => {
+                        console.error("Erro ao fazer fetch:", error);
+                    });
+            } else {
+                console.error("Erro encontrado.")
+            }
+        }
+    }, [role, decodedToken]);
+
+    useEffect(() => {
+        console.log("Nome de usuário definido:", userName); // Adiciona log de depuração
+    }, [userName]);
+
+    const openModal = (isError) => {
+        setIsModalOpen(true);
+        setIsErrorReport(isError);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setMessage('');
+    };
+
+    const handleSubmit = async (e) => {
+        console.log("Clicou")
+        e.preventDefault();
+        const url = isErrorReport ? 'https://localhost:7000/api/Feedback/report-error' : 'https://localhost:7000/api/Feedback/send-feedback';
+        try {
+            await api.post(url, { UserName: userName, Message: message });
+            toast.success("Mensagem enviada com sucesso!")
+            closeModal();
+        } catch (error) {
+            console.error('Erro ao enviar feedback:', error);
+            toast.error("Erro ao enviar mensagem.")
+        }
+    };
+
 
     const handleLogout = () => {
         confirmAlert({
@@ -30,8 +93,8 @@ const PerfilPage = () => {
                 {
                     label: 'Sim',
                     onClick: () => {
-                        localStorage.removeItem('userToken'); // Remover o token de autenticação
-                        navigate('/'); // Redirecionar para a página de login
+                        localStorage.removeItem('userToken'); 
+                        navigate('/');
                     }
                 },
                 {
@@ -42,12 +105,51 @@ const PerfilPage = () => {
         });
     };
 
+    const customStyles = {
+        overlay: {
+            backgroundColor: 'rgba(89, 89, 89, 0.75)',
+        },
+    };
+
     return (
         <div className='main-content'>
+            <ToastContainer />
             <div className='img-div'>
                 <img src={WheelShareLogo} className='WheelShareLogo' alt='WheelShare Logo' />
             </div>
             <div className='container-div'>
+                <Modal
+                    style={customStyles}
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    contentLabel="Editar Usuário"
+                    className="modal-filter modal-scrollable"
+                    closeTimeoutMS={300}
+                >
+                    <br />
+                    <h2>{isErrorReport ? 'Reporte um Erro' : 'Mande um Feedback'}</h2>
+                    <p className='p-info-modal'>{isErrorReport ?  'Enfrentou algum erro inesperado? Descreva o erro com detalhes para nosso time de desenvolvimento.' : 'Deseja deixar uma sugestão ou feedback sobre o sistema? Encaminhe diretamente para nosso time de desenvolvimento!'}</p>
+
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, ml: 3, mr: 3 }}>
+                        <TextField
+                            id="message"
+                            label={isErrorReport ? 'Descreva o erro encontrado' : 'Deixe seu feedback'}
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                            fullWidth
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            required
+                        />
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            Enviar
+                        </Button>
+                        <Button onClick={closeModal} fullWidth variant="outlined">
+                            Fechar
+                        </Button>
+                    </Box>
+                </Modal>
                 <br />
                 <h2 className='perfil-title'>Configurações</h2>
                 <div className='geral-config'>
@@ -84,13 +186,13 @@ const PerfilPage = () => {
                 )}
                 <div className='feedback-config'>
                     <h3>Feedback</h3>
-                    <button className='btn-account'>
+                    <button className='btn-account' onClick={() => openModal(true)}>
                         <div className='icon-account'>
                             <FontAwesomeIcon icon={faTriangleExclamation} />
                         </div>
                         <span>Reporte um erro</span>
                     </button>
-                    <button className='btn-account'>
+                    <button className='btn-account' onClick={() => openModal(false)}>
                         <div className='icon-account'>
                             <FontAwesomeIcon icon={faPaperPlane} />
                         </div>
