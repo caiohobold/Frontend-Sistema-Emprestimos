@@ -11,6 +11,8 @@ import { FormControl, InputLabel, MenuItem, Select, Button, TextField } from '@m
 import { Autocomplete } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEquip = () => {
   const [categorias, setCategorias] = useState([]);
@@ -104,29 +106,68 @@ const AddEquip = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (!equipamento.nomeEquipamento) {
+      toast.info("O campo 'Nome do Equipamento' é obrigatório.")
+      return;
+    }
+
+    if (!equipamento.descricaoEquipamento) {
+      toast.info("O campo 'Descrição' é obrigatório.")
+      return;
+  }
+
+    if (!equipamento.idCategoria) {
+      toast.info("O campo 'Categoria' é obrigatório.")
+      return;
+  }
+
+    if (!equipamento.idLocal) {
+      toast.info("O campo 'Local de armazenamento' é obrigatório.")
+      return;
+  }
+
+    if (!equipamento.estadoEquipamento && equipamento.estadoEquipamento !== 0) {
+      toast.info("O campo 'Estado do Equipamento' é obrigatório.")
+      return;
+  }
+
+    if (!equipamento.cargaEquipamento && equipamento.cargaEquipamento !== 0) {
+      toast.info("O campo 'Carga do Equipamento' é obrigatório.")
+      return;
+  }
+
+  if (!equipamento.foto1 || !equipamento.foto2) {
+    toast.info("É necessário adicionar duas fotos do equipamento.")
+    return;
+}
+
     const formData= new FormData();
     for(const key in equipamento){
       formData.append(key, equipamento[key]);
     }
-    setLoading(true);
     try {
       await api.post('https://localhost:7000/api/Equipamentos', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setMessage('Equipamento cadastrado com sucesso!');
+      toast.success("Equipamento cadastrado com sucesso!");
+      setTimeout(() => {
+        navigate('/Usuarios/Equipamentos');
+      }, 1500);
       setLoading(false);
-      navigate('/Usuarios/Equipamentos');
+
     } catch (error) {
       console.error('Erro ao cadastrar o equipamento:', error);
-      setMessage('Erro ao cadastrar o equipamento.');
+      toast.error("Erro ao cadastrar o equipamento.")
       setLoading(false);
     }
   };
 
   return (
     <div className='main-content'>
+      <ToastContainer />
       <div className='return-div'>
         <button onClick={() => navigate("/Usuarios/Equipamentos")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
       </div>
@@ -172,7 +213,7 @@ const AddEquip = () => {
           </div>
           <div className='form-input-estado'>
             <FormControl fullWidth>
-                    <InputLabel>Carga do Equipamento</InputLabel>
+                    <InputLabel>Capacidade do Equipamento</InputLabel>
                     <Select
                         name="cargaEquipamento"
                         value={equipamento.cargaEquipamento}
@@ -190,7 +231,7 @@ const AddEquip = () => {
                   options={local}
                   getOptionLabel={(option) => option.nomeLocal}
                   onChange={(event, value) => handleAutoCompleteChangeLocal(event, value, 'idLocal')}
-                  renderInput={(params) => <TextField {...params} label="Local" />}
+                  renderInput={(params) => <TextField {...params} label="Local de armazenamento" />}
               />
             </FormControl>
           </div>

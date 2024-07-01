@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import pessoasService from '../services/pessoasService';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import '../styles/equipamentosPage.css'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import { faWheelchair, faWalking, faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { faCrutch } from '@fortawesome/free-solid-svg-icons';
-import NavBar from '../components/navBar';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import '../styles/equipamentosPage.css';
+import { faArrowLeft, faCircleUser, faWheelchair, faCrutch, faFilter, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import equipamentosService from '../services/equipamentosService';
+import NavBar from '../components/navBar';
+import { Box, FormControl, FormControlLabel, Checkbox, Select, MenuItem, InputLabel, ListItemText } from '@mui/material';
 import Modal from 'react-modal';
-import { FormControlLabel, Checkbox, Button, TextField, Box, Select, MenuItem, InputLabel, FormControl, ListItemText } from '@mui/material';
+import equipamentosService from '../services/equipamentosService';
 import categoriasServices from '../services/categoriasServices';
 import locaisServices from '../services/locaisServices';
-
+import Loading from '../components/loading';
 
 const EquipamentosPage = () => {
     const [equipamentos, setEquipamentos] = useState([]);
@@ -30,6 +23,8 @@ const EquipamentosPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showNew, setShowNew] = useState(true);
     const [showUsed, setShowUsed] = useState(true);
+    const [showDefeito, setShowDefeito] = useState(true);
+    const [showBaixado, setShowBaixado] = useState(true);
     const [showNormal, setShowNormal] = useState(true);
     const [showObeso, setShowObeso] = useState(true);
     const [showSemiObeso, setShowSemiObeso] = useState(true);
@@ -40,7 +35,15 @@ const EquipamentosPage = () => {
     const [selectedLocais, setSelectedLocais] = useState([]);
     const [openLocais, setOpenLocais] = useState(false);
     const [filteredCount, setFilteredCount] = useState(0);
+    const [role, setRole] = useState('');
 
+    useEffect(() => {
+        const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setRole(decodedToken.role);
+        }
+    }, []);
 
     const getEquipamentoIcon = (categoria) => {
         switch (categoria) {
@@ -63,7 +66,10 @@ const EquipamentosPage = () => {
         setSelectedLocais(value);
     };
 
-    const getStatusString = (status) => {
+    const getStatusString = (status, estado) => {
+        if (estado === 2 || estado === 3) {
+            return "Fora de uso";
+        }
         const statusMap = {
             0: "Em uso",
             1: "Disponível"
@@ -71,7 +77,10 @@ const EquipamentosPage = () => {
         return statusMap[status] || "Disponível";
     };
 
-    const getStatusClass = (status) => {
+    const getStatusClass = (status, estado) => {
+        if (estado === 2 || estado === 3) {
+            return "fora-de-uso";
+        }
         const statusMap = {
             0: "em-uso",
             1: "disponivel"
@@ -82,7 +91,9 @@ const EquipamentosPage = () => {
     const getEstadoString = (status) => {
         const statusMap = {
             0: "Novo",
-            1: "Usado"
+            1: "Usado",
+            2: "Defeito",
+            3: "Baixado"
         };
         return statusMap[status] || "Usado";
     };
@@ -90,7 +101,9 @@ const EquipamentosPage = () => {
     const getEstadoClass = (status) => {
         const statusMap = {
             0: "novo",
-            1: "usado"
+            1: "usado",
+            2: "defeito",
+            3: "baixado"
         };
         return statusMap[status] || "usado";
     };
@@ -159,19 +172,19 @@ const EquipamentosPage = () => {
     }, []);
 
     useEffect(() => {
-    const loadCategorias = async () => {
-        try {
-            const data = await categoriasServices.getCategorias(1, 500);
-            console.log("Categorias carregadas: ", data);
-            setCategorias(data);
-            setSelectedCategorias(data.map(categoria => categoria.idCategoria));
-        } catch (error) {
-            console.error("Falha ao carregar as categorias:", error);
-        }
-    };
+        const loadCategorias = async () => {
+            try {
+                const data = await categoriasServices.getCategorias(1, 500);
+                console.log("Categorias carregadas: ", data);
+                setCategorias(data);
+                setSelectedCategorias(data.map(categoria => categoria.idCategoria));
+            } catch (error) {
+                console.error("Falha ao carregar as categorias:", error);
+            }
+        };
 
-    loadCategorias();
-}, []);
+        loadCategorias();
+    }, []);
 
     useEffect(() => {
         let results = equipamentos.filter(equip =>
@@ -187,12 +200,36 @@ const EquipamentosPage = () => {
             results = [];
         }
 
-        if (showNew && !showUsed) {
+        if (showNew && !showUsed && !showDefeito && !showBaixado) {
             results = results.filter(equip => equip.estadoEquipamento === 0);
-        } else if (!showNew && showUsed) {
+        } else if (!showNew && showUsed && !showDefeito && !showBaixado) {
             results = results.filter(equip => equip.estadoEquipamento === 1);
-        } else if (!showNew && !showUsed) {
-            results = [];
+        } else if (!showNew && !showUsed && showDefeito && !showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 2);
+        } else if (!showNew && !showUsed && !showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 3);
+        } else if (showNew && showUsed && !showDefeito && !showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 1);
+        } else if (showNew && !showUsed && showDefeito && !showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 2);
+        } else if (showNew && !showUsed && !showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 3);
+        } else if (!showNew && showUsed && showDefeito && !showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 1 || equip.estadoEquipamento === 2);
+        } else if (!showNew && showUsed && !showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 1 || equip.estadoEquipamento === 3);
+        } else if (!showNew && !showUsed && showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 2 || equip.estadoEquipamento === 3);
+        } else if (showNew && showUsed && showDefeito && !showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 1 || equip.estadoEquipamento === 2);
+        } else if (showNew && showUsed && !showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 1 || equip.estadoEquipamento === 3);
+        } else if (showNew && !showUsed && showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 2 || equip.estadoEquipamento === 3);
+        } else if (!showNew && showUsed && showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 1 || equip.estadoEquipamento === 2 || equip.estadoEquipamento === 3);
+        } else if (showNew && showUsed && showDefeito && showBaixado) {
+            results = results.filter(equip => equip.estadoEquipamento === 0 || equip.estadoEquipamento === 1 || equip.estadoEquipamento === 2 || equip.estadoEquipamento === 3);
         }
 
         if (showNormal && !showObeso && !showSemiObeso) {
@@ -219,7 +256,7 @@ const EquipamentosPage = () => {
 
         setFilteredEquipamentos(results);
         setFilteredCount(results.length); 
-    }, [searchTerm, equipamentos, showInUse, showAvailable, showNew, showUsed, showNormal, showObeso, showSemiObeso, selectedCategorias, selectedLocais]);
+    }, [searchTerm, equipamentos, showInUse, showAvailable, showNew, showUsed, showDefeito, showBaixado, showNormal, showObeso, showSemiObeso, selectedCategorias, selectedLocais]);
 
     const navigate = useNavigate();
 
@@ -239,71 +276,52 @@ const EquipamentosPage = () => {
                 <br />
                 <h2>Filtros</h2>
                 <h3>Disponibilidade:</h3>
-                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px" marginTop="10px" backgroundColor="white">
-                    <Button
-                        variant={showInUse ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowInUse(!showInUse)}
-                        style={{ marginBottom: '10px', width: '165px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Em uso
-                    </Button>
-                    <Button
-                        variant={showAvailable ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowAvailable(!showAvailable)}
-                        style={{ marginBottom: '10px', width: '165px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Disponíveis
-                    </Button>
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" backgroundColor="white" marginLeft="25px" marginRight="100px">
+                    <FormControlLabel
+                        control={<Checkbox checked={showInUse} onChange={() => setShowInUse(!showInUse)} />}
+                        label="Em uso"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showAvailable} onChange={() => setShowAvailable(!showAvailable)} />}
+                        label="Disponíveis"
+                    />
                 </Box>
                 <h3>Estado:</h3>
-                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px">
-                    <Button
-                        variant={showNew ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowNew(!showNew)}
-                        style={{ marginBottom: '10px', width: '165px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Novos
-                    </Button>
-                    <Button
-                        variant={showUsed ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowUsed(!showUsed)}
-                        style={{ marginBottom: '10px', width: '165px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Usados
-                    </Button>
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                    <FormControlLabel
+                        control={<Checkbox checked={showNew} onChange={() => setShowNew(!showNew)} />}
+                        label="Novos"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showUsed} onChange={() => setShowUsed(!showUsed)} />}
+                        label="Usados"
+                    />
+                </Box>
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                    <FormControlLabel
+                        control={<Checkbox checked={showDefeito} onChange={() => setShowDefeito(!showDefeito)} />}
+                        label="Defeituosos"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showBaixado} onChange={() => setShowBaixado(!showBaixado)} />}
+                        label="Baixados"
+                    />
                 </Box>
                 <h3>Carga:</h3>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="5px">
-                    <Button
-                        variant={showNormal ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowNormal(!showNormal)}
-                        style={{ marginBottom: '10px', width: '115px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Normal
-                    </Button>
-                    <Button
-                        variant={showObeso ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowObeso(!showObeso)}
-                        style={{ marginBottom: '10px', width: '115px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Obeso
-                    </Button>
-                    <Button
-                        variant={showSemiObeso ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowSemiObeso(!showSemiObeso)}
-                        style={{ marginBottom: '10px', width: '115px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Semi-obeso
-                    </Button>
+                    <FormControlLabel
+                        control={<Checkbox checked={showNormal} onChange={() => setShowNormal(!showNormal)} />}
+                        label="Normal"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showObeso} onChange={() => setShowObeso(!showObeso)} />}
+                        label="Obeso"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showSemiObeso} onChange={() => setShowSemiObeso(!showSemiObeso)} />}
+                        label="Semi-obeso"
+                    />
                 </Box>
-                <br />
                 <h3>Mostrar por categorias:</h3>
                 <div className='filter-categoria'>
                     <FormControl fullWidth>
@@ -335,10 +353,10 @@ const EquipamentosPage = () => {
                 <h3>Mostrar por locais:</h3>
                 <div className='filter-categoria'>
                     <FormControl fullWidth>
-                        <InputLabel id="categorias-label">Locais</InputLabel>
+                        <InputLabel id="locais-label">Locais</InputLabel>
                         <Select
-                            labelId="categorias-label"
-                            id="categorias-select"
+                            labelId="locais-label"
+                            id="locais-select"
                             multiple
                             value={selectedLocais}
                             onChange={handleLocalChange}
@@ -365,7 +383,7 @@ const EquipamentosPage = () => {
                 <br></br>
                 <div className='row-title'>
                     <h2 className='pessoas-title'>Equipamentos</h2>
-                    <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon class="icon-filter" icon={faFilter} /></button>
+                    <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon className="icon-filter" icon={faFilter} /></button>
                 </div>
                 <input
                     type="text"
@@ -377,42 +395,42 @@ const EquipamentosPage = () => {
                 <div className='equipamentos'>
                     <p className='total-equip'>{filteredCount} equipamentos</p>
                     {loading ? (
-                        <p>Carregando...</p>
+                        <Loading />
                     ) : (
-                    filteredEquipamentos.length === 0 ? (
-                      <div className='no-emprestimos-pessoa'>
-                        <FontAwesomeIcon icon={faWheelchair} className='icon-chair'/>
-                        <div>Nenhum equipamento encontrado.</div>
-                      </div>
-                    ) : (
-                        filteredEquipamentos.map(equip => 
-                        
-                        <div key={equip.idEquipamento} className='box-equip'>
-                            <div className='icon-equip-div'>
-                                {equip.foto1 && <img src={renderImage(equip.foto1)} className='img-equip' alt='Equipamento' />}
+                        filteredEquipamentos.length === 0 ? (
+                            <div className='no-emprestimos-pessoa'>
+                                <FontAwesomeIcon icon={faWheelchair} className='icon-chair' />
+                                <div>Nenhum equipamento encontrado.</div>
                             </div>
-                            <div className='equip-info'>
-                                <div className='row-info'>
-                                    <div className='nomeequip'>{equip.nomeEquipamento}</div>
-                                    <div className='idequip'>ID: {equip.idEquipamento}</div>
+                        ) : (
+                            filteredEquipamentos.map(equip =>
+                                <div key={equip.idEquipamento} className='box-equip'>
+                                    <div className='icon-equip-div'>
+                                        {equip.foto1 && <img src={renderImage(equip.foto1)} className='img-equip' alt='Equipamento' />}
+                                    </div>
+                                    <div className='equip-info'>
+                                        <div className='row-info'>
+                                            <div className='nomeequip'>{equip.nomeEquipamento}</div>
+                                            <div className='idequip'>ID: {equip.idEquipamento}</div>
+                                        </div>
+                                        <div className='row1-info'>
+                                            <div className={getStatusClass(equip.statusEquipamento, equip.estadoEquipamento)}>{getStatusString(equip.statusEquipamento, equip.estadoEquipamento)}</div>
+                                            <div className={getEstadoClass(equip.estadoEquipamento)}>{getEstadoString(equip.estadoEquipamento)}</div>
+                                        </div>
+                                        <div className='row2-info'>
+                                            <div className={getCargaClass(equip.cargaEquipamento)}>{getCargaDescription(equip.cargaEquipamento)}</div>
+                                            {role === 'Associacao' && (
+                                                <button className='btn-equip-div' onClick={() => navigate(`/equipamento/edit/${equip.idEquipamento}`)}>Editar</button>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className='modals'>
+
+                                    </div>
                                 </div>
-                                <div className='row1-info'>
-                                    <div className={getStatusClass(equip.statusEquipamento)}>{getStatusString(equip.statusEquipamento)}</div>
-                                    <div className={getEstadoClass(equip.estadoEquipamento)}>{getEstadoString(equip.estadoEquipamento)}</div>
-                                </div>
-                                <div className='row2-info'>
-                                    <div className={getCargaClass(equip.cargaEquipamento)}>{getCargaDescription(equip.cargaEquipamento)}</div>
-                                    <button className='btn-equip-div' onClick={() => navigate(`/equipamento/edit/${equip.idEquipamento}`)}>Editar</button>
-                                </div>
-                            </div>
-                            <div className='modals'>
-                                
-                            </div>
-                        </div>
-                        
-                    )
-                )
-            )}
+                            )
+                        )
+                    )}
                     <br></br>
                     <br></br>
                     <br></br>

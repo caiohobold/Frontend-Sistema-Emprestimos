@@ -13,6 +13,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import emprestimosService from '../services/emprestimosService';
 import Modal from 'react-modal';
 import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button } from '@mui/material';
+import Loading from '../components/loading';
 
 const RelatorioEmp = () => {
     const navigate = useNavigate();
@@ -169,8 +170,9 @@ const RelatorioEmp = () => {
                     className='search-input'
                 />
                 <div className='emprestimos-realizados'>
+                <p className='total-equip'>{filteredCount} empréstimos</p>
                     {loading ? (
-                        <p>Carregando...</p>
+                        <Loading />
                     ) : (
                         filteredEmprestimos.length === 0 ? (
                             <div className='no-emprestimos'>

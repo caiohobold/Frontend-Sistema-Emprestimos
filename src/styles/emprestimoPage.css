@@ -179,3 +179,17 @@
     overflow-y: auto;
     border-radius: 20px;
 }
+
+.form-input-estado{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.react-confirm-alert-button-group button{
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: system-ui;
+}

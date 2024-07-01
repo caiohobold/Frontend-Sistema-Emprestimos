@@ -10,6 +10,11 @@
     margin-top: 10px;
 }
 
+.carregando-p{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 18px;
+}
+
 .btns-div{
     margin-top: 30px;
     gap: 30px;

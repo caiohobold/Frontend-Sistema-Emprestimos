@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
+import Loading from '../components/loading';
 
 const EditEquip = () => {
     const [categorias, setCategorias] = useState([]);
@@ -136,13 +137,41 @@ const EditEquip = () => {
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // Verificação dos campos obrigatórios
-        if (!equipamento.nomeEquipamento || !equipamento.descricaoEquipamento) {
-            setMessage("Os campos Nome do Equipamento e Descrição são obrigatórios.");
+        if (!equipamento.nomeEquipamento) {
+            toast.info("O campo 'Nome do Equipamento' é obrigatório.")
+            return;
+          }
+      
+          if (!equipamento.descricaoEquipamento) {
+            toast.info("O campo 'Descrição' é obrigatório.")
             return;
         }
+      
+          if (!equipamento.idCategoria) {
+            toast.info("O campo 'Categoria' é obrigatório.")
+            return;
+        }
+      
+          if (!equipamento.idLocal) {
+            toast.info("O campo 'Local de armazenamento' é obrigatório.")
+            return;
+        }
+      
+          if (!equipamento.estadoEquipamento && equipamento.estadoEquipamento !== 0) {
+            toast.info("O campo 'Estado do Equipamento' é obrigatório.")
+            return;
+        }
+      
+          if (!equipamento.cargaEquipamento && equipamento.cargaEquipamento !== 0) {
+            toast.info("O campo 'Carga do Equipamento' é obrigatório.")
+            return;
+        }
+      
+        if (!equipamento.foto1 || !equipamento.foto2) {
+          toast.info("É necessário adicionar duas fotos do equipamento.")
+          return;
+      }
 
-        // Adicione as fotos originais ao payload se não forem alteradas
         const formData = new FormData();
         for (const key in equipamento) {
             if (equipamento[key] !== null && equipamento[key] !== undefined && key !== 'foto1' && key !== 'foto2') {
@@ -168,19 +197,19 @@ const EditEquip = () => {
         console.log("Dados do formulário:", equipamento);
         console.log("FormData:", ...formData.entries());
 
-        setLoading(true);
         try {
             await api.put(`https://localhost:7000/api/Equipamentos/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMessage('Equipamento atualizado com sucesso!');
-            setLoading(false);
-            navigate('/Usuarios/Equipamentos');
+            toast.success("Equipamento atualizado com sucesso!")
+            setTimeout(() => {
+                navigate('/Usuarios/Equipamentos');
+            }, 1500);
         } catch (error) {
             console.error('Erro ao atualizar o equipamento:', error);
-            setMessage('Erro ao atualizar o equipamento.');
+            toast.error("Erro ao atualizar o equipamento.");
             setLoading(false);
         }
     };
@@ -195,8 +224,10 @@ const EditEquip = () => {
                     onClick: async () => {
                         try {
                             await api.delete(`https://localhost:7000/api/Equipamentos/${id}`);
-                            setMessage('Equipamento removido com sucesso!');
-                            navigate('/Usuarios/equipamentos');
+                            toast.success("Equipamento removido com sucesso!")
+                            setTimeout(() => {
+                                navigate('/Usuarios/equipamentos');
+                            }, 1500);
                         } catch (error) {
                             const resMessage =
                                 (error.response &&
@@ -222,10 +253,6 @@ const EditEquip = () => {
         });
     };
 
-    if (loading) {
-        return <div>Carregando...</div>;
-    }
-
     return (
         <div className='main-content'>
             <ToastContainer />
@@ -239,66 +266,70 @@ const EditEquip = () => {
                     <button className='btn-delete' onClick={handleDelete}><FontAwesomeIcon className='icon-delete' icon={faTrashCan} /></button>
                 </div>
                 {message && <p>{message}</p>}
-                <form className='form-edit-equip' onSubmit={handleSave}>
-                    <div className='form-input'>
-                        <CustomInput label="Nome do Equipamento" type="text" name="nomeEquipamento" value={equipamento.nomeEquipamento} onChange={handleChange} />
-                    </div>
-                    <div className='form-input-estado'>
-                        <FormControl fullWidth>
-                            <InputLabel>Estado do Equipamento</InputLabel>
-                            <Select name="estadoEquipamento" value={equipamento.estadoEquipamento} onChange={handleChange}>
-                                <MenuItem value={0}>Novo</MenuItem>
-                                <MenuItem value={1}>Usado</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <div className='form-input-estado'>
-                        <FormControl fullWidth>
-                            <InputLabel>Carga do Equipamento</InputLabel>
-                            <Select name="cargaEquipamento" value={equipamento.cargaEquipamento} onChange={handleChange}>
-                                <MenuItem value={0}>Normal</MenuItem>
-                                <MenuItem value={1}>Obeso</MenuItem>
-                                <MenuItem value={2}>Semi-obeso</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <div className='form-input-estado'>
-                        <FormControl fullWidth>
-                            <Autocomplete
-                                value={selectedLocal}
-                                options={local}
-                                getOptionLabel={(option) => option.nomeLocal}
-                                onChange={(event, value) => handleAutoCompleteChangeLocal(event, value, 'idLocal')}
-                                renderInput={(params) => <TextField {...params} label="Local" />}
-                            />
-                        </FormControl>
-                    </div>
+                {loading ? <Loading /> : (
+                    <form className='form-edit-equip' onSubmit={handleSave}>
+                        <div className='form-input'>
+                            <CustomInput label="Nome do Equipamento" type="text" name="nomeEquipamento" value={equipamento.nomeEquipamento} onChange={handleChange} />
+                        </div>
+                        <div className='form-input-estado'>
+                            <FormControl fullWidth>
+                                <InputLabel>Estado do Equipamento</InputLabel>
+                                <Select name="estadoEquipamento" value={equipamento.estadoEquipamento} onChange={handleChange}>
+                                    <MenuItem value={0}>Novo</MenuItem>
+                                    <MenuItem value={1}>Usado</MenuItem>
+                                    <MenuItem value={2}>Defeituoso</MenuItem>
+                                    <MenuItem value={3}>Baixado</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div className='form-input-estado'>
+                            <FormControl fullWidth>
+                                <InputLabel>Capacidade do Equipamento</InputLabel>
+                                <Select name="cargaEquipamento" value={equipamento.cargaEquipamento} onChange={handleChange}>
+                                    <MenuItem value={0}>Normal</MenuItem>
+                                    <MenuItem value={1}>Obeso</MenuItem>
+                                    <MenuItem value={2}>Semi-obeso</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div className='form-input-estado'>
+                            <FormControl fullWidth>
+                                <Autocomplete
+                                    value={selectedLocal}
+                                    options={local}
+                                    getOptionLabel={(option) => option.nomeLocal}
+                                    onChange={(event, value) => handleAutoCompleteChangeLocal(event, value, 'idLocal')}
+                                    renderInput={(params) => <TextField {...params} label="Local de armazenamento" />}
+                                />
+                            </FormControl>
+                        </div>
 
-                    <div className='form-input'>
-                        <CustomInput label="Descrição" type="text" name="descricaoEquipamento" value={equipamento.descricaoEquipamento} onChange={handleChange} />
-                    </div>
-                    <p className='edit-string'>Clique nas fotos para editar</p>
-                    <div className='photos'>
                         <div className='form-input'>
-                            <div {...getRootProps1()} className="dropzone">
-                                <input {...getInputProps1()} />
-                                {preview1 ? <img src={preview1} alt="Preview" className="preview-image" /> : <p>Clique para selecionar a Foto 1</p>}
+                            <CustomInput label="Descrição" type="text" name="descricaoEquipamento" value={equipamento.descricaoEquipamento} onChange={handleChange} />
+                        </div>
+                        <p className='edit-string'>Clique nas fotos para editar</p>
+                        <div className='photos'>
+                            <div className='form-input'>
+                                <div {...getRootProps1()} className="dropzone">
+                                    <input {...getInputProps1()} />
+                                    {preview1 ? <img src={preview1} alt="Preview" className="preview-image" /> : <p>Clique para selecionar a Foto 1</p>}
+                                </div>
+                            </div>
+                            <div className='form-input'>
+                                <div {...getRootProps2()} className="dropzone">
+                                    <input {...getInputProps2()} />
+                                    {preview2 ? <img src={preview2} alt="Preview" className="preview-image" /> : <p>Clique para selecionar a Foto 2</p>}
+                                </div>
                             </div>
                         </div>
-                        <div className='form-input'>
-                            <div {...getRootProps2()} className="dropzone">
-                                <input {...getInputProps2()} />
-                                {preview2 ? <img src={preview2} alt="Preview" className="preview-image" /> : <p>Clique para selecionar a Foto 2</p>}
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                </form>
+                        <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    </form>
+                )}
             </div>
         </div>
     );

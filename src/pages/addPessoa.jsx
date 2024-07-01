@@ -33,6 +33,36 @@ const AddPessoa = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (!pessoa.nomeCompleto) {
+      toast.info("O campo 'Nome Completo' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.cpf) {
+      toast.info("O campo 'CPF' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.email) {
+      toast.info("O campo 'E-mail' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.telefone) {
+      toast.info("O campo 'Telefone' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.descricao) {
+      toast.info("O campo 'Descrição' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.endereco) {
+      toast.info("O campo 'Endereço' é obrigatório.")
+      return;
+    }
     setLoading(true);
     try {
       await api.post('https://localhost:7000/api/Pessoas', pessoa);

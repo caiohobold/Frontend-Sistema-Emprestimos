@@ -18,6 +18,17 @@ const getEquipamentos = async (pageNumber, pageSize) => {
 }
 };
 
+const patchEstadoEquipamento = async (id, idEstadoEquipamento) => {
+    try{
+    const response = await api.patch(`${API_URL}${id}/estado-equipamento`, { idEstadoEquipamento });
+    return response.data;
+    }
+    catch (error){
+        console.error('Erro ao atualizar estado: ', error);
+        throw error;
+    }
+}
+
 
 const getEquipamentosDisponiveis = async (pageNumber, pageSize) => {
     try {
@@ -36,5 +47,6 @@ const getEquipamentosDisponiveis = async (pageNumber, pageSize) => {
 
 export default {
     getEquipamentos,
-    getEquipamentosDisponiveis
+    getEquipamentosDisponiveis,
+    patchEstadoEquipamento
 }

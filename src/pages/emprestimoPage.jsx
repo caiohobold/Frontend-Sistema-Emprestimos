@@ -3,6 +3,7 @@ import emprestimosService from '../services/emprestimosService';
 import locaisServices from '../services/locaisServices';
 import { useNavigate } from 'react-router-dom';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png';
+import { jwtDecode } from 'jwt-decode';
 import '../styles/emprestimoPage.css';
 import { faPenToSquare, faWheelchair, faFilter } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '../components/navBar';
@@ -11,11 +12,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Modal from 'react-modal';
-import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button } from '@mui/material';
+import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import equipamentosService from '../services/equipamentosService';
+import Loading from '../components/loading';
 
 const EmprestimosPage = () => {
     const [emprestimos, setEmprestimos] = useState([]);
     const [locais, setLocais] = useState([]);
+    const [estadoEquipamento, setEstadoEquipamento] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filteredEmprestimos, setFilteredEmprestimos] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +32,16 @@ const EmprestimosPage = () => {
     const [selectedEmprestimo, setSelectedEmprestimo] = useState(null);
     const [selectedLocal, setSelectedLocal] = useState(null);
     const [filteredCount, setFilteredCount] = useState(0);
+    const [role, setRole] = useState('');
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+        if (token) {
+            const decodedToken = jwtDecode(token)
+            setRole(decodedToken.role);
+        }
+    }, []);
 
     const navigate = useNavigate();
 
@@ -172,9 +186,13 @@ const EmprestimosPage = () => {
                 if (selectedLocal) {
                     await atualizarLocalEquipamento(selectedEmprestimo.idEquipamento, selectedLocal);
                 }
+                if(estadoEquipamento){
+                    await equipamentosService.patchEstadoEquipamento(selectedEmprestimo.idEquipamento, estadoEquipamento);
+                }
+                
                 await finalizarEmprestimo(selectedEmprestimo.idEmprestimo);
             } catch (error) {
-                alert("Falha ao atualizar o local do equipamento. O empréstimo não será finalizado.");
+                alert("Falha ao atualizar o local ou estado do equipamento. O empréstimo não será finalizado.");
             }
         }
     };
@@ -186,6 +204,10 @@ const EmprestimosPage = () => {
 
     const handleLocationChange = (event, value) => {
         setSelectedLocal(value ? value.idLocal : null);
+    };
+
+    const handleEstadoChange = (event) => {
+        setEstadoEquipamento(event.target.value);
     };
 
     return (
@@ -204,23 +226,15 @@ const EmprestimosPage = () => {
                 <br />
                 <h2>Filtros</h2>
                 <h3>Mostrar apenas empréstimos:</h3>
-                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" marginTop="20px" gap="20px">
-                    <Button
-                        variant={showAtrasados ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowAtrasados(!showAtrasados)}
-                        style={{ marginBottom: '10px', width: '150px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Atrasados
-                    </Button>
-                    <Button
-                        variant={showEmDia ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowEmDia(!showEmDia)}
-                        style={{ marginBottom: '10px', width: '150px', borderRadius: '20px', fontFamily: 'League Spartan' }}
-                    >
-                        Em dia
-                    </Button>
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                    <FormControlLabel
+                        control={<Checkbox checked={showAtrasados} onChange={() => setShowAtrasados(!showAtrasados)} />}
+                        label="Atrasados"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={showEmDia} onChange={() => setShowEmDia(!showEmDia)} />}
+                        label="Em dia"
+                    />
                 </Box>
                 <hr />
                 <h3>Filtrar por data de início:</h3>
@@ -253,7 +267,7 @@ const EmprestimosPage = () => {
                 style={customStyles}
                 isOpen={isLocationModalOpen}
                 onRequestClose={() => setIsLocationModalOpen(false)}
-                contentLabel="Trocar Local do Equipamento"
+                contentLabel="Trocar Local de armazenamento do Equipamento"
                 className="modal-filter"
                 closeTimeoutMS={300}
             >
@@ -267,6 +281,26 @@ const EmprestimosPage = () => {
                     onChange={handleLocationChange}
                     renderInput={(params) => <TextField {...params} label="Selecionar Local" />}
                 />
+                <br />
+                <hr />
+                <br />
+                <h2 className='change-local-equip-h2'>Trocar estado do Equipamento</h2>
+                <div className='form-input-estado'>
+                    <FormControl fullWidth>
+                        <InputLabel>Estado do Equipamento</InputLabel>
+                        <Select
+                            name="estadoEquipamento"
+                            value={estadoEquipamento}
+                            onChange={handleEstadoChange}
+                        >
+                            <MenuItem value={1}>Usado</MenuItem>
+                            <MenuItem value={2}>Defeituoso</MenuItem>
+                            {role === 'Associacao' && (
+                            <MenuItem value={3}>Baixado</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
+                </div>
                 <button onClick={handleLocationSubmit} className='btn-apply-filter'>Confirmar</button>
             </Modal>
 
@@ -286,7 +320,7 @@ const EmprestimosPage = () => {
                 <div className='emprestimos'>
                 <p className='total-equip'>{filteredCount} empréstimos ativos</p>
                     {loading ? (
-                        <p>Carregando...</p>
+                        <Loading />
                     ) : (
                         filteredEmprestimos.length === 0 ? (
                             <div className='no-emprestimos'>

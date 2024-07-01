@@ -11,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../components/loading';
 
 const EditPessoa = () => {
   const { id } = useParams();
@@ -52,6 +53,36 @@ const EditPessoa = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (!pessoa.nomeCompleto) {
+      toast.info("O campo 'Nome Completo' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.cpf) {
+      toast.info("O campo 'CPF' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.email) {
+      toast.info("O campo 'E-mail' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.telefone) {
+      toast.info("O campo 'Telefone' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.descricao) {
+      toast.info("O campo 'Descrição' é obrigatório.")
+      return;
+    }
+
+    if (!pessoa.endereco) {
+      toast.info("O campo 'Endereço' é obrigatório.")
+      return;
+    }
     try {
       await api.put(`https://localhost:7000/api/Pessoas/${id}`, pessoa);
       setMessage('Dados atualizados com sucesso!');
@@ -102,10 +133,6 @@ const EditPessoa = () => {
     });
   };
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
   return (
 
     <div className='main-content' >
@@ -120,27 +147,30 @@ const EditPessoa = () => {
                     <button className='btn-delete' onClick={handleDelete}><FontAwesomeIcon className='icon-delete' icon={faTrashCan} /></button>
                 </div>
                 {message && <p>{message}</p>}
-                <form className='form-edit' onSubmit={handleSave}>
-                    <div className='form-input'>
-                        <CustomInput label="Nome Completo" name="nomeCompleto" type="text" value={pessoa.nomeCompleto} onChange={handleChange}/>
-                    </div>
-                    <div className='form-input'>
-                        <CustomInput label="CPF" type="text" name="cpf" mask="999.999.999-99" value={pessoa.cpf} onChange={handleChange}/>
-                    </div>
-                    <div className='form-input'>
-                        <CustomInput label="E-mail" type="text" name="email" value={pessoa.email} onChange={handleChange}/>
-                    </div>
-                    <div className='form-input'>
-                        <CustomInput label="Telefone" type="text" name="telefone" mask="(99) 99999-9999" value={pessoa.telefone} onChange={handleChange}/>
-                    </div>
-                    <div className='form-input'>
-                        <CustomInput label="Descrição" type="text" name="descricao" value={pessoa.descricao} onChange={handleChange}/>
-                    </div>
-                    <div className='form-input'>
-                        <CustomInput label="Endereço" type="text" name="endereco" value={pessoa.endereco} onChange={handleChange}/>
-                    </div>
-                    <button type="submit" className='save-btn'>Salvar</button>
-                </form>
+                {loading ? <Loading /> : (
+                  <form className='form-edit' onSubmit={handleSave}>
+                      <div className='form-input'>
+                          <CustomInput label="Nome Completo" name="nomeCompleto" type="text" value={pessoa.nomeCompleto} onChange={handleChange}/>
+                      </div>
+                      <div className='form-input'>
+                          <CustomInput label="CPF" type="text" name="cpf" mask="999.999.999-99" value={pessoa.cpf} onChange={handleChange}/>
+                      </div>
+                      <div className='form-input'>
+                          <CustomInput label="E-mail" type="text" name="email" value={pessoa.email} onChange={handleChange}/>
+                      </div>
+                      <div className='form-input'>
+                          <CustomInput label="Telefone" type="text" name="telefone" mask="(99) 99999-9999" value={pessoa.telefone} onChange={handleChange}/>
+                      </div>
+                      <div className='form-input'>
+                          <CustomInput label="Descrição" type="text" name="descricao" value={pessoa.descricao} onChange={handleChange}/>
+                      </div>
+                      <div className='form-input'>
+                          <CustomInput label="Endereço" type="text" name="endereco" value={pessoa.endereco} onChange={handleChange}/>
+                      </div>
+                      <button type="submit" className='save-btn'>Salvar</button>
+                  </form>
+                )}
+                
             </div>
         </div>
     /* 

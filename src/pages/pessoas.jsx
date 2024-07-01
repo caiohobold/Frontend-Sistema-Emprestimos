@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import pessoasService from '../services/pessoasService';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { FormControlLabel, Checkbox, Button, TextField, Box } from '@mui/material';
-import '../styles/pessoasPage.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { FormControlLabel, Checkbox, TextField, Box } from '@mui/material';
+import '../styles/pessoasPage.css';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import NavBar from '../components/navBar';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'react-modal';
+import Loading from '../components/loading';
 
-
-const PessoasPage = () =>{
+const PessoasPage = () => {
     const [pessoas, setPessoas] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filteredPessoas, setFilteredPessoas] = useState([]);
@@ -46,9 +41,9 @@ const PessoasPage = () =>{
 
     const customStyles = {
         overlay: {
-          backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
+            backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
         },
-      };
+    };
 
     useEffect(() => {
         let results = pessoas;
@@ -61,11 +56,11 @@ const PessoasPage = () =>{
             results = [];
         }
         results = results.filter(pessoa => 
-            pessoa.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase()) || pessoa.cpf.toLowerCase().replace(".", "").replace(".", "").replace("-", "").includes(searchTerm.toLowerCase())
-        )
+            pessoa.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase()) || pessoa.cpf.toLowerCase().replace(/\./g, "").replace("-", "").includes(searchTerm.toLowerCase())
+        );
 
         setFilteredPessoas(results);
-        setFilteredCount(results.length); 
+        setFilteredCount(results.length);
     }, [searchTerm, pessoas, showActiveOnly, showInactiveOnly]);
 
     const getStatusPessoa = (status) => {
@@ -78,16 +73,16 @@ const PessoasPage = () =>{
 
     const getStatusClass = (status) => {
         const statusClasses = {
-          0: 'com-emprestimo',
-          1: 'sem-emprestimo'
+            0: 'com-emprestimo',
+            1: 'sem-emprestimo'
         };
-        return statusClasses[status] || 'sem-emprestimo'; // Retorna uma classe padrão se não for 0, 1 ou 2
-      };
+        return statusClasses[status] || 'sem-emprestimo'; 
+    };
 
     const navigate = useNavigate();
 
-    return(
-        <div className='main-content' >
+    return (
+        <div className='main-content'>
             <div className='return-div'>
                 <button onClick={() => navigate("/Usuarios/Inicio")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>
@@ -95,7 +90,7 @@ const PessoasPage = () =>{
                 <br></br>
                 <div className='row-title'>
                     <h2 className='pessoas-title'>Pessoas</h2>
-                    <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon class="icon-filter" icon={faFilter} /></button>
+                    <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon className="icon-filter" icon={faFilter} /></button>
                 </div>
                 <input
                     type="text"
@@ -115,61 +110,51 @@ const PessoasPage = () =>{
                     <br />
                     <h2>Filtros</h2>
                     <h3>Mostrar apenas pessoas:</h3>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" marginTop="20px" gap="10px">
-                    <Button
-                        variant={showActiveOnly ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowActiveOnly(!showActiveOnly)}
-                        style={{ marginBottom: '10px', width: '170px', borderRadius: '20px', fontSize: '13px', fontFamily: 'League Spartan' }}
-                    >
-                        Com empréstimos
-                    </Button>
-                    <Button
-                        variant={showInactiveOnly ? "contained" : "outlined"}
-                        color="primary"
-                        onClick={() => setShowInactiveOnly(!showInactiveOnly)}
-                        style={{ marginBottom: '10px', width: '170px', borderRadius: '20px', fontSize: '13px', fontFamily: 'League Spartan' }}
-                    >
-                        Sem empréstimos
-                    </Button>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                        <FormControlLabel
+                            control={<Checkbox checked={showActiveOnly} onChange={() => setShowActiveOnly(!showActiveOnly)} />}
+                            label="Com empréstimos"
+                        />
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                        <FormControlLabel
+                            control={<Checkbox checked={showInactiveOnly} onChange={() => setShowInactiveOnly(!showInactiveOnly)} />}
+                            label="Sem empréstimos"
+                        />
                     </Box>
                     <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
                 </Modal>
                 <div className='pessoas'>
-                <p className='total-equip'>{filteredCount} pessoas</p>
+                    <p className='total-equip'>{filteredCount} pessoas</p>
                     {loading ? (
-                        <p>Carregando...</p>
+                        <Loading />
                     ) : (
-                    filteredPessoas.length === 0 ? (
-                      <div className='no-emprestimos-pessoa'>
-                        <FontAwesomeIcon icon={faUserSlash} className='icon-chair'/>
-                        <div>Nenhuma pessoa encontrada.</div>
-                      </div>
-                    ) : (
-                        filteredPessoas.map(p => 
-                        
-                        <div key={p.idPessoa} className='box-pessoa'>
-                            <div className='icon-pessoa-div'>
-                                <FontAwesomeIcon  className='icon-pessoa' icon={faCircleUser} />
+                        filteredPessoas.length === 0 ? (
+                            <div className='no-emprestimos-pessoa'>
+                                <FontAwesomeIcon icon={faUserSlash} className='icon-chair' />
+                                <div>Nenhuma pessoa encontrada.</div>
                             </div>
-                            <div className='pessoas-info'>
-                                <div className='nomepessoa'>{p.nomeCompleto}</div>
-                                <div className={getStatusClass(p.statusEmprestimo)}>{getStatusPessoa(p.statusEmprestimo)}</div>
-                                <div className='btns'>
-                                    <Link to={`/pessoa/${p.idPessoa}`}>
-                                        <button className='profile-btn'>Ver Perfil</button>
-                                    </Link>
-                                    <button className='btn-edit-div' onClick={() => navigate(`/pessoa/edit/${p.idPessoa}`)}><FontAwesomeIcon className='btn-edit' icon={faPenToSquare} /></button>
+                        ) : (
+                            filteredPessoas.map(p => 
+                                <div key={p.idPessoa} className='box-pessoa'>
+                                    <div className='icon-pessoa-div'>
+                                        <FontAwesomeIcon className='icon-pessoa' icon={faCircleUser} />
+                                    </div>
+                                    <div className='pessoas-info'>
+                                        <div className='nomepessoa'>{p.nomeCompleto}</div>
+                                        <div className={getStatusClass(p.statusEmprestimo)}>{getStatusPessoa(p.statusEmprestimo)}</div>
+                                        <div className='btns'>
+                                            <Link to={`/pessoa/${p.idPessoa}`}>
+                                                <button className='profile-btn'>Ver Perfil</button>
+                                            </Link>
+                                            <button className='btn-edit-div' onClick={() => navigate(`/pessoa/edit/${p.idPessoa}`)}><FontAwesomeIcon className='btn-edit' icon={faPenToSquare} /></button>
+                                        </div>
+                                    </div>
+                                    <div className='modals'></div>
                                 </div>
-                            </div>
-                            <div className='modals'>
-                                
-                            </div>
-                        </div>
-                        
-                    )
-                )
-            )}
+                            )
+                        )
+                    )}
                     <br></br>
                     <br></br>
                     <br></br>

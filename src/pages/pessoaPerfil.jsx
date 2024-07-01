@@ -15,6 +15,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
 import locaisServices from '../services/locaisServices';
+import Loading from '../components/loading';
 
 const PerfilPessoa = () => {
   const { id } = useParams();
@@ -168,7 +169,7 @@ const handleLocationChange = (event, value) => {
 };
 
   if (!pessoa) {
-    return <div>Carregando...</div>;
+    return <Loading />;
   }
 
   return (
@@ -207,15 +208,16 @@ const handleLocationChange = (event, value) => {
                     closeTimeoutMS={300}
                 >
                     <br />
-                    <h3>Informações Adicionais:</h3>
+                    <h3 className='info-row-h3'>Informações Adicionais:</h3>
                     <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
                       <div className='div-info-add'>
                         <p className='description-pessoa'><span>Descrição:</span> {pessoa.descricao}</p>
-                        <p className='tel-pessoa'><span>Telefone:</span> {pessoa.telefone}</p>
+                        <p className='tel-pessoa'><span>CPF:</span> {pessoa.cpf}</p>
                         <p className='tel-pessoa'><span>E-mail:</span> {pessoa.email}</p>
                         <p className='tel-pessoa'><span>Endereco:</span> {pessoa.endereco}</p>
                       </div>
                     </Box>
+                    <hr></hr>
                     <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Fechar</button>
                 </Modal>
                 <div className='pessoa'>
@@ -224,7 +226,7 @@ const handleLocationChange = (event, value) => {
                     </div>
                     <div>
                         <div className='pessoa-name'>{pessoa.nomeCompleto}</div>
-                        <div className='pessoa-cpf'>{pessoa.cpf}</div>
+                        <div className='pessoa-cpf'>{pessoa.telefone}</div>
                         <div className='row-3'>
                           <div className={getStatusClass(pessoa.statusEmprestimo)}>{getStatusPessoa(pessoa.statusEmprestimo)}</div>
                           <button onClick={() => setIsModalOpen(true)} className='btn-filter-more-info'>Detalhes</button>                        
@@ -234,7 +236,7 @@ const handleLocationChange = (event, value) => {
                 <div className='box-emprestimos'>
                   <h2 className='emprestimos-title'>Empréstimos</h2>
                   {loading ? (
-                    <p>Carregando...</p>
+                    <Loading />
                   ) : (
                     emprestimos.length === 0 ? (
                       <div className='no-emprestimos'>

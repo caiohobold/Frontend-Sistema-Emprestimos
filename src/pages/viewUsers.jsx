@@ -26,8 +26,7 @@ const ViewUsersPage = () => {
         nomeCompleto: '',
         numeroTelefone: '',
         emailPessoal: '',
-        dataNascimento: '',
-        senhaHash: '' // Inclui a senha atual no estado
+        dataNascimento: ''
     });
     const [newPassword, setNewPassword] = useState('');
 
@@ -56,8 +55,7 @@ const ViewUsersPage = () => {
             nomeCompleto: user.nomeCompleto,
             numeroTelefone: user.numeroTelefone,
             emailPessoal: user.emailPessoal,
-            dataNascimento: user.dataNascimento.split('T')[0], // Converte a data para o formato YYYY-MM-DD
-            senhaHash: user.senhaHash // Inclui a senha atual
+            dataNascimento: user.dataNascimento.split('T')[0]
         });
         setIsEditModalOpen(true);
     };
@@ -104,8 +102,7 @@ const ViewUsersPage = () => {
                 numeroTelefone: selectedUser.numeroTelefone,
                 emailPessoal: selectedUser.emailPessoal,
                 dataNascimento: selectedUser.dataNascimento,
-                endereco: selectedUser.endereco,
-                senha: selectedUser.senhaHash // Inclui a senha atual no payload
+                endereco: selectedUser.endereco
             };
             await api.put(`https://localhost:7000/api/Usuarios/${selectedUser.idUsuario}`, updatedUser);
             toast.success('Usuário atualizado com sucesso!');

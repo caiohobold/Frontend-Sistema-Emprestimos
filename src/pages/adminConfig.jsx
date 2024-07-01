@@ -43,7 +43,7 @@ const AdminConfig = () =>{
                         <div className='icon-account-local'>
                             <FontAwesomeIcon icon={faLocationDot} />
                         </div>
-                        <span>Locais</span>
+                        <span>Locais de armazenamento</span>
                     </button>          
                 </div>
                 <br />

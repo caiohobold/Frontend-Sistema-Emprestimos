@@ -140,7 +140,7 @@ const LocalPage = () => {
             </div>
             <div className='container-div'>
                 <br />
-                <h2 className='perfil-title'>Locais</h2>
+                <h2 className='perfil-title'>Locais de armazenamento</h2>
                 <Modal
                     style={customStyles}
                     isOpen={isModalOpen}
