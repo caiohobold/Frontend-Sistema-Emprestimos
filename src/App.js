@@ -28,6 +28,7 @@ import AddUser from './pages/addUser';
 import ViewUsersPage from './pages/viewUsers';
 import RelatoriosPage from './pages/relatóriosPage';
 import RelatorioEmp from './pages/relatorioEmprestimos';
+import RelatorioDevolucoes from './pages/relatorioDevolucoes';
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
               <Route exact path="/Associacao/cadastros/viewUsuarios" element={<ViewUsersPage />}/>
               <Route exact path="/Associacao/relatorios" element={<RelatoriosPage />}/>
               <Route exact path="/Associacao/relatorios/emprestimos" element={<RelatorioEmp />}/>
+              <Route exact path="/Associacao/relatorios/devolucoes" element={<RelatorioDevolucoes />}/>
             </Routes>
           </Router>
         </main>

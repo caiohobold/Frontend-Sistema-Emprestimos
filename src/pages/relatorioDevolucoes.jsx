@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import jwt_decode, { jwtDecode } from 'jwt-decode';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png';
 import '../styles/userPage.css';
 import CustonBtn from '../components/customBtn';
 import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie, faArrowLeft, faWheelchair, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie, faArrowLeft, faWheelchair, faFilter, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import emprestimosService from '../services/emprestimosService';
 import Modal from 'react-modal';
-import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button } from '@mui/material';
+import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Loading from '../components/loading';
 
-const RelatorioEmp = () => {
+const RelatorioDevolucoes = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
     const [emprestimos, setEmprestimos] = useState([]);
     const [showAtivos, setshowAtivos] = useState(true);
     const [showFinalizados, setshowFinalizados] = useState(true);
+    const [estadoEquipamento, setEstadoEquipamento] = useState([]);
+    const [showAtrasados, setShowAtrasados] = useState(true);
+    const [showEmDia, setShowEmDia] = useState(true);
     const [startDate, setStartDate] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
+    const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+    const [locais, setLocais] = useState([]);
+    const [selectedLocal, setSelectedLocal] = useState(null);
     const [endDate, setEndDate] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -34,25 +40,25 @@ const RelatorioEmp = () => {
             emp.nomePessoa.toLowerCase().includes(searchTerm.toLowerCase()) || emp.nomeEquipamento.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
-        if (showAtivos && !showFinalizados) {
-            results = results.filter(emp => emp.status === 0);
-        } else if (!showAtivos && showFinalizados) {
-            results = results.filter(emp => emp.status === 1);
-        } else if (!showAtivos && !showFinalizados) {
+        if (showAtrasados && !showEmDia) {
+            results = results.filter(emp => isAtrasado(emp.dataDevolucao));
+        } else if (!showAtrasados && showEmDia) {
+            results = results.filter(emp => !isAtrasado(emp.dataDevolucao));
+        } else if (!showAtrasados && !showEmDia) {
             results = [];
         }
 
         if (startDate) {
-            results = results.filter(emp => new Date(emp.dataEmprestimo) >= new Date(startDate));
+            results = results.filter(emp => new Date(emp.dataDevolucao) >= new Date(startDate));
         }
 
         if (endDate) {
-            results = results.filter(emp => new Date(emp.dataEmprestimo) <= new Date(endDate));
+            results = results.filter(emp => new Date(emp.dataDevolucao) <= new Date(endDate));
         }
 
         setFilteredEmprestimos(results);
         setFilteredCount(results.length); 
-    }, [searchTerm, emprestimos, showAtivos, showFinalizados, startDate, endDate]);
+    }, [searchTerm, emprestimos, showAtrasados, showEmDia, startDate, endDate]);
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
@@ -68,6 +74,14 @@ const RelatorioEmp = () => {
         return dataAtual > dataDevolucaoDate;
     }
 
+    const handleLocationChange = (event, value) => {
+        setSelectedLocal(value ? value.idLocal : null);
+    };
+
+    const handleEstadoChange = (event) => {
+        setEstadoEquipamento(event.target.value);
+    };
+
     const customStyles = {
         overlay: {
           backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
@@ -78,7 +92,7 @@ const RelatorioEmp = () => {
         const loadEmprestimos = async () => {
             try {
                 setLoading(true);
-                const data = await emprestimosService.getAllEmprestimos(1, 500);
+                const data = await emprestimosService.getEmprestimosAtivos(1, 500);
                 setEmprestimos(data);
                 setFilteredEmprestimos(data);
                 setLoading(false);
@@ -102,7 +116,6 @@ const RelatorioEmp = () => {
             <div className='return-div'>
                 <button onClick={() => navigate("/Associacao/relatorios")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>
-            <div className='container-div'>
             <Modal
                 style={customStyles}
                 isOpen={isModalOpen}
@@ -116,16 +129,16 @@ const RelatorioEmp = () => {
                 <h3>Mostrar apenas empréstimos:</h3>
                 <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
                     <FormControlLabel
-                        control={<Checkbox checked={showAtivos} onChange={() => setshowAtivos(!showAtivos)} />}
-                        label="Ativos"
+                        control={<Checkbox checked={showAtrasados} onChange={() => setShowAtrasados(!showAtrasados)} />}
+                        label="Atrasados"
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={showFinalizados} onChange={() => setshowFinalizados(!showFinalizados)} />}
-                        label="Finalizados"
+                        control={<Checkbox checked={showEmDia} onChange={() => setShowEmDia(!showEmDia)} />}
+                        label="Em dia"
                     />
                 </Box>
                 <hr />
-                <h3>Filtrar por data de início:</h3>
+                <h3>Filtrar por data de devolução:</h3>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" marginTop="15px">
                     <TextField
                         label="Data de Início"
@@ -150,9 +163,11 @@ const RelatorioEmp = () => {
                 </Box>
                 <button onClick={() => setIsModalOpen(false)} className='btn-apply-filter'>Aplicar Filtros</button>
             </Modal>
-                <br />
+
+            <div className='container-div'>
+                <br></br>
                 <div className='row-title'>
-                    <h2 className='perfil-title'>Empréstimos</h2>
+                    <h2 className='emprestimo-title'>Próximas Devoluções</h2>
                     <button onClick={() => setIsModalOpen(true)} className='btn-filter'><FontAwesomeIcon className="icon-filter" icon={faFilter} /></button>
                 </div>
                 <input
@@ -163,7 +178,7 @@ const RelatorioEmp = () => {
                     className='search-input'
                 />
                 <div className='emprestimos-realizados'>
-                <p className='total-equip'>{filteredCount} empréstimos</p>
+                <p className='total-equip'>{filteredCount} empréstimos ativos</p>
                     {loading ? (
                         <Loading />
                     ) : (
@@ -175,19 +190,18 @@ const RelatorioEmp = () => {
                         ) : (
                             filteredEmprestimos.map(emp =>
                                 <div key={emp.id} className='box-emprestimo'>
-                                    <div className='row-edit'>
-                                        <div className='nomepessoa-emprestimo'>{emp.nomePessoa}</div>
-                                        <div className={`status-emprestimo-relatorio ${emp.status === 1 ? 'status-finalizado' : 'status-ativo'}`}>
-                                            {emp.status === 1 ? "Finalizado" : "Ativo"}
-                                        </div>
+                                    <div className='atrasado'>
+                                        {isAtrasado(emp.dataDevolucao) && <div className='status-atrasado'>Atrasado</div>}
                                     </div>
-                                    <div className='nomeequipamento-emprestimo'>{emp.nomeEquipamento}</div>
+                                    <div className='row-edit'>
+                                        <div className='nomepessoa-emprestimo-relatorio'>{emp.nomePessoa}</div>
+                                    </div>
+                                    <div className='nomeequipamento-emprestimo-relatorio'>{emp.nomeEquipamento}</div>
                                     <div className='row-datas'>
-                                        <div className='data-emprestimo'>Início: {formatDate(emp.dataEmprestimo.split('T')[0])}</div>
-                                        <div></div>
-                                        <div className='data-devolucao-relatorio-2'>
-                                            {emp.status === 1 ? "Devolvido em: " : "Devolução:"} {formatDate(emp.dataDevolucao.split('T')[0])}
-                                        </div>
+                                        <div className='data-devolucao-relatorio'>Devolução estimada: {formatDate(emp.dataDevolucao.split('T')[0])}</div>
+                                        <Link to={`/pessoa/${emp.idPessoa}`}>
+                                                <button className='profile-btn-relatorio'><FontAwesomeIcon icon={faUpRightFromSquare} className='icon-btn-relatorio'/></button>
+                                        </Link>
                                     </div>
                                 </div>
                             )
@@ -204,4 +218,4 @@ const RelatorioEmp = () => {
     );
 };
 
-export default RelatorioEmp;
+export default RelatorioDevolucoes;

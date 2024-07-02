@@ -56,6 +56,16 @@
     text-align: start;
 }
 
+.nomepessoa-emprestimo-relatorio{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 17px;
+    margin-top: 7px;
+    margin-left: 19px;
+    display: flex;
+    font-weight: 500;
+    text-align: start;
+}
+
 .date-input{
     width: 45%;
 }
@@ -63,6 +73,15 @@
 .nomeequipamento-emprestimo{
     font-family: 'League Spartan', sans-serif;
     font-size: 18px;
+    margin-left: 20px;
+    margin-top: -5px;
+    display: flex;
+    font-weight: 400;
+}
+
+.nomeequipamento-emprestimo-relatorio{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
     margin-left: 20px;
     margin-top: -5px;
     display: flex;
@@ -102,6 +121,28 @@
     display: flex;
     font-weight: 400;
 }
+
+.data-devolucao-relatorio{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
+    margin-left: 20px;
+    margin-top: -5px;
+    margin-bottom: 5px;
+    display: flex;
+    font-weight: 400;
+}
+
+.data-devolucao-relatorio-2{
+    font-family: 'League Spartan', sans-serif;
+    font-size: 15px;
+    margin-top: -5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    font-weight: 400;
+}
+
+
 
 .row-edit{
     display: flex;

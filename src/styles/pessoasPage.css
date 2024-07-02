@@ -181,6 +181,26 @@
     margin-top: 5px;
 }
 
+.profile-btn-relatorio{
+    border: none;
+    outline: none;
+    color: #8f8f8f;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    right: 20px;
+    bottom: 10px;
+    display: flex;
+}
+
+.icon-btn-relatorio{
+    width: 20px;
+    height: 20px;
+}
+
 .btns{
     display: flex;
     flex-direction: row;

@@ -6,7 +6,7 @@ import '../styles/userPage.css';
 import CustonBtn from '../components/customBtn';
 import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie, faArrowLeft, faWheelchair } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faChartPie, faArrowLeft, faWheelchair, faArrowRightArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -34,6 +34,7 @@ const RelatoriosPage = () => {
                 <h2 className='perfil-title'>Relatórios</h2>
                 <div className='btns-div'>
                     <CustonBtn label="Empréstimos realizados" icon={faWheelchair} iconColor="#7B7B7B" textColor="#7B7B7B" onClick={() => navigate("/Associacao/relatorios/emprestimos")}/>
+                    <CustonBtn label="Próximas devoluções" icon={faArrowRightArrowLeft} iconColor="#71C7E8" textColor="#71C7E8" onClick={() => navigate("/Associacao/relatorios/devolucoes")}/>
                 </div>
             </div>
         </div>

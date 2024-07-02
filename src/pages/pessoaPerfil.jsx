@@ -4,7 +4,8 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
 import emprestimosService from '../services/emprestimosService';
-import { FormControlLabel, Checkbox, Button, TextField, Box, Autocomplete } from '@mui/material';
+import { jwtDecode } from 'jwt-decode';
+import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -16,10 +17,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
+import equipamentosService from '../services/equipamentosService';
 
 const PerfilPessoa = () => {
   const { id } = useParams();
   const [emprestimos, setEmprestimos] = useState([]);
+  const [estadoEquipamento, setEstadoEquipamento] = useState([]);
   const [locais, setLocais] = useState([]);
   const [pessoa, setPessoa] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,8 +30,17 @@ const PerfilPessoa = () => {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [selectedEmprestimo, setSelectedEmprestimo] = useState(null);
   const [selectedLocal, setSelectedLocal] = useState(null);
+  const [role, setRole] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+    if (token) {
+        const decodedToken = jwtDecode(token)
+        setRole(decodedToken.role);
+    }
+}, []);
 
   const getStatusPessoa = (status) => {
         const statusMap = {
@@ -126,32 +138,36 @@ const PerfilPessoa = () => {
     });
 };
 
-const handleLocationSubmit = async () => {
-  if (selectedEmprestimo) {
-      try {
-          if (selectedLocal) {
-              await atualizarLocalEquipamento(selectedEmprestimo.idEquipamento, selectedLocal);
-          }
-          await finalizarEmprestimo(selectedEmprestimo.idEmprestimo);
-      } catch (error) {
-          alert("Falha ao atualizar o local do equipamento. O empréstimo não será finalizado.");
-      }
-  }
-};
+  const handleLocationSubmit = async () => {
+    if (selectedEmprestimo) {
+        try {
+            if (selectedLocal) {
+                await atualizarLocalEquipamento(selectedEmprestimo.idEquipamento, selectedLocal);
+            }
+            if(estadoEquipamento){
+                await equipamentosService.patchEstadoEquipamento(selectedEmprestimo.idEquipamento, estadoEquipamento);
+            }
+            
+            await finalizarEmprestimo(selectedEmprestimo.idEmprestimo);
+        } catch (error) {
+            alert("Falha ao atualizar o local ou estado do equipamento. O empréstimo não será finalizado.");
+        }
+    }
+  };
 
-const finalizarEmprestimo = async (idEmprestimo) => {
-  try {
-      await emprestimosService.finalizarEmprestimo(idEmprestimo);
-      console.log("Empréstimo finalizado com sucesso!");
-      setEmprestimos(emprestimos.filter(emp => emp.id !== idEmprestimo));
-      setIsLocationModalOpen(false);
-      setSelectedLocal(null);
-      setSelectedEmprestimo(null);
-  } catch (error) {
-      console.error("Erro ao finalizar empréstimo:", error);
-      alert("Falha ao finalizar empréstimo");
-  }
-};
+  const finalizarEmprestimo = async (idEmprestimo) => {
+    try {
+        await emprestimosService.finalizarEmprestimo(idEmprestimo);
+        console.log("Empréstimo finalizado com sucesso!");
+        setEmprestimos(emprestimos.filter(emp => emp.id !== idEmprestimo));
+        setIsLocationModalOpen(false);
+        setSelectedLocal(null);
+        setSelectedEmprestimo(null);
+    } catch (error) {
+        console.error("Erro ao finalizar empréstimo:", error);
+        alert("Falha ao finalizar empréstimo");
+    }
+  };
 
 const atualizarLocalEquipamento = async (idEquipamento, localId) => {
   try {
@@ -168,6 +184,10 @@ const handleLocationChange = (event, value) => {
   setSelectedLocal(value ? value.idLocal : null);
 };
 
+const handleEstadoChange = (event) => {
+  setEstadoEquipamento(event.target.value);
+};
+
   if (!pessoa) {
     return <Loading />;
   }
@@ -179,11 +199,12 @@ const handleLocationChange = (event, value) => {
             </div>
 
             <Modal
+                style={customStyles}
                 isOpen={isLocationModalOpen}
                 onRequestClose={() => setIsLocationModalOpen(false)}
-                contentLabel="Trocar Local do Equipamento"
+                contentLabel="Trocar Local de armazenamento do Equipamento"
                 className="modal-filter"
-                style={customStyles}
+                closeTimeoutMS={300}
             >
                 <br />
                 <br />
@@ -195,6 +216,26 @@ const handleLocationChange = (event, value) => {
                     onChange={handleLocationChange}
                     renderInput={(params) => <TextField {...params} label="Selecionar Local" />}
                 />
+                <br />
+                <hr />
+                <br />
+                <h2 className='change-local-equip-h2'>Trocar estado do Equipamento</h2>
+                <div className='form-input-estado'>
+                    <FormControl fullWidth>
+                        <InputLabel>Estado do Equipamento</InputLabel>
+                        <Select
+                            name="estadoEquipamento"
+                            value={estadoEquipamento}
+                            onChange={handleEstadoChange}
+                        >
+                            <MenuItem value={1}>Usado</MenuItem>
+                            <MenuItem value={2}>Defeituoso</MenuItem>
+                            {role === 'Associacao' && (
+                            <MenuItem value={3}>Baixado</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
+                </div>
                 <button onClick={handleLocationSubmit} className='btn-apply-filter'>Confirmar</button>
             </Modal>
             <div className='container-div'>
