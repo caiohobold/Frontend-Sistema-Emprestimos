@@ -14,7 +14,7 @@ const InitialPage = () =>{
     };
 
     const handleAssocClick = () => {
-        navigate('/Associacoes')
+        navigate('/Associacoes/login'); 
     };
 
     return(

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CustomInput from '../components/customInput';
 import axios from 'axios';
 import '../styles/editPessoa.css'
+import { jwtDecode } from 'jwt-decode';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
@@ -14,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../components/loading';
 
 const EditPessoa = () => {
+  const [idAssoc, setIdAssoc] = useState('');
   const { id } = useParams();
   const [pessoa, setPessoa] = useState({
     nomeCompleto: '',
@@ -22,11 +24,24 @@ const EditPessoa = () => {
     telefone: '',
     descricao: '',
     endereco: '',
+    idAssociacao: idAssoc
   });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        setIdAssoc(decodedToken.idAssoc);
+        setPessoa(prevState => ({
+          ...prevState,
+          idAssociacao: decodedToken.idAssoc
+        }));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchPessoa = async () => {
@@ -106,8 +121,10 @@ const EditPessoa = () => {
           onClick: async () => {
             try {
               await api.delete(`https://localhost:7000/api/Pessoas/${id}`);
-              setMessage('Pessoa removida com sucesso!');
-              navigate('/Usuarios/pessoas');
+              toast.success('Pessoa removida com sucesso!');
+              setTimeout(() => {
+                navigate('/Usuarios/pessoas');
+              }, 1500);
             } catch (error) {
               const resMessage =
                     (error.response && 
@@ -117,7 +134,7 @@ const EditPessoa = () => {
                     error.toString();
 
                     if (error.response && error.response.status === 500) {
-                      toast.error("Não é possível remover uma pessoa que possui empréstimos em andamento.");
+                      toast.error("Não é possível remover uma pessoa que possui empréstimos ativos ou finalizados.");
                   } else {
                       toast.error(resMessage);
                   }

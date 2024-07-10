@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import usuariosServices from '../services/usuariosServices';
 
 const AddEmprestimo = () => {
+    const [idAssoc, setIdAssoc] = useState('');
     const [pessoas, setPessoas] = useState([]);
     const [equipamentos, setEquipamentos] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
@@ -24,13 +25,26 @@ const AddEmprestimo = () => {
         idEquipamento: '',
         dataEmprestimo: '',
         dataDevolucao: '',
-        idUsuario: ''
+        idUsuario: '',
+        idAssociacao: idAssoc
     });
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken'); 
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setIdAssoc(decodedToken.idAssoc);
+            setEmprestimo(prevState => ({
+              ...prevState,
+              idAssociacao: decodedToken.idAssoc
+            }));
+        }
+      }, []);
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token

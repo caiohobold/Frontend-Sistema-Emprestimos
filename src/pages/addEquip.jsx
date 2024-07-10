@@ -6,6 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/addPessoa.css';
 import api from '../services/axiosConfig';
+import { jwtDecode } from 'jwt-decode';
 import categoriasServices from '../services/categoriasServices';
 import { FormControl, InputLabel, MenuItem, Select, Button, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
@@ -24,15 +25,29 @@ const AddEquip = () => {
     descricaoEquipamento: '',
     idLocal: '',
     foto1: null,
-    foto2: null
+    foto2: null,
+    idAssociacao: null
   });
   const [loading, setLoading] = useState(false);
+  const [idAssoc, setIdAssoc] = useState('');
   const [message, setMessage] = useState('');
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
   const [local, setLocal] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        setIdAssoc(decodedToken.idAssoc);
+        setEquipamento(prevState => ({
+          ...prevState,
+          idAssociacao: decodedToken.idAssoc
+        }));
+    }
+}, []);
 
   const handleDrop1 = (acceptedFiles) => {
     const file = acceptedFiles[0];

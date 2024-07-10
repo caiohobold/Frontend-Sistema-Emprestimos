@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import locaisServices from '../services/locaisServices';
 import Modal from 'react-modal';
 import api from '../services/axiosConfig';
+import { jwtDecode } from 'jwt-decode';
 import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,12 +18,26 @@ const LocalPage = () => {
 
     const navigate = useNavigate();
     const [locais, setLocais] = useState([]);
+    const [idAssoc, setIdAssoc] = useState('');
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newLocal, setNewLocal] = useState({
         idLocal: null,
-        nomeLocal: ''
+        nomeLocal: '',
+        idAssociacao: null
     });
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setIdAssoc(decodedToken.idAssoc);
+            setNewLocal(prevState => ({
+              ...prevState,
+              idAssociacao: decodedToken.idAssoc
+            }));
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +57,12 @@ const LocalPage = () => {
                 toast.success('Local atualizado com sucesso!');
             } else {
                 // Criar novo local
-                await api.post('https://localhost:7000/api/Locais', newLocal);
+
+                const localParaSalvar = {
+                    ...newLocal,
+                    idAssociacao: idAssoc
+                }
+                await api.post('https://localhost:7000/api/Locais', localParaSalvar);
                 toast.success('Local cadastrado com sucesso!');
             }
             setLoading(false);
@@ -51,7 +71,7 @@ const LocalPage = () => {
             }, 1500);
             setTimeout(() => {
                 setIsModalOpen(false);
-                setNewLocal({ idLocal: null, nomeLocal: '' });
+                setNewLocal({ idLocal: null, nomeLocal: '', idAssociacao: idAssoc });
             }, 1500);
         } catch (error) {
             console.error('Erro ao salvar o local:', error);
@@ -128,7 +148,7 @@ const LocalPage = () => {
     };
 
     const openCreateModal = () => {
-        setNewLocal({ idLocal: null, nomeLocal: '' });
+        setNewLocal({ idLocal: null, nomeLocal: '', idAssociacao: idAssoc });
         setIsModalOpen(true);
     };
 

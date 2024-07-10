@@ -1,10 +1,11 @@
 import axios from 'axios';
+import api from './axiosConfig';
 
 const API_URL = 'https://localhost:7000/api/';
 
 const getLocais = async (pageNumber, pageSize) => {
     try {
-        const response = await axios.get(`${API_URL}Locais`, {
+        const response = await api.get(`${API_URL}Locais`, {
             params: {
                 pageNumber: pageNumber,
                 pageSize: pageSize
@@ -19,7 +20,7 @@ const getLocais = async (pageNumber, pageSize) => {
 
 const getLocalById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}Locais/${id}`);
+        const response = await api.get(`${API_URL}Locais/${id}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar local: ', error);
@@ -29,7 +30,7 @@ const getLocalById = async (id) => {
 
 const updateLocalEquipamento = async (idEquipamento, idLocal) => {
     try {
-        const response = await axios.patch(`${API_URL}Equipamentos/${idEquipamento}/local`, { idLocal });
+        const response = await api.patch(`${API_URL}Equipamentos/${idEquipamento}/local`, { idLocal });
         return response.data;
     } catch (error) {
         console.error('Erro ao atualizar local do equipamento: ', error);
@@ -37,7 +38,7 @@ const updateLocalEquipamento = async (idEquipamento, idLocal) => {
     }
 };
 
-export default {
+export default {page
     getLocais,
     getLocalById,
     updateLocalEquipamento

@@ -19,6 +19,7 @@ const PerfilPage = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
     const [userName, setUserName] = useState('');
+    const [idAssoc, setIdAssoc] = useState('');
     const [message, setMessage] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isErrorReport, setIsErrorReport] = useState(false);
@@ -31,6 +32,14 @@ const PerfilPage = () => {
             console.log(role)
         }
     }, [decodedToken]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setIdAssoc(decodedToken.idAssoc);
+        }
+    }, []);
 
     useEffect(() => {
         if (role) {
@@ -75,7 +84,7 @@ const PerfilPage = () => {
         e.preventDefault();
         const url = isErrorReport ? 'https://localhost:7000/api/Feedback/report-error' : 'https://localhost:7000/api/Feedback/send-feedback';
         try {
-            await api.post(url, { UserName: userName, Message: message });
+            await api.post(url, { UserName: userName, Message: message, idAssociacao: idAssoc});
             toast.success("Mensagem enviada com sucesso!")
             closeModal();
         } catch (error) {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomInput from '../components/customInput';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/addPessoa.css';
@@ -10,18 +11,32 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddPessoa = () => {
+  const [idAssoc, setIdAssoc] = useState('');
   const [pessoa, setPessoa] = useState({
     nomeCompleto: '',
     cpf: '',
     email: '',
     telefone: '',
     descricao: '',
-    endereco: ''
+    endereco: '',
+    idAssociacao: idAssoc
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        setIdAssoc(decodedToken.idAssoc);
+        setPessoa(prevState => ({
+          ...prevState,
+          idAssociacao: decodedToken.idAssoc
+        }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

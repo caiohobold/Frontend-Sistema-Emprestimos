@@ -6,6 +6,7 @@ import { faArrowLeft, faPenToSquare, faLayerGroup, faTrash } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import categoriasServices from '../services/categoriasServices';
 import Modal from 'react-modal';
+import { jwtDecode } from 'jwt-decode';
 import api from '../services/axiosConfig';
 import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,13 +18,27 @@ const CategPage = () => {
 
     const navigate = useNavigate();
     const [categorias, setCategorias] = useState([]);
+    const [idAssoc, setIdAssoc] = useState('');
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [newCategoria, setNewCategoria] = useState({
         idCategoria: null,
-        nomeCategoria: ''
+        nomeCategoria: '',
+        idAssociacao: null
     });
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setIdAssoc(decodedToken.idAssoc);
+            setNewCategoria(prevState => ({
+              ...prevState,
+              idAssociacao: decodedToken.idAssoc
+            }));
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,7 +58,11 @@ const CategPage = () => {
                 toast.success('Categoria atualizada com sucesso!');
             } else {
                 // Criar nova categoria
-                await api.post('https://localhost:7000/api/Categorias', newCategoria);
+                const categoriaParaSalvar = {
+                    ...newCategoria,
+                    idAssociacao: idAssoc
+                };
+                await api.post('https://localhost:7000/api/Categorias', categoriaParaSalvar);
                 toast.success('Categoria cadastrada com sucesso!');
             }
             setLoading(false);
@@ -53,7 +72,7 @@ const CategPage = () => {
             setTimeout(() => {
                 setIsModalOpen(false);
                 setIsModalEditOpen(false);
-                setNewCategoria({ idCategoria: null, nomeCategoria: '' });
+                setNewCategoria({ idCategoria: null, nomeCategoria: '', idAssociacao: idAssoc });
             }, 1500);
         } catch (error) {
             console.error('Erro ao salvar a categoria:', error);
@@ -129,7 +148,7 @@ const CategPage = () => {
     };
 
     const openCreateModal = () => {
-        setNewCategoria({ idCategoria: null, nomeCategoria: '' });
+        setNewCategoria({ idCategoria: null, nomeCategoria: '', idAssociacao: idAssoc });
         setIsModalOpen(true);
     };
 

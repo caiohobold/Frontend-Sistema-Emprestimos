@@ -16,6 +16,15 @@ import NavBar from '../components/navBar';
 const HomePage = () =>{
 
     const [atrasados, setAtrasados] = useState([]);
+    const [role, setRole] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setRole(decodedToken.role);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchAtrasados = async () => {
@@ -34,7 +43,7 @@ const HomePage = () =>{
     const token = localStorage.getItem('userToken');
     const decodedToken = jwtDecode(token);
     const userName = decodedToken.user;
-    const assocName = decodedToken.nomefantasia;
+    const assocName = decodedToken.nomeFantasiaAssoc;
     const navigate = useNavigate();
 
     return(
@@ -44,8 +53,15 @@ const HomePage = () =>{
             </div>
             <div className='container-div'>
                     <br></br>
-                    <h2 className='welcome-title'>Olá, {userName}!</h2>
-                    <h2 className='sub-welcome-title'>{assocName}</h2>
+                    {role === "Associacao" && (
+                        <h2 className='welcome-title'>{userName}</h2>
+                    )}
+                    {role === "Usuario" && (
+                        <div>
+                            <h2 className='welcome-title'>Olá, {userName}!</h2>
+                            <h2 className='sub-welcome-title'>{assocName}</h2>
+                        </div>
+                    )}
                     <div className='btns-div'>
                          <CustonBtn label="Pessoas" icon={faUsers} iconColor='#71C7E8' textColor='#71C7E8' onClick={() => navigate("/Usuarios/pessoas")}/>
                          <CustonBtn label="Equipamentos" icon={faWheelchair} iconColor="#7B7B7B" textColor="#7B7B7B" onClick={() => navigate("/Usuarios/equipamentos")}/>
