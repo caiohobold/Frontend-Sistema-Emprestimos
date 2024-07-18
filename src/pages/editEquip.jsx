@@ -70,7 +70,7 @@ const EditEquip = () => {
     useEffect(() => {
         const fetchEquip = async () => {
             try {
-                const response = await api.get(`https://localhost:7000/api/Equipamentos/${id}`);
+                const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`);
                 const data = response.data;
                 setEquipamento(data);
 
@@ -198,7 +198,7 @@ const EditEquip = () => {
         console.log("FormData:", ...formData.entries());
 
         try {
-            await api.put(`https://localhost:7000/api/Equipamentos/${id}`, formData, {
+            await api.put(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -223,7 +223,7 @@ const EditEquip = () => {
                     label: 'Sim',
                     onClick: async () => {
                         try {
-                            await api.delete(`https://localhost:7000/api/Equipamentos/${id}`);
+                            await api.delete(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`);
                             toast.success("Equipamento removido com sucesso!")
                             setTimeout(() => {
                                 navigate('/Usuarios/equipamentos');

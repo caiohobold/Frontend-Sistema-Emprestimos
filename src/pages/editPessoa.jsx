@@ -46,7 +46,7 @@ const EditPessoa = () => {
   useEffect(() => {
     const fetchPessoa = async () => {
       try {
-        const response = await api.get(`https://localhost:7000/api/Pessoas/${id}`);
+        const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
         setPessoa(response.data);
         setLoading(false);
       } catch (error) {
@@ -99,7 +99,7 @@ const EditPessoa = () => {
       return;
     }
     try {
-      await api.put(`https://localhost:7000/api/Pessoas/${id}`, pessoa);
+      await api.put(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`, pessoa);
       setMessage('Dados atualizados com sucesso!');
       toast.success('Pessoa editada com sucesso!');
       setTimeout(() => {
@@ -120,7 +120,7 @@ const EditPessoa = () => {
           label: 'Sim',
           onClick: async () => {
             try {
-              await api.delete(`https://localhost:7000/api/Pessoas/${id}`);
+              await api.delete(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
               toast.success('Pessoa removida com sucesso!');
               setTimeout(() => {
                 navigate('/Usuarios/pessoas');

@@ -15,7 +15,7 @@ const EditAssoc = () => {
     const token = localStorage.getItem('userToken');
 
     const api2 = axios.create({
-        baseURL: "https://localhost:7000/api",
+        baseURL: "https://backend-wheelshare.up.railway.app/api",
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -60,7 +60,7 @@ const EditAssoc = () => {
         setLoading(true);
         console.log("Clicou")
         try {
-            await api.put(`https://localhost:7000/api/Associacoes/${user.idAssociacao}/change-password`, { novaSenha: newPassword });
+            await api.put(`https://backend-wheelshare.up.railway.app/api/Associacoes/${user.idAssociacao}/change-password`, { novaSenha: newPassword });
             toast.success('Senha atualizada com sucesso!');
             setIsPasswordModalOpen(false);
             setLoading(false);

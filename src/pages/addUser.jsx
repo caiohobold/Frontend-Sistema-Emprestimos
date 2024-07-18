@@ -36,7 +36,7 @@ const AddUser = () => {
   useEffect(() => {
     const fetchAssociacao = async () => {
       try {
-        const response = await api.get('https://localhost:7000/api/Associacoes/me');
+        const response = await api.get('https://backend-wheelshare.up.railway.app/api/Associacoes/me');
         setUser(prevState => ({
           ...prevState,
           idAssociacao: response.data.idAssociacao
@@ -54,7 +54,7 @@ const AddUser = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post('https://localhost:7000/api/Usuarios/register-user', user);
+      await api.post('https://backend-wheelshare.up.railway.app/api/Usuarios/register-user', user);
       setMessage('Usuário cadastrado com sucesso!');
       toast.success("Usuário cadastrado com sucesso!");
       setLoading(false);

@@ -26,7 +26,7 @@ const EditEmp = () => {
   useEffect(() => {
     const fetchEmp = async () => {
       try {
-        const response = await api.get(`https://localhost:7000/api/Emprestimos/${id}`);
+        const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Emprestimos/${id}`);
         const data = response.data
         const formattedDataEmprestimo = data.dataEmprestimo.split('T')[0];
         const formattedDataDevolucao = data.dataDevolucao.split('T')[0];
@@ -57,7 +57,7 @@ const EditEmp = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await api.put(`https://localhost:7000/api/Emprestimos/${id}`, emprestimo);
+      await api.put(`https://backend-wheelshare.up.railway.app/api/Emprestimos/${id}`, emprestimo);
       toast.success('Empréstimo editado com sucesso!');
       setTimeout(() => {
         navigate('/Usuarios/emprestimos');

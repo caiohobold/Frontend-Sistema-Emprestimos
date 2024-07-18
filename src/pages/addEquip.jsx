@@ -162,7 +162,7 @@ const AddEquip = () => {
       formData.append(key, equipamento[key]);
     }
     try {
-      await api.post('https://localhost:7000/api/Equipamentos', formData, {
+      await api.post('https://backend-wheelshare.up.railway.app/api/Equipamentos', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

@@ -53,7 +53,7 @@ const LocalPage = () => {
         try {
             if (newLocal.idLocal) {
                 // Atualizar local existente
-                await api.put(`https://localhost:7000/api/Locais/${newLocal.idLocal}`, newLocal);
+                await api.put(`https://backend-wheelshare.up.railway.app/api/Locais/${newLocal.idLocal}`, newLocal);
                 toast.success('Local atualizado com sucesso!');
             } else {
                 // Criar novo local
@@ -62,7 +62,7 @@ const LocalPage = () => {
                     ...newLocal,
                     idAssociacao: idAssoc
                 }
-                await api.post('https://localhost:7000/api/Locais', localParaSalvar);
+                await api.post('https://backend-wheelshare.up.railway.app/api/Locais', localParaSalvar);
                 toast.success('Local cadastrado com sucesso!');
             }
             setLoading(false);
@@ -83,7 +83,7 @@ const LocalPage = () => {
     const handleDelete = async () => {
         setLoading(true);
         try {
-            await api.delete(`https://localhost:7000/api/Locais/${newLocal.idLocal}`);
+            await api.delete(`https://backend-wheelshare.up.railway.app/api/Locais/${newLocal.idLocal}`);
             toast.success('Local deletado com sucesso!');
             setLoading(false);
             setTimeout(() => {

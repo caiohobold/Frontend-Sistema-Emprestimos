@@ -29,7 +29,7 @@ const HomePage = () =>{
     useEffect(() => {
         const fetchAtrasados = async () => {
             try {
-                const response = await api.get('https://localhost:7000/api/Emprestimos/atrasados');
+                const response = await api.get('https://backend-wheelshare.up.railway.app/api/Emprestimos/atrasados');
                 
                 setAtrasados(response.data);
             } catch (error) {

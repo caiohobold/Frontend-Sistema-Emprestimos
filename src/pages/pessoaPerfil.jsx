@@ -103,7 +103,7 @@ const PerfilPessoa = () => {
       setLoading(true);
 
       try{
-        const pessoaResponse = await api.get(`https://localhost:7000/api/Pessoas/${id}`);
+        const pessoaResponse = await api.get(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
         setPessoa(pessoaResponse.data);
 
         const emprestimosResponse = await emprestimosService.getEmprestimosByPessoaId(id);

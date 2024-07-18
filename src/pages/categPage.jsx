@@ -54,7 +54,7 @@ const CategPage = () => {
         try {
             if (newCategoria.idCategoria) {
                 // Atualizar categoria existente
-                await api.put(`https://localhost:7000/api/Categorias/${newCategoria.idCategoria}`, newCategoria);
+                await api.put(`https://backend-wheelshare.up.railway.app/api/Categorias/${newCategoria.idCategoria}`, newCategoria);
                 toast.success('Categoria atualizada com sucesso!');
             } else {
                 // Criar nova categoria
@@ -62,7 +62,7 @@ const CategPage = () => {
                     ...newCategoria,
                     idAssociacao: idAssoc
                 };
-                await api.post('https://localhost:7000/api/Categorias', categoriaParaSalvar);
+                await api.post('https://backend-wheelshare.up.railway.app/api/Categorias', categoriaParaSalvar);
                 toast.success('Categoria cadastrada com sucesso!');
             }
             setLoading(false);
@@ -84,7 +84,7 @@ const CategPage = () => {
     const handleDelete = async () => {
         setLoading(true);
         try {
-            await api.delete(`https://localhost:7000/api/Categorias/${newCategoria.idCategoria}`);
+            await api.delete(`https://backend-wheelshare.up.railway.app/api/Categorias/${newCategoria.idCategoria}`);
             toast.success('Categoria deletada com sucesso!');
             setLoading(false);
             setTimeout(() => {

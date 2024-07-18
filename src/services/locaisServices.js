@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './axiosConfig';
 
-const API_URL = 'https://localhost:7000/api/';
+const API_URL = 'https://backend-wheelshare.up.railway.app/api/';
 
 const getLocais = async (pageNumber, pageSize) => {
     try {
@@ -38,7 +38,7 @@ const updateLocalEquipamento = async (idEquipamento, idLocal) => {
     }
 };
 
-export default {page
+export default {
     getLocais,
     getLocalById,
     updateLocalEquipamento

@@ -70,7 +70,7 @@ const ViewUsersPage = () => {
                     onClick: async () => {
                         try {
                             setLoading(true);
-                            await api.delete(`https://localhost:7000/api/Usuarios/${id}`);
+                            await api.delete(`https://backend-wheelshare.up.railway.app/api/Usuarios/${id}`);
                             toast.success('Usuário deletado com sucesso!');
                             loadUsuarios();
                             setLoading(false);
@@ -104,7 +104,7 @@ const ViewUsersPage = () => {
                 dataNascimento: selectedUser.dataNascimento,
                 endereco: selectedUser.endereco
             };
-            await api.put(`https://localhost:7000/api/Usuarios/${selectedUser.idUsuario}`, updatedUser);
+            await api.put(`https://backend-wheelshare.up.railway.app/api/Usuarios/${selectedUser.idUsuario}`, updatedUser);
             toast.success('Usuário atualizado com sucesso!');
             loadUsuarios();
             setIsEditModalOpen(false);
@@ -120,7 +120,7 @@ const ViewUsersPage = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await api.put(`https://localhost:7000/api/Usuarios/${selectedUser.idUsuario}/change-password`, { NovaSenha: newPassword });
+            await api.put(`https://backend-wheelshare.up.railway.app/api/Usuarios/${selectedUser.idUsuario}/change-password`, { NovaSenha: newPassword });
             toast.success('Senha atualizada com sucesso!');
             setIsPasswordModalOpen(false);
             setLoading(false);

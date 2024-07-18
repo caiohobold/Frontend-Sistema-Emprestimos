@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './axiosConfig';
 
-const API_URL = "https://localhost:7000/api/Equipamentos/";
+const API_URL = "https://backend-wheelshare.up.railway.app/api/Equipamentos/";
 
 const getEquipamentos = async (pageNumber, pageSize) => {
     try {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authServices from './authServices';
 
-const API_URL = 'https://localhost:7000/api/';
+const API_URL = 'https://backend-wheelshare.up.railway.app/api/';
 
 const token = localStorage.getItem('userToken');
 

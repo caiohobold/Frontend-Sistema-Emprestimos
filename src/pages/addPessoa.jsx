@@ -80,7 +80,7 @@ const AddPessoa = () => {
     }
     setLoading(true);
     try {
-      await api.post('https://localhost:7000/api/Pessoas', pessoa);
+      await api.post('https://backend-wheelshare.up.railway.app/api/Pessoas', pessoa);
       toast.success('Pessoa cadastrada com sucesso!');
       setLoading(false);
       setTimeout(() => {

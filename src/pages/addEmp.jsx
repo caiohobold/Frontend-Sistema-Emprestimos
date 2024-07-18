@@ -146,7 +146,7 @@ const AddEmprestimo = () => {
         console.log('Payload enviado:', emprestimoData);
 
         try {
-            await api.post('https://localhost:7000/api/Emprestimos', emprestimoData);
+            await api.post('https://backend-wheelshare.up.railway.app/api/Emprestimos', emprestimoData);
             toast.success("Empréstimo cadastrado com sucesso!");
             setLoading(false);
             setTimeout(() => {

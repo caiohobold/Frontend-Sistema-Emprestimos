@@ -16,7 +16,7 @@ const EditUser = () =>{
     const token = localStorage.getItem('userToken');
 
     const api2 = axios.create({
-        baseURL: "https://localhost:7000/api",
+        baseURL: "https://backend-wheelshare.up.railway.app/api",
         headers: {
             'Authorization': `Bearer ${token}`
         }
