@@ -13,6 +13,9 @@ RUN npm install
 # Copiar todo o código fonte para o diretório de trabalho
 COPY . .
 
+# Definir variáveis de ambiente necessárias para o build
+ARG REACT_APP_API_URL
+
 # Construir a aplicação
 RUN npm run build
 
