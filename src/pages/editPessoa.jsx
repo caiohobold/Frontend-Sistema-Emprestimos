@@ -13,6 +13,9 @@ import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../components/loading';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const EditPessoa = () => {
   const [idAssoc, setIdAssoc] = useState('');
@@ -46,7 +49,7 @@ const EditPessoa = () => {
   useEffect(() => {
     const fetchPessoa = async () => {
       try {
-        const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
+        const response = await api.get(API_URL + `Pessoas/${id}`);
         setPessoa(response.data);
         setLoading(false);
       } catch (error) {
@@ -99,7 +102,7 @@ const EditPessoa = () => {
       return;
     }
     try {
-      await api.put(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`, pessoa);
+      await api.put(API_URL + `Pessoas/${id}`, pessoa);
       setMessage('Dados atualizados com sucesso!');
       toast.success('Pessoa editada com sucesso!');
       setTimeout(() => {
@@ -120,7 +123,7 @@ const EditPessoa = () => {
           label: 'Sim',
           onClick: async () => {
             try {
-              await api.delete(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
+              await api.delete(API_URL + `Pessoas/${id}`);
               toast.success('Pessoa removida com sucesso!');
               setTimeout(() => {
                 navigate('/Usuarios/pessoas');

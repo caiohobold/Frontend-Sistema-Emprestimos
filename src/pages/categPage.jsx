@@ -13,6 +13,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert'; // Importação da biblioteca de confirmação
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Importação do CSS da biblioteca de confirmação
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const CategPage = () => {
 
@@ -54,7 +57,7 @@ const CategPage = () => {
         try {
             if (newCategoria.idCategoria) {
                 // Atualizar categoria existente
-                await api.put(`https://backend-wheelshare.up.railway.app/api/Categorias/${newCategoria.idCategoria}`, newCategoria);
+                await api.put(API_URL + `Categorias/${newCategoria.idCategoria}`, newCategoria);
                 toast.success('Categoria atualizada com sucesso!');
             } else {
                 // Criar nova categoria
@@ -62,7 +65,7 @@ const CategPage = () => {
                     ...newCategoria,
                     idAssociacao: idAssoc
                 };
-                await api.post('https://backend-wheelshare.up.railway.app/api/Categorias', categoriaParaSalvar);
+                await api.post(API_URL + 'Categorias', categoriaParaSalvar);
                 toast.success('Categoria cadastrada com sucesso!');
             }
             setLoading(false);
@@ -84,7 +87,7 @@ const CategPage = () => {
     const handleDelete = async () => {
         setLoading(true);
         try {
-            await api.delete(`https://backend-wheelshare.up.railway.app/api/Categorias/${newCategoria.idCategoria}`);
+            await api.delete(API_URL + `Categorias/${newCategoria.idCategoria}`);
             toast.success('Categoria deletada com sucesso!');
             setLoading(false);
             setTimeout(() => {

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'https://backend-wheelshare.up.railway.app/api/';
+const API_URL = process.env.REACT_APP_API_URL;
+
+console.log('API URL:', API_URL); // Adicione este log para verificar o valor
 
 class AuthService{
     loginAssoc(email, senha){
@@ -11,6 +13,7 @@ class AuthService{
             if(response.data.token){
                 localStorage.setItem('userToken', token);
             }
+            
             return response.data;
         });
     }

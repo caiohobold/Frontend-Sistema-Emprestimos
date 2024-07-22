@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './axiosConfig';
 
-const API_URL = 'https://backend-wheelshare.up.railway.app/api/';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const getLocais = async (pageNumber, pageSize) => {
     try {

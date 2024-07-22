@@ -10,12 +10,15 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box } from '@mui/material';
 import Modal from 'react-modal';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const EditAssoc = () => {
     const token = localStorage.getItem('userToken');
 
     const api2 = axios.create({
-        baseURL: "https://backend-wheelshare.up.railway.app/api",
+        baseURL: API_URL,
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -60,7 +63,7 @@ const EditAssoc = () => {
         setLoading(true);
         console.log("Clicou")
         try {
-            await api.put(`https://backend-wheelshare.up.railway.app/api/Associacoes/${user.idAssociacao}/change-password`, { novaSenha: newPassword });
+            await api.put(API_URL + `Associacoes/${user.idAssociacao}/change-password`, { novaSenha: newPassword });
             toast.success('Senha atualizada com sucesso!');
             setIsPasswordModalOpen(false);
             setLoading(false);

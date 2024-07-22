@@ -11,8 +11,11 @@ import { jwtDecode } from 'jwt-decode';
 import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { confirmAlert } from 'react-confirm-alert'; // Importação da biblioteca de confirmação
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Importação do CSS da biblioteca de confirmação
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const LocalPage = () => {
 
@@ -53,7 +56,7 @@ const LocalPage = () => {
         try {
             if (newLocal.idLocal) {
                 // Atualizar local existente
-                await api.put(`https://backend-wheelshare.up.railway.app/api/Locais/${newLocal.idLocal}`, newLocal);
+                await api.put(API_URL + `Locais/${newLocal.idLocal}`, newLocal);
                 toast.success('Local atualizado com sucesso!');
             } else {
                 // Criar novo local
@@ -62,7 +65,7 @@ const LocalPage = () => {
                     ...newLocal,
                     idAssociacao: idAssoc
                 }
-                await api.post('https://backend-wheelshare.up.railway.app/api/Locais', localParaSalvar);
+                await api.post(API_URL + 'Locais', localParaSalvar);
                 toast.success('Local cadastrado com sucesso!');
             }
             setLoading(false);
@@ -83,7 +86,7 @@ const LocalPage = () => {
     const handleDelete = async () => {
         setLoading(true);
         try {
-            await api.delete(`https://backend-wheelshare.up.railway.app/api/Locais/${newLocal.idLocal}`);
+            await api.delete(API_URL + `Locais/${newLocal.idLocal}`);
             toast.success('Local deletado com sucesso!');
             setLoading(false);
             setTimeout(() => {

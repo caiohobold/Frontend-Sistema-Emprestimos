@@ -9,14 +9,16 @@ import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faArrowLeft, faCircleUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import URL from '../services/URL';
 
+const API_URL = URL.API_URL;
 
 const EditUser = () =>{
 
     const token = localStorage.getItem('userToken');
 
     const api2 = axios.create({
-        baseURL: "https://backend-wheelshare.up.railway.app/api",
+        baseURL: API_URL,
         headers: {
             'Authorization': `Bearer ${token}`
         }

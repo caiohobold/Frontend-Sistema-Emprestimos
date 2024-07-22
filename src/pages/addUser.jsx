@@ -8,6 +8,9 @@ import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FormControl, InputLabel, MenuItem, Select, Button, TextField } from '@mui/material';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const AddUser = () => {
   const [user, setUser] = useState({
@@ -36,7 +39,7 @@ const AddUser = () => {
   useEffect(() => {
     const fetchAssociacao = async () => {
       try {
-        const response = await api.get('https://backend-wheelshare.up.railway.app/api/Associacoes/me');
+        const response = await api.get(API_URL + 'Associacoes/me');
         setUser(prevState => ({
           ...prevState,
           idAssociacao: response.data.idAssociacao
@@ -54,7 +57,7 @@ const AddUser = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post('https://backend-wheelshare.up.railway.app/api/Usuarios/register-user', user);
+      await api.post(API_URL + 'Usuarios/register-user', user);
       setMessage('Usuário cadastrado com sucesso!');
       toast.success("Usuário cadastrado com sucesso!");
       setLoading(false);

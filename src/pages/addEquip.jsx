@@ -14,6 +14,9 @@ import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const AddEquip = () => {
   const [categorias, setCategorias] = useState([]);
@@ -162,7 +165,7 @@ const AddEquip = () => {
       formData.append(key, equipamento[key]);
     }
     try {
-      await api.post('https://backend-wheelshare.up.railway.app/api/Equipamentos', formData, {
+      await api.post(API_URL + 'Equipamentos', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

@@ -11,6 +11,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const EditEmp = () => {
   const { id } = useParams();
@@ -26,7 +29,7 @@ const EditEmp = () => {
   useEffect(() => {
     const fetchEmp = async () => {
       try {
-        const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Emprestimos/${id}`);
+        const response = await api.get(API_URL + `Emprestimos/${id}`);
         const data = response.data
         const formattedDataEmprestimo = data.dataEmprestimo.split('T')[0];
         const formattedDataDevolucao = data.dataDevolucao.split('T')[0];

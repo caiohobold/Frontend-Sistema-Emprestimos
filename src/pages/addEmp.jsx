@@ -13,6 +13,9 @@ import { Autocomplete } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import usuariosServices from '../services/usuariosServices';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const AddEmprestimo = () => {
     const [idAssoc, setIdAssoc] = useState('');
@@ -146,7 +149,7 @@ const AddEmprestimo = () => {
         console.log('Payload enviado:', emprestimoData);
 
         try {
-            await api.post('https://backend-wheelshare.up.railway.app/api/Emprestimos', emprestimoData);
+            await api.post(API_URL + 'Emprestimos', emprestimoData);
             toast.success("Empréstimo cadastrado com sucesso!");
             setLoading(false);
             setTimeout(() => {

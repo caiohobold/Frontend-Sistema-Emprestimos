@@ -14,6 +14,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const EditEquip = () => {
     const [categorias, setCategorias] = useState([]);
@@ -70,7 +73,7 @@ const EditEquip = () => {
     useEffect(() => {
         const fetchEquip = async () => {
             try {
-                const response = await api.get(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`);
+                const response = await api.get(API_URL + `Equipamentos/${id}`);
                 const data = response.data;
                 setEquipamento(data);
 
@@ -198,7 +201,7 @@ const EditEquip = () => {
         console.log("FormData:", ...formData.entries());
 
         try {
-            await api.put(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`, formData, {
+            await api.put(API_URL + `Equipamentos/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -223,7 +226,7 @@ const EditEquip = () => {
                     label: 'Sim',
                     onClick: async () => {
                         try {
-                            await api.delete(`https://backend-wheelshare.up.railway.app/api/Equipamentos/${id}`);
+                            await api.delete(API_URL + `Equipamentos/${id}`);
                             toast.success("Equipamento removido com sucesso!")
                             setTimeout(() => {
                                 navigate('/Usuarios/equipamentos');

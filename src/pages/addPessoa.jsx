@@ -9,6 +9,9 @@ import '../styles/addPessoa.css';
 import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const AddPessoa = () => {
   const [idAssoc, setIdAssoc] = useState('');
@@ -80,7 +83,7 @@ const AddPessoa = () => {
     }
     setLoading(true);
     try {
-      await api.post('https://backend-wheelshare.up.railway.app/api/Pessoas', pessoa);
+      await api.post(API_URL + 'Pessoas', pessoa);
       toast.success('Pessoa cadastrada com sucesso!');
       setLoading(false);
       setTimeout(() => {

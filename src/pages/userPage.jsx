@@ -14,6 +14,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from 'react-modal';
 import { TextField, Button, Box } from '@mui/material';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const PerfilPage = () => {
     const navigate = useNavigate();
@@ -44,7 +47,7 @@ const PerfilPage = () => {
     useEffect(() => {
         if (role) {
             if (role === "Usuario") {
-                api.get(`https://backend-wheelshare.up.railway.app/api/Usuarios/${decodedToken.id}`)
+                api.get(API_URL + `Usuarios/${decodedToken.id}`)
                     .then(response => {
                         setUserName(response.data.nomeCompleto);
                     })
@@ -52,7 +55,7 @@ const PerfilPage = () => {
                         console.error("Erro ao fazer fetch:", error);
                     });
             } else if (role === "Associacao") {
-                api.get(`https://backend-wheelshare.up.railway.app/api/Associacoes/${decodedToken.id}`)
+                api.get(API_URL + `Associacoes/${decodedToken.id}`)
                     .then(response => {
                         setUserName(response.data.nomeFantasia);
                     })
@@ -82,7 +85,7 @@ const PerfilPage = () => {
     const handleSubmit = async (e) => {
         console.log("Clicou")
         e.preventDefault();
-        const url = isErrorReport ? 'https://backend-wheelshare.up.railway.app/api/Feedback/report-error' : 'https://backend-wheelshare.up.railway.app/api/Feedback/send-feedback';
+        const url = isErrorReport ? API_URL + 'Feedback/report-error' : API_URL + 'Feedback/send-feedback';
         try {
             await api.post(url, { UserName: userName, Message: message, idAssociacao: idAssoc});
             toast.success("Mensagem enviada com sucesso!")

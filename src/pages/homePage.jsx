@@ -11,7 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
 import { faPersonCane } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '../components/navBar';
+import URL from '../services/URL';
 
+const API_URL = URL.API_URL;
 
 const HomePage = () =>{
 
@@ -29,7 +31,7 @@ const HomePage = () =>{
     useEffect(() => {
         const fetchAtrasados = async () => {
             try {
-                const response = await api.get('https://backend-wheelshare.up.railway.app/api/Emprestimos/atrasados');
+                const response = await api.get(API_URL + 'Emprestimos/atrasados');
                 
                 setAtrasados(response.data);
             } catch (error) {

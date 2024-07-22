@@ -18,6 +18,9 @@ import api from '../services/axiosConfig';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
 import equipamentosService from '../services/equipamentosService';
+import URL from '../services/URL';
+
+const API_URL = URL.API_URL;
 
 const PerfilPessoa = () => {
   const { id } = useParams();
@@ -103,7 +106,7 @@ const PerfilPessoa = () => {
       setLoading(true);
 
       try{
-        const pessoaResponse = await api.get(`https://backend-wheelshare.up.railway.app/api/Pessoas/${id}`);
+        const pessoaResponse = await api.get(API_URL + `Pessoas/${id}`);
         setPessoa(pessoaResponse.data);
 
         const emprestimosResponse = await emprestimosService.getEmprestimosByPessoaId(id);

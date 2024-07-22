@@ -1,6 +1,6 @@
 import api from './axiosConfig';
 
-const API_URL = 'https://backend-wheelshare.up.railway.app/api/Emprestimos/';  // Ajuste para o seu URL específico
+const API_URL = process.env.REACT_APP_API_URL + 'Emprestimos/';
 
 const getEmprestimosAtivos = async (pageNumber, pageSize) => {
     try {
