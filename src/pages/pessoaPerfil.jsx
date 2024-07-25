@@ -18,6 +18,8 @@ import api from '../services/axiosConfig';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
 import equipamentosService from '../services/equipamentosService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import URLBase from '../services/URLBase';
 
 const API_URL = URLBase.API_URL;
@@ -163,7 +165,10 @@ const PerfilPessoa = () => {
         await emprestimosService.finalizarEmprestimo(idEmprestimo);
         console.log("Empréstimo finalizado com sucesso!");
         setEmprestimos(emprestimos.filter(emp => emp.id !== idEmprestimo));
-        setIsLocationModalOpen(false);
+        toast.success("Empréstimo finalizado com sucesso!");
+            setTimeout(() => {
+                setIsLocationModalOpen(false);
+            }, 1500);
         setSelectedLocal(null);
         setSelectedEmprestimo(null);
     } catch (error) {
@@ -197,6 +202,7 @@ const handleEstadoChange = (event) => {
 
   return (
     <div className='main-content' >
+      <ToastContainer />
             <div className='return-div'>
                 <button onClick={() => navigate("/Usuarios/pessoas")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>

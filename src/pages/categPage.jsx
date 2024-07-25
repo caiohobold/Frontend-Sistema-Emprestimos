@@ -53,6 +53,12 @@ const CategPage = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
+
+        if (!newCategoria.nomeCategoria) {
+            toast.info("É preciso informar o nome da categoria.")
+            setLoading(false)
+            return;
+          }
         setLoading(true);
         try {
             if (newCategoria.idCategoria) {
@@ -88,7 +94,7 @@ const CategPage = () => {
         setLoading(true);
         try {
             await api.delete(API_URL + `Categorias/${newCategoria.idCategoria}`);
-            toast.success('Categoria deletada com sucesso!');
+            toast.success('Categoria removida com sucesso!');
             setLoading(false);
             setTimeout(() => {
                 setIsModalEditOpen(false);
@@ -174,11 +180,13 @@ const CategPage = () => {
                 >
                     <br />
                     <h2>Cadastrar categoria</h2>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px">
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px" marginTop="30px">
                         <form className='form-edit' onSubmit={handleSave}>
                             <div className='form-input-categ'>
                                 <CustomInput label="Nome da Categoria" type="text" name="nomeCategoria" value={newCategoria.nomeCategoria} onChange={handleChange} />
                             </div>
+                            <br />
+                            <br />
                             <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
                         </form>
                     </Box>
@@ -198,11 +206,13 @@ const CategPage = () => {
                             <button className='btn-delete' onClick={confirmDelete} disabled={loading}><FontAwesomeIcon icon={faTrash} className='icon-delete-2' /></button>
                         )}
                     </div>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px">
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="row" gap="10px" marginTop="30px">
                         <form className='form-edit' onSubmit={handleSave}>
                             <div className='form-input-categ'>
                                 <CustomInput label="Nome da Categoria" type="text" name="nomeCategoria" value={newCategoria.nomeCategoria} onChange={handleChange} />
                             </div>
+                            <br />
+                            <br />
                             <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
                         </form>
                     </Box>

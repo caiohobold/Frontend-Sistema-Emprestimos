@@ -119,3 +119,23 @@
 .atrasados{
     width: 100%;
 }
+
+.profile-btn-atrasado{
+    border: none;
+    outline: none;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    text-decoration: none;
+    right: 10px;
+    background-color: transparent;
+    margin-right: 18px;
+    margin-top: 170%;
+}
+
+.icon-btn-atrasado{
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+
+}

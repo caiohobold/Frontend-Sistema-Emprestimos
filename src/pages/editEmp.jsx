@@ -59,6 +59,18 @@ const EditEmp = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (!emprestimo.dataEmprestimo) {
+      toast.info("É preciso informar quando o equipamento será/foi emprestado.")
+      setLoading(false)
+      return;
+    }
+
+    if (!emprestimo.dataDevolucao) {
+      toast.info("É preciso informar quando o equipamento será/foi devolvido.")
+      setLoading(false)
+      return;
+    }
     try {
       await api.put(`${API_URL}Emprestimos/${id}`, emprestimo);
       toast.success('Empréstimo editado com sucesso!');

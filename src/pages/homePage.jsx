@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/axiosConfig';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import WheelShareLogo from '../photos/WheelShareWithoutName.png'
 import '../styles/homepage.css'
 import CustonBtn from '../components/customBtn';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
@@ -87,6 +87,11 @@ const HomePage = () =>{
                                             <div>
                                                 <p className='message-atrasado'>O empréstimo de <span className='nome-atrasado'>{emp.nomePessoa}</span> chegou ao prazo de validade hoje. </p>
                                                 <p className='message-atrasado-2'>Telefone: <span className='nome-atrasado'>{emp.telefonePessoa}</span></p>
+                                            </div>
+                                            <div>
+                                                <Link to={`/pessoa/${emp.idPessoa}`}>
+                                                    <button className='profile-btn-atrasado'><FontAwesomeIcon icon={faUpRightFromSquare} className='icon-btn-atrasado'/></button>
+                                                </Link>
                                             </div>
                                         </div>
                                     ))}

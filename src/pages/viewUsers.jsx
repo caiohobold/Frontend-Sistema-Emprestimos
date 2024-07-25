@@ -97,6 +97,42 @@ const ViewUsersPage = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
+
+        if (!selectedUser.nomeCompleto) {
+            toast.info("É preciso informar o nome do usuário.")
+            setLoading(false)
+            return;
+          }
+      
+          if (!selectedUser.cpf) {
+            toast.info("É preciso informar o CPF do usuário.")
+            setLoading(false)
+            return;
+          }
+      
+          if (!selectedUser.numeroTelefone) {
+            toast.info("É preciso informar o Telefone do usuário.")
+            setLoading(false)
+            return;
+          }
+      
+          if (!selectedUser.emailPessoal) {
+            toast.info("É preciso informar o E-mail do usuário.")
+            setLoading(false)
+            return;
+          }
+      
+          if (!selectedUser.endereco) {
+            toast.info("É preciso informar o endereço do usuário.")
+            setLoading(false)
+            return;
+          }
+      
+          if (!selectedUser.dataNascimento) {
+            toast.info("É preciso informar a data de nascimento do usuário.")
+            setLoading(false)
+            return;
+          }
         setLoading(true);
         try {
             const updatedUser = {
@@ -162,7 +198,7 @@ const ViewUsersPage = () => {
                     isOpen={isEditModalOpen}
                     onRequestClose={() => setIsEditModalOpen(false)}
                     contentLabel="Editar Usuário"
-                    className="modal-filter modal-scrollable"
+                    className="modal-filter"
                     closeTimeoutMS={300}
                 >
                     <br />
@@ -170,7 +206,7 @@ const ViewUsersPage = () => {
                         <h2>Editar Usuário</h2>
                         <button onClick={() => setIsPasswordModalOpen(true)} className='change-password-btn'>Alterar Senha</button>
                     </div>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap="10px" marginTop="-20px">
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap="10px">
                         <form className='form-edit' onSubmit={handleSave}>
                             <div className='form-input-categ'>
                                 <CustomInput label="Nome Completo" type="text" name="nomeCompleto" value={selectedUser.nomeCompleto} onChange={handleChange} />
@@ -180,6 +216,7 @@ const ViewUsersPage = () => {
                                 <CustomInput label="Endereço" type="text" name="endereco" value={selectedUser.endereco} onChange={handleChange} />
                                 <CustomInput label="Data de Nascimento" type="date" name="dataNascimento" value={selectedUser.dataNascimento} onChange={handleChange} />
                             </div>
+                            <br />
                             <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
                         </form>
 
@@ -191,16 +228,18 @@ const ViewUsersPage = () => {
                     isOpen={isPasswordModalOpen}
                     onRequestClose={() => setIsPasswordModalOpen(false)}
                     contentLabel="Alterar Senha"
-                    className="modal-filter modal-scrollable"
+                    className="modal-filter"
                     closeTimeoutMS={300}
                 >
                     <br />
                     <h2>Alterar Senha</h2>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap="10px">
+                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap="10px" marginTop="30px">
                         <form className='form-edit' onSubmit={handleChangePassword}>
                             <div className='form-input-categ'>
                                 <CustomInput label="Nova Senha" type="password" name="newSenha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                             </div>
+                            <br />
+                            <br />
                             <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
                         </form>
                     </Box>

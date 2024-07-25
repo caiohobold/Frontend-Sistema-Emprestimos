@@ -54,7 +54,50 @@ const AddUser = () => {
   }, []);  
 
   const handleSave = async (e) => {
+
     e.preventDefault();
+
+    if (!user.nomeCompleto) {
+      toast.info("É preciso informar o nome do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.cpf) {
+      toast.info("É preciso informar o CPF do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.numeroTelefone) {
+      toast.info("É preciso informar o Telefone do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.emailPessoal) {
+      toast.info("É preciso informar o E-mail do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.endereco) {
+      toast.info("É preciso informar o endereço do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.senha) {
+      toast.info("É preciso informar a senha do usuário.")
+      setLoading(false)
+      return;
+    }
+
+    if (!user.dataNascimento) {
+      toast.info("É preciso informar a data de nascimento do usuário.")
+      setLoading(false)
+      return;
+    }
     setLoading(true);
     try {
       await api.post(API_URL + 'Usuarios/register-user', user);

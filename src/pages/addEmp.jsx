@@ -139,6 +139,30 @@ const AddEmprestimo = () => {
             return;
         }
 
+        if (!emprestimo.idPessoa) {
+            toast.info("É preciso informar a pessoa que receberá/recebeu o empréstimo.")
+            setLoading(false)
+            return;
+          }
+
+          if (!emprestimo.idEquipamento) {
+            toast.info("É preciso informar o equipamento que será/foi emprestado.")
+            setLoading(false)
+            return;
+          }
+
+          if (!emprestimo.dataEmprestimo) {
+            toast.info("É preciso informar quando o equipamento será/foi emprestado.")
+            setLoading(false)
+            return;
+          }
+
+          if (!emprestimo.dataDevolucao) {
+            toast.info("É preciso informar quando o equipamento será/foi devolvido.")
+            setLoading(false)
+            return;
+          }
+
         const emprestimoData = {
             ...emprestimo,
             dataEmprestimo: dataEmprestimoUtc.toISOString(),
