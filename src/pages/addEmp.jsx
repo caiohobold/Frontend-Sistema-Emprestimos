@@ -247,7 +247,12 @@ const AddEmprestimo = () => {
                             fullWidth
                         />
                     </div>
-                    <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
+                    <button type="submit" className='save-pessoa' disabled={loading}>
+                        {loading && (
+                        <span className="spinner-border spinner-border-sm" id='loading-icon'></span>
+                        )}
+                        <span>Emprestar</span>
+                    </button>
                 </form>
             </div>
         </div>

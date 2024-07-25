@@ -73,7 +73,7 @@ const LoginMember = () =>{
                         <div className='form-senha'>
                             <CustomInput
                                 label="Senha"
-                                type="senha"
+                                type="password"
                                 onChange={(e) => setSenha(e.target.value)}
                             />
                         </div>

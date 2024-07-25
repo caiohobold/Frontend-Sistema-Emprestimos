@@ -317,7 +317,12 @@ const EditEquip = () => {
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
+                        <button type="submit" className='save-pessoa' disabled={loading}>
+                        {loading && (
+                        <span className="spinner-border spinner-border-sm" id='loading-icon'></span>
+                        )}
+                        <span>Salvar</span>
+                        </button>
                         <br />
                         <br />
                         <br />

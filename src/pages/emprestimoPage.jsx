@@ -14,6 +14,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Modal from 'react-modal';
 import { FormControlLabel, Checkbox, Box, TextField, Autocomplete, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import equipamentosService from '../services/equipamentosService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../components/loading';
 
 const EmprestimosPage = () => {
@@ -158,12 +160,15 @@ const EmprestimosPage = () => {
     const finalizarEmprestimo = async (idEmprestimo) => {
         try {
             await emprestimosService.finalizarEmprestimo(idEmprestimo);
-            console.log("Empréstimo finalizado com sucesso!");
             setEmprestimos(emprestimos.filter(emp => emp.id !== idEmprestimo));
-            setIsLocationModalOpen(false);
+            toast.success("Empréstimo finalizado com sucesso!");
+            setTimeout(() => {
+                setIsLocationModalOpen(false);
+            }, 1500);
             setSelectedLocal(null);
             setSelectedEmprestimo(null);
         } catch (error) {
+            toast.error("Erro ao finalizar empréstimo.");
             console.error("Erro ao finalizar empréstimo:", error);
             alert("Falha ao finalizar empréstimo");
         }
@@ -174,9 +179,11 @@ const EmprestimosPage = () => {
             console.log("Atualizando local do equipamento:", idEquipamento, localId);  // Log para verificar os IDs
             await locaisServices.updateLocalEquipamento(idEquipamento, localId);
             console.log("Local do equipamento atualizado com sucesso!");
+
         } catch (error) {
             console.error("Erro ao atualizar local do equipamento:", error);
             throw new Error("Erro ao atualizar local do equipamento");
+            toast.error("Erro ao finalizar empréstimo.");
         }
     };
 
@@ -190,6 +197,7 @@ const EmprestimosPage = () => {
                     await equipamentosService.patchEstadoEquipamento(selectedEmprestimo.idEquipamento, estadoEquipamento);
                 }
                 
+                console.log("Passou por aqui")
                 await finalizarEmprestimo(selectedEmprestimo.idEmprestimo);
             } catch (error) {
                 alert("Falha ao atualizar o local ou estado do equipamento. O empréstimo não será finalizado.");
@@ -212,6 +220,7 @@ const EmprestimosPage = () => {
 
     return (
         <div className='main-content'>
+            <ToastContainer />
             <div className='img-div'>
                 <img src={WheelShareLogo} className='WheelShareLogo' alt="WheelShare Logo"></img>
             </div>

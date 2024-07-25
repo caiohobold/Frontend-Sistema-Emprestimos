@@ -60,7 +60,7 @@ const EditEmp = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await api.put(`https://backend-wheelshare.up.railway.app/api/Emprestimos/${id}`, emprestimo);
+      await api.put(`${API_URL}Emprestimos/${id}`, emprestimo);
       toast.success('Empréstimo editado com sucesso!');
       setTimeout(() => {
         navigate('/Usuarios/emprestimos');
@@ -112,7 +112,12 @@ const EditEmp = () => {
                     <div className='form-input'>
                         <CustomInput label="Data de devolução" type='date'  name="dataDevolucao" value={emprestimo.dataDevolucao} onChange={handleChange}/>
                     </div>
-                    <button type="submit" className='save-btn'>Salvar</button>
+                    <button type="submit" className='save-pessoa' disabled={loading}>
+                        {loading && (
+                        <span className="spinner-border spinner-border-sm" id='loading-icon'></span>
+                        )}
+                        <span>Salvar</span>
+                    </button>
                 </form>
             </div>
         </div>

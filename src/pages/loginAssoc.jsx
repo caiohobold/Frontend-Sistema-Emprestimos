@@ -53,6 +53,7 @@ const LoginAssoc = () =>{
     return(
 
         <div className='main-content'>
+            <ToastContainer />
             <div className='sub-content'>
                 <img src={WheelShareLogo} className='WheelShareLogo'></img>
             </div>

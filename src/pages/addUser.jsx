@@ -116,7 +116,12 @@ const AddUser = () => {
                     />
           </div>
           
-          <button type="submit" className='save-equip' disabled={loading}>Salvar</button>
+          <button type="submit" className='save-equip' disabled={loading}>
+            {loading && (
+            <span className="spinner-border spinner-border-sm" id='loading-icon'></span>
+            )}
+            <span>Salvar</span>
+          </button>
           <br />
           <br />
           <br />

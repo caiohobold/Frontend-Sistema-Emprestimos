@@ -125,7 +125,12 @@ const AddPessoa = () => {
           <div className='form-input'>
             <CustomInput label="Endereço" type="text" name="endereco" value={pessoa.endereco} onChange={handleChange} />
           </div>
-          <button type="submit" className='save-pessoa' disabled={loading}>Salvar</button>
+          <button type="submit" className='save-pessoa' disabled={loading}>
+            {loading && (
+              <span className="spinner-border spinner-border-sm" id='loading-icon'></span>
+            )}
+            <span>Salvar</span>
+          </button>
         </form>
       </div>
     </div>
