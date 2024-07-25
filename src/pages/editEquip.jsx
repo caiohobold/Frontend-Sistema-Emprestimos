@@ -234,7 +234,7 @@ const EditEquip = () => {
                             if (error.response && error.response.status === 500) {
                                 toast.error("Não é possível remover um equipamento vinculado a um empréstimo.");
                             } else {
-                                toast.error(resMessage);
+                                toast.error("Não é possível remover um equipamento vinculado a um empréstimo.");
                             }
 
                             setLoading(false);

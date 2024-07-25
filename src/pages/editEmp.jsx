@@ -11,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../components/loading';
 import URLBase from '../services/URLBase';
 
 const API_URL = URLBase.API_URL;
@@ -88,15 +89,10 @@ const EditEmp = () => {
         if (error.response && error.response.status === 500) {
           toast.error("A data de devolução não pode ser anterior à data de início do empréstimo.");
       } else {
-          toast.error(resMessage);
+          toast.error("A data de devolução não pode ser anterior à data de início do empréstimo.");
       }
     }
   };
-
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
 
   return (
 
@@ -111,6 +107,7 @@ const EditEmp = () => {
                     <h2 className='pessoa-edit-title'>Edição de empréstimo</h2>
                 </div>
                 {message && <p>{message}</p>}
+                {loading ? <Loading /> : (
                 <form className='form-edit' onSubmit={handleSave}>
                     <div className='form-input'>
                         <CustomInput label="Nome Completo" name="nomePessoa" type="text" value={emprestimo.nomePessoa} readonly />
@@ -131,6 +128,7 @@ const EditEmp = () => {
                         <span>Salvar</span>
                     </button>
                 </form>
+                )}
             </div>
         </div>
   );

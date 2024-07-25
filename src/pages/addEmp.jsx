@@ -190,7 +190,7 @@ const AddEmprestimo = () => {
             if (error.response && error.response.status === 500) {
                 toast.error("A data de devolução não pode ser anterior à data de início do empréstimo.");
             } else {
-                toast.error(resMessage);
+                toast.error("A data de devolução não pode ser anterior à data de início do empréstimo.");
             }
 
             setLoading(false);

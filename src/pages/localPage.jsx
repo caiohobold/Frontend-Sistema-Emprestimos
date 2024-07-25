@@ -98,6 +98,9 @@ const LocalPage = () => {
             if (error.response && error.response.status === 500){
                 toast.error('Não é possível remover locais que tenham equipamentos vinculados.');
             }
+            else{
+                toast.error('Não é possível remover locais que tenham equipamentos vinculados.');
+            }
             setLoading(false);
         }
     };

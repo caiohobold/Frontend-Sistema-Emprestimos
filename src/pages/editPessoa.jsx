@@ -139,7 +139,7 @@ const EditPessoa = () => {
                     if (error.response && error.response.status === 500) {
                       toast.error("Não é possível remover uma pessoa que possui empréstimos ativos ou finalizados.");
                   } else {
-                      toast.error(resMessage);
+                      toast.error("Não é possível remover uma pessoa que possui empréstimos ativos ou finalizados.");
                   }
   
                   setLoading(false);

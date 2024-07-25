@@ -82,7 +82,7 @@ const ViewUsersPage = () => {
                                 toast.error('Não é possível remover um usuário vinculado a um empréstimo ativo.');
                             }
                             else{
-                                toast.error('Erro ao deletar o usuário.');
+                                toast.error('Não é possível remover um usuário vinculado a um empréstimo ativo.');
                             }
                             setLoading(false);
                         }

@@ -104,6 +104,9 @@ const CategPage = () => {
             if (error.response && error.response.status === 500){
                 toast.error('Não é possível remover uma categoria vinculada a um equipamento cadastrado.');
             }
+            else{
+                toast.error('Não é possível remover uma categoria vinculada a um equipamento cadastrado.');
+            }
             setLoading(false);
         }
     };
