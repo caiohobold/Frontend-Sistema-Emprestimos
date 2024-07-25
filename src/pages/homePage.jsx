@@ -11,9 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons';
 import { faPersonCane } from '@fortawesome/free-solid-svg-icons';
 import NavBar from '../components/navBar';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const HomePage = () =>{
 
@@ -96,6 +96,7 @@ const HomePage = () =>{
                         
                     </div>
                     <NavBar />
+                    
             </div>
         </div>
     );

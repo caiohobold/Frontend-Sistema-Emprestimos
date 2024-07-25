@@ -10,7 +10,7 @@
   }
   
   .form-input {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
   }
 
   .form-input-estado{
@@ -22,7 +22,7 @@
 .save-pessoa{
     background-color: #3dabd6;
     font-family: 'League Spartan', sans-serif;
-    margin-top: 30px;
+    margin-top: 15px;
     width: 200px;
     height: 50px;
     border-radius: 25px;

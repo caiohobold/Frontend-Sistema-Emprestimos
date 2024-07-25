@@ -9,9 +9,9 @@ import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faArrowLeft, faCircleUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const EditUser = () =>{
 

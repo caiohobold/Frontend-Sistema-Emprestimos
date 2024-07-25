@@ -13,9 +13,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert'; // Importação da biblioteca de confirmação
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Importação do CSS da biblioteca de confirmação
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const CategPage = () => {
 

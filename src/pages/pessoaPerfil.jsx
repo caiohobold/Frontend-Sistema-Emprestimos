@@ -18,9 +18,9 @@ import api from '../services/axiosConfig';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
 import equipamentosService from '../services/equipamentosService';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const PerfilPessoa = () => {
   const { id } = useParams();

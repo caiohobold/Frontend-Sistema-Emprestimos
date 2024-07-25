@@ -8,9 +8,9 @@ import api from '../services/axiosConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FormControl, InputLabel, MenuItem, Select, Button, TextField } from '@mui/material';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const AddUser = () => {
   const [user, setUser] = useState({

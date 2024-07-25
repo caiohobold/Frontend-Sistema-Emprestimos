@@ -144,7 +144,7 @@ const PessoasPage = () => {
                                         <div className='nomepessoa'>{p.nomeCompleto}</div>
                                         <div className={getStatusClass(p.statusEmprestimo)}>{getStatusPessoa(p.statusEmprestimo)}</div>
                                         <div className='btns'>
-                                            <Link to={`/pessoa/${p.idPessoa}`}>
+                                            <Link to={`/pessoa/${p.idPessoa}`} className='a-profile-btn'>
                                                 <button className='profile-btn'>Ver Perfil</button>
                                             </Link>
                                             <button className='btn-edit-div' onClick={() => navigate(`/pessoa/edit/${p.idPessoa}`)}><FontAwesomeIcon className='btn-edit' icon={faPenToSquare} /></button>

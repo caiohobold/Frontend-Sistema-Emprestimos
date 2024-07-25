@@ -14,9 +14,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
 import Loading from '../components/loading';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const EditEquip = () => {
     const [categorias, setCategorias] = useState([]);
@@ -31,10 +31,12 @@ const EditEquip = () => {
         descricaoEquipamento: '',
         idLocal: '',
         foto1: null,
-        foto2: null
+        foto2: null,
+        idAssociacao: null
     });
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
+    const [idAssoc, setIdAssoc] = useState('');
     const [preview1, setPreview1] = useState(null);
     const [preview2, setPreview2] = useState(null);
     const [originalFoto1, setOriginalFoto1] = useState(null);
@@ -145,11 +147,6 @@ const EditEquip = () => {
             return;
           }
       
-          if (!equipamento.descricaoEquipamento) {
-            toast.info("O campo 'Descrição' é obrigatório.")
-            return;
-        }
-      
           if (!equipamento.idCategoria) {
             toast.info("O campo 'Categoria' é obrigatório.")
             return;
@@ -169,11 +166,6 @@ const EditEquip = () => {
             toast.info("O campo 'Carga do Equipamento' é obrigatório.")
             return;
         }
-      
-        if (!equipamento.foto1 || !equipamento.foto2) {
-          toast.info("É necessário adicionar duas fotos do equipamento.")
-          return;
-      }
 
         const formData = new FormData();
         for (const key in equipamento) {

@@ -36,6 +36,8 @@ const EquipamentosPage = () => {
     const [openLocais, setOpenLocais] = useState(false);
     const [filteredCount, setFilteredCount] = useState(0);
     const [role, setRole] = useState('');
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
@@ -144,7 +146,7 @@ const EquipamentosPage = () => {
         const loadEquipamentos = async () => {
             try {
                 setLoading(true);
-                const data = await equipamentosService.getEquipamentos(1, 500);
+                const data = await equipamentosService.getEquipamentos(1, 500); // Carregar 10 por vez
                 setEquipamentos(data);
                 setFilteredEquipamentos(data);
                 setLoading(false);
@@ -153,9 +155,9 @@ const EquipamentosPage = () => {
                 setLoading(false);
             }
         };
-
+    
         loadEquipamentos();
-    }, []);
+    }, [page]);
 
     useEffect(() => {
         const loadLocais = async () => {
@@ -406,7 +408,11 @@ const EquipamentosPage = () => {
                             filteredEquipamentos.map(equip =>
                                 <div key={equip.idEquipamento} className='box-equip'>
                                     <div className='icon-equip-div'>
-                                        {equip.foto1 && <img src={renderImage(equip.foto1)} className='img-equip' alt='Equipamento' />}
+                                    {equip.foto1 ? (
+                                        <img src={renderImage(equip.foto1)} className='img-equip' alt='Equipamento' />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faWheelchair} size="4x" className='img-null-equip' />
+                                    )}
                                     </div>
                                     <div className='equip-info'>
                                         <div className='row-info'>

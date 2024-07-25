@@ -10,7 +10,6 @@
     background-color: #3dabd6;
     text-align: center;
     height: 100vh;
-    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -27,6 +26,7 @@
     border-top-left-radius: 60px;
     height: inherit;
     margin-top: 30px;
+    height: 60%;
 }
 
 .sub-content2{

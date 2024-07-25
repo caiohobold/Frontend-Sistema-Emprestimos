@@ -12,9 +12,9 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import CustomInput from '../components/customInput';
 import usuariosServices from '../services/usuariosServices';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const ViewUsersPage = () => {
     const navigate = useNavigate();

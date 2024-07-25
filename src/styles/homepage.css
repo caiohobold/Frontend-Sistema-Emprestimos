@@ -8,6 +8,7 @@
     border-top-right-radius: 60px;
     height: inherit;
     margin-top: 10px;
+    overflow-y: auto;
 }
 
 .carregando-p{

@@ -13,13 +13,6 @@
     scale: calc(1.7);
 }
 
-.container-div{
-    background-color: #ffffff;
-    border-top-right-radius: 60px;
-    height: inherit;
-    margin-top: 10px;
-}
-
 .pessoas-title{
     font-family: 'League Spartan', sans-serif;
     font-weight: 400;
@@ -176,9 +169,12 @@
     font-weight: 800;
     font-size: 18px;
     display: flex;
-    text-decoration: none;
     margin-left: 20px;
     margin-top: 5px;
+}
+
+.a-profile-btn{
+    text-decoration: none;
 }
 
 .profile-btn-relatorio{

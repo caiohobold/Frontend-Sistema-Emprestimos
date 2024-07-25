@@ -13,13 +13,6 @@
     scale: calc(1.7);
 }
 
-.container-div{
-    background-color: #ffffff;
-    border-top-right-radius: 60px;
-    height: inherit;
-    margin-top: 10px;
-}
-
 .pessoa{
     font-family: 'League Spartan', sans-serif;
     display: flex;
@@ -304,12 +297,13 @@
     border-top-right-radius: 50px;
     background-color: white;
     box-shadow: 2 10px 10px rgba(0, 0, 0, 0.774);
-    margin-top: 50%;
+    margin-top: 17%;
     margin-right: auto;
     margin-left: auto;
     display: flex;
     flex-direction: column;
     z-index: 5000;
+    overflow-y: auto;
 }
 
 .change-local-equip-h2{

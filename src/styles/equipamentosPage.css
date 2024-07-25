@@ -112,7 +112,7 @@
     height: 24px;
     font-size: 10px;
     font-weight: bold;
-    margin-left: 40px;
+    margin-left: 20px;
 }
 
 .em-uso{
@@ -357,4 +357,24 @@
     border-radius: 10px;
     margin-left: 8px;
   }
+
+  .img-null-equip{
+    margin-left: 15px;
+    margin-right: 18px;
+  }
+
+  .btn-show-more {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-show-more:hover {
+    background-color: #0056b3;
+}
 

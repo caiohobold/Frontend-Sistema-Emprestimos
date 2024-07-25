@@ -14,9 +14,9 @@ import { useDropzone } from 'react-dropzone';
 import locaisServices from '../services/locaisServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import URL from '../services/URL';
+import URLBase from '../services/URLBase';
 
-const API_URL = URL.API_URL;
+const API_URL = URLBase.API_URL;
 
 const AddEquip = () => {
   const [categorias, setCategorias] = useState([]);
@@ -130,10 +130,6 @@ const AddEquip = () => {
       return;
     }
 
-    if (!equipamento.descricaoEquipamento) {
-      toast.info("O campo 'Descrição' é obrigatório.")
-      return;
-  }
 
     if (!equipamento.idCategoria) {
       toast.info("O campo 'Categoria' é obrigatório.")
@@ -154,11 +150,6 @@ const AddEquip = () => {
       toast.info("O campo 'Carga do Equipamento' é obrigatório.")
       return;
   }
-
-  if (!equipamento.foto1 || !equipamento.foto2) {
-    toast.info("É necessário adicionar duas fotos do equipamento.")
-    return;
-}
 
     const formData= new FormData();
     for(const key in equipamento){
@@ -182,6 +173,7 @@ const AddEquip = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className='main-content'>
