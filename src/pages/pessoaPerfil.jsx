@@ -82,6 +82,12 @@ const PerfilPessoa = () => {
     return dataAtual > dataDevolucaoDate && status === 0;
   };
 
+  const isAgendado = (dataInicio, status) => {
+    const dataAtual = new Date();
+    const dataInicioDate = new Date(dataInicio);
+    return dataAtual < dataInicioDate && status === 0;
+  }
+
   const customStyles = {
     overlay: {
       backgroundColor: 'rgba(89, 89, 89, 0.75)', // Cor de fundo do overlay
@@ -298,6 +304,7 @@ const handleEstadoChange = (event) => {
                         <div key={emp.id} className='sub-box-emprestimos'>
                           <div className='atrasado'>
                             {isAtrasado(emp.dataDevolucao, emp.status) && <div className='status-atrasado'>Atrasado</div>}
+                            {isAgendado(emp.dataEmprestimo, emp.status) && <div className='status-agendado'>Agendado</div>}
                           </div>
                           <div className='nomeEquipamento'>{emp.nomeEquipamento}</div>
                           <div className='row-dates'>

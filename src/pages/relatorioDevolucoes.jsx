@@ -74,6 +74,12 @@ const RelatorioDevolucoes = () => {
         return dataAtual > dataDevolucaoDate;
     }
 
+    const isAgendado = (dataInicio) => {
+        const dataAtual = new Date();
+        const dataInicioDate = new Date(dataInicio);
+        return dataAtual < dataInicioDate;
+    }
+
     const handleLocationChange = (event, value) => {
         setSelectedLocal(value ? value.idLocal : null);
     };
@@ -191,6 +197,7 @@ const RelatorioDevolucoes = () => {
                             filteredEmprestimos.map(emp =>
                                 <div key={emp.id} className='box-emprestimo'>
                                     <div className='atrasado'>
+                                        {isAgendado(emp.dataEmprestimo) && <div className='status-agendado'>Agendado</div>}
                                         {isAtrasado(emp.dataDevolucao) && <div className='status-atrasado'>Atrasado</div>}
                                     </div>
                                     <div className='row-edit'>

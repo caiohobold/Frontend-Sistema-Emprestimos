@@ -30,13 +30,24 @@
     flex-direction: column;
 }
 
-.atrasado{
+.atrasado-agendado{
     display: flex;
     justify-content: center;
 }
 
 .status-atrasado{
     background-color: #d41414;
+    width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+}
+
+.status-agendado{
+    background-color: #1417d4;
     width: 100%;
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-console.log('API URL:', API_URL); // Adicione este log para verificar o valor
+console.log('API URL:', API_URL);
 
 class AuthService{
     loginAssoc(email, senha){

@@ -26,6 +26,7 @@ const EmprestimosPage = () => {
     const [filteredEmprestimos, setFilteredEmprestimos] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showAtrasados, setShowAtrasados] = useState(true);
+    const [showAgendados, setShowAgendados] = useState(true)
     const [showEmDia, setShowEmDia] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [startDate, setStartDate] = useState("");
@@ -51,26 +52,35 @@ const EmprestimosPage = () => {
         let results = emprestimos.filter(emp =>
             emp.nomePessoa.toLowerCase().includes(searchTerm.toLowerCase()) || emp.nomeEquipamento.toLowerCase().includes(searchTerm.toLowerCase())
         );
-
-        if (showAtrasados && !showEmDia) {
-            results = results.filter(emp => isAtrasado(emp.dataDevolucao));
-        } else if (!showAtrasados && showEmDia) {
-            results = results.filter(emp => !isAtrasado(emp.dataDevolucao));
-        } else if (!showAtrasados && !showEmDia) {
-            results = [];
+    
+        // Filtros combinados para Atrasados, Em dia e Agendados
+        if (showAtrasados || showEmDia || showAgendados) {
+            results = results.filter(emp => {
+                const isAtrasadoStatus = isAtrasado(emp.dataDevolucao);
+                const isAgendadoStatus = isAgendado(emp.dataEmprestimo);
+                const isEmDiaStatus = !isAtrasadoStatus && !isAgendadoStatus;
+    
+                return (
+                    (showAtrasados && isAtrasadoStatus) ||
+                    (showEmDia && isEmDiaStatus) ||
+                    (showAgendados && isAgendadoStatus)
+                );
+            });
         }
-
+    
         if (startDate) {
             results = results.filter(emp => new Date(emp.dataEmprestimo) >= new Date(startDate));
         }
-
+    
         if (endDate) {
             results = results.filter(emp => new Date(emp.dataEmprestimo) <= new Date(endDate));
         }
-
+    
         setFilteredEmprestimos(results);
-        setFilteredCount(results.length); 
-    }, [searchTerm, emprestimos, showAtrasados, showEmDia, startDate, endDate]);
+        setFilteredCount(results.length);
+    }, [searchTerm, emprestimos, showAtrasados, showEmDia, showAgendados, startDate, endDate]);
+    
+    
 
     useEffect(() => {
         const loadEmprestimos = async () => {
@@ -155,6 +165,12 @@ const EmprestimosPage = () => {
         const dataAtual = new Date();
         const dataDevolucaoDate = new Date(dataDevolucao);
         return dataAtual > dataDevolucaoDate;
+    }
+
+    const isAgendado = (dataInicio) => {
+        const dataAtual = new Date();
+        const dataInicioDate = new Date(dataInicio);
+        return dataAtual < dataInicioDate;
     }
 
     const finalizarEmprestimo = async (idEmprestimo) => {
@@ -243,6 +259,12 @@ const EmprestimosPage = () => {
                     <FormControlLabel
                         control={<Checkbox checked={showEmDia} onChange={() => setShowEmDia(!showEmDia)} />}
                         label="Em dia"
+                    />
+                </Box>
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="row" marginLeft="25px" marginRight="130px">
+                    <FormControlLabel
+                        control={<Checkbox checked={showAgendados} onChange={() => setShowAgendados(!showAgendados)} />}
+                        label="Agendados"
                     />
                 </Box>
                 <hr />
@@ -339,7 +361,8 @@ const EmprestimosPage = () => {
                         ) : (
                             filteredEmprestimos.map(emp =>
                                 <div key={emp.id} className='box-emprestimo'>
-                                    <div className='atrasado'>
+                                    <div className='atrasado-agendado'>
+                                        {isAgendado(emp.dataEmprestimo) && <div className='status-agendado'>Agendado</div>}
                                         {isAtrasado(emp.dataDevolucao) && <div className='status-atrasado'>Atrasado</div>}
                                     </div>
                                     <div className='row-edit'>

@@ -18,7 +18,13 @@ const API_URL = URLBase.API_URL;
 const HomePage = () =>{
 
     const [atrasados, setAtrasados] = useState([]);
+    const [agendados, setAgendados] = useState([]);
     const [role, setRole] = useState('');
+
+    const formatDate = (dateString) => {
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); // Ou onde você estiver armazenando o token
@@ -40,6 +46,20 @@ const HomePage = () =>{
         };
 
         fetchAtrasados();
+    }, []);
+
+    useEffect(() => {
+        const fetchAgendados = async () => {
+            try {
+                const response = await api.get(API_URL + 'Emprestimos/agendados');
+                
+                setAgendados(response.data);
+            } catch (error) {
+                console.error("Erro ao buscar empréstimos agendados:", error);
+            }
+        };
+
+        fetchAgendados();
     }, []);
 
     const token = localStorage.getItem('userToken');
@@ -74,23 +94,37 @@ const HomePage = () =>{
                     <div className='notifications-box'>
                         <h2 className='notification-title'>Notificações</h2>
                         <div className='notifications'>
-                            {atrasados.length === 0 ? (
+                            {atrasados.length === 0 && agendados.length === 0 ? (
                                 <div className='no-emprestimos-2'>
                                 <FontAwesomeIcon icon={faWheelchair} className='icon-chair-2' />
-                                <div>Nenhum empréstimo encontrado.</div>
+                                <div>Nenhuma notificação encontrada.</div>
                                 </div>
                             ) : (
                                 <div className='atrasados'>
                                     {atrasados.map(emp => (
                                         <div key={emp.id} className='sub-box-atrasados'>
-                                            <FontAwesomeIcon icon={faBell} className='icon-bell'/>
+                                            <FontAwesomeIcon icon={faBell} className='icon-bell-atrasado'/>
                                             <div>
-                                                <p className='message-atrasado'>O empréstimo de <span className='nome-atrasado'>{emp.nomePessoa}</span> chegou ao prazo de validade hoje. </p>
+                                                <p className='message-atrasado'>O empréstimo de <span className='nome-atrasado'>{emp.nomePessoa}</span> venceu em {formatDate(emp.dataDevolucao.split('T')[0])}. </p>
                                                 <p className='message-atrasado-2'>Telefone: <span className='nome-atrasado'>{emp.telefonePessoa}</span></p>
                                             </div>
                                             <div>
                                                 <Link to={`/pessoa/${emp.idPessoa}`}>
                                                     <button className='profile-btn-atrasado'><FontAwesomeIcon icon={faUpRightFromSquare} className='icon-btn-atrasado'/></button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {agendados.map(emp => (
+                                        <div key={emp.id} className='sub-box-agendados'>
+                                            <FontAwesomeIcon icon={faBell} className='icon-bell-agendado'/>
+                                            <div>
+                                                <p className='message-agendado'>O empréstimo de <span className='nome-agendado'>{emp.nomePessoa}</span> está agendado para <span className='nome-agendado'>{formatDate(emp.dataEmprestimo.split('T')[0])}.</span> </p>
+                                                <p className='message-agendado-2'>Telefone: <span className='nome-agendado'>{emp.telefonePessoa}</span></p>
+                                            </div>
+                                            <div>
+                                                <Link to={`/pessoa/${emp.idPessoa}`}>
+                                                    <button className='profile-btn-agendado'><FontAwesomeIcon icon={faUpRightFromSquare} className='icon-btn-atrasado'/></button>
                                                 </Link>
                                             </div>
                                         </div>
