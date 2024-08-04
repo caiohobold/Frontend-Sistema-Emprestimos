@@ -303,3 +303,14 @@
     color: rgb(214, 0, 29);
     margin-bottom: 5px;
 }
+
+.div-info-member{
+    display: flex;
+    flex-direction: column;
+}
+
+.span-forgot-password{
+    font-weight: 500;
+    margin-bottom: -5px;
+    color: #0c85b4;
+}
