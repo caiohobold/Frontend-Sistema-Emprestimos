@@ -58,22 +58,6 @@ const EditAssoc = () => {
         }));
     };
 
-    const handleChangePassword = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        console.log("Clicou")
-        try {
-            await api.put(API_URL + `Associacoes/${user.idAssociacao}/change-password`, { novaSenha: newPassword });
-            toast.success('Senha atualizada com sucesso!');
-            setIsPasswordModalOpen(false);
-            setLoading(false);
-        } catch (error) {
-            console.error('Erro ao atualizar a senha:', error);
-            toast.error('Erro ao atualizar a senha.');
-            setLoading(false);
-        }
-    };
-
     const customStyles = {
         overlay: {
             backgroundColor: 'rgba(89, 89, 89, 0.75)',
@@ -95,11 +79,12 @@ const EditAssoc = () => {
         try {
             await api2.put('/Associacoes/me', payload);
             setLoading(false);
-            toast.success('Usuário atualizado com sucesso!');
+            toast.success('Associação atualizada com sucesso!');
             setTimeout(() => {
                 navigate('/Usuarios/perfil/info');
             }, 1800);
         } catch (error) {
+            toast.error('Erro inesperado ao atualizar associação.');
             console.error("Erro ao atualizar o perfil:", error);
             setLoading(false);
         }
@@ -111,31 +96,11 @@ const EditAssoc = () => {
             <div className='return-div'>
                 <button onClick={() => navigate("/Usuarios/perfil/info")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>
-
-            <Modal
-                    style={customStyles}
-                    isOpen={isPasswordModalOpen}
-                    onRequestClose={() => setIsPasswordModalOpen(false)}
-                    contentLabel="Alterar Senha"
-                    className="modal-filter modal-scrollable"
-                    closeTimeoutMS={300}
-                >
-                    <br />
-                    <h2>Alterar Senha</h2>
-                    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap="10px">
-                        <form className='form-edit'>
-                            <div className='form-input-categ'>
-                                <CustomInput label="Nova Senha" type="password" name="novaSenha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                            </div>
-                            <button type="submit" className='save-pessoa' onClick={handleChangePassword} disabled={loading}>Salvar</button>
-                        </form>
-                    </Box>
-                </Modal>
             <div className='container-div'>
                 <br />
                 <div className='edit-user-row-1'>
                     <h2 className='perfil-title'>Editar perfil</h2>
-                    <button onClick={() => setIsPasswordModalOpen(true)} className='change-password-btn'>Alterar Senha</button>
+                    <button onClick={() => navigate("/Usuarios/perfil/edit/changepassword")} className='change-password-btn'>Alterar Senha</button>
                 </div>
                 <div className='perfil-container'>
                     <form onSubmit={handleSubmit} className='form-edit'>

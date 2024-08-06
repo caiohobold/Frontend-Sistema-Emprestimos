@@ -9,6 +9,8 @@ import NavBar from '../components/navBar';
 import { faUser, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightFromBracket, faUserGroup, faTriangleExclamation, faArrowLeft, faCircleUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import URLBase from '../services/URLBase';
 
 const API_URL = URLBase.API_URL;
@@ -28,7 +30,11 @@ const EditUser = () =>{
 
     const [user, setUser] = useState({
         nomeCompleto: '',
-        emailPessoal: ''
+        emailPessoal: '',
+        numeroTelefone: '',
+        cpf: '',
+        endereco: '',
+        dataNascimento: ''
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -38,7 +44,12 @@ const EditUser = () =>{
         const fetchUser = async () => {
             try {
                 const response = await api2.get('/Usuarios/me');
-                setUser(response.data);
+                const data = response.data;
+                const formattedDataNascimento = data.dataNascimento.split('T')[0];
+                setUser({
+                    ...data,
+                    dataNascimento: formattedDataNascimento
+                  });
                 console.log(user)
             } catch (error) {
                 console.error("Erro ao carregar o usuário:", error);
@@ -59,11 +70,24 @@ const EditUser = () =>{
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
+        const payload = {
+            cpf: user.cpf,
+            nomeCompleto: user.nomeCompleto,
+            numeroTelefone: user.numeroTelefone,
+            emailPessoal: user.emailPessoal,
+            dataNascimento: user.dataNascimento,
+            endereco: user.endereco
+        };
         try {
-            await axios.put('/Usuarios/me', user);
+            await api2.put('/Usuarios/me', payload);
             setLoading(false);
-            navigate('/profile');
+            toast.success('Usuário editado com sucesso!');
+            setTimeout(() => {
+                navigate('/Usuarios/perfil/info');
+            }, 1500);
         } catch (error) {
+            toast.error("Erro inesperado ao editar usuário.");
             console.error("Erro ao atualizar o perfil:", error);
             setLoading(false);
         }
@@ -71,26 +95,37 @@ const EditUser = () =>{
 
     return(
         <div className='main-content'>
+            <ToastContainer/>
             <div className='return-div'>
                 <button onClick={() => navigate("/Usuarios/perfil/info")} className='return-btn'><FontAwesomeIcon icon={faArrowLeft} /></button>
             </div>
             <div className='container-div'>
                 <br />
-                <h2 className='perfil-title'>Edição de Usuário</h2>
+                <div className='edit-user-row-1'>
+                    <h2 className='perfil-title'>Editar perfil</h2>
+                    <button onClick={() => navigate("/Usuarios/perfil/edit/changepassword-user")} className='change-password-btn'>Alterar Senha</button>
+                </div>
                 <div className='perfil-container'>
                 <form onSubmit={handleSubmit} className='form-edit'>
                     <div className='form-input'>
                         <CustomInput label="Nome Completo" type="text" name="nomeCompleto" value={user.nomeCompleto} onChange={handleChange} />
                     </div>
                     <div className='form-input'>
+                        <CustomInput label="CPF" type="text" name="cpf" value={user.cpf} mask="999.999.999-99" onChange={handleChange} />
+                    </div>
+                    <div className='form-input'>
                         <CustomInput label="E-mail" type="email" name="emailPessoal" value={user.emailPessoal} onChange={handleChange} />
+                    </div>
+                    <div className='form-input'>
+                        <CustomInput label="Data de nascimento" type="date" name="dataNascimento" value={user.dataNascimento} onChange={handleChange} />
+                    </div>
+                    <div className='form-input'>
+                        <CustomInput label="Endereço" type="text" name="endereco" value={user.endereco} onChange={handleChange} />
                     </div>
                     <div className='form-input'>
                         <CustomInput label="Telefone" type="text" name="numeroTelefone" mask="(99) 99999-9999" value={user.numeroTelefone} onChange={handleChange} />
                     </div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? 'Salvando...' : 'Salvar'}
-                    </button>
+                    <button type="submit" className='save-btn'>Salvar</button>
                 </form>
                 </div>
             </div>

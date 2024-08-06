@@ -6,6 +6,7 @@ import CustomInput from '../components/customInput';
 import WheelShareLogo from '../photos/WheelShareLogo.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ForgotPasswordAssocModal from '../components/ForgotPasswordAssocModal';
 
 const LoginAssoc = () =>{
 
@@ -13,6 +14,7 @@ const LoginAssoc = () =>{
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [modalOpen, setModalOpen] = useState(false); 
 
     const navigate = useNavigate();
 
@@ -50,6 +52,14 @@ const LoginAssoc = () =>{
         );
     };
 
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleForgotPasswordClick = () => {
+        setModalOpen(true);
+    };
+
     return(
 
         <div className='main-content'>
@@ -77,8 +87,10 @@ const LoginAssoc = () =>{
                             />
                         </div>
                     </div>
-
-                    <span className='span-member' onClick={handleBackClick}>Não possui cadastro? Voltar</span>
+                    <div className='div-info-member'>
+                        <span className='span-forgot-password' onClick={handleForgotPasswordClick}>Esqueci minha senha</span>
+                        <span className='span-member' onClick={handleBackClick}>Não possui cadastro? Voltar</span>
+                    </div>
                     <div className="form-group">
                         <button className="btn btn-primary btn-block" id="btnEntrar" disabled={loading}>
                         {loading && (
@@ -97,6 +109,7 @@ const LoginAssoc = () =>{
 
                 </form>
             </div>
+            <ForgotPasswordAssocModal open={modalOpen} handleClose={handleCloseModal} />
         </div>
 
     );

@@ -29,6 +29,8 @@ import ViewUsersPage from './pages/viewUsers';
 import RelatoriosPage from './pages/relatóriosPage';
 import RelatorioEmp from './pages/relatorioEmprestimos';
 import RelatorioDevolucoes from './pages/relatorioDevolucoes';
+import ChangePasswordAssoc from './pages/changePasswordAssoc';
+import ChangePasswordMembro from './pages/changePasswordMembro';
 
 function App() {
 
@@ -48,6 +50,8 @@ function App() {
               <Route exact path="/Usuarios/perfil/info" element={<ConfigUserPage />}/>
               <Route exact path="/Usuarios/perfil/edit/membro" element={<EditUser />}/>
               <Route exact path="/Usuarios/perfil/edit/assoc" element={<EditAssoc />}/>
+              <Route exact path="/Usuarios/perfil/edit/changepassword" element={<ChangePasswordAssoc />}/>
+              <Route exact path="/Usuarios/perfil/edit/changepassword-user" element={<ChangePasswordMembro />}/>
               <Route exact path="/Usuarios/pessoas" element={<PessoasPage />}/>
               <Route exact path="/pessoa/:id" element={<PerfilPessoa />}/>
               <Route exact path="/pessoa/edit/:id" element={<EditPessoa />}/>
