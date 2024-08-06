@@ -62,18 +62,8 @@ const AddPessoa = () => {
       return;
     }
 
-    if (!pessoa.email) {
-      toast.info("O campo 'E-mail' é obrigatório.")
-      return;
-    }
-
     if (!pessoa.telefone) {
       toast.info("O campo 'Telefone' é obrigatório.")
-      return;
-    }
-
-    if (!pessoa.descricao) {
-      toast.info("O campo 'Descrição' é obrigatório.")
       return;
     }
 
